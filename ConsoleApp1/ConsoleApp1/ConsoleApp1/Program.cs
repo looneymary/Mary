@@ -24,72 +24,69 @@ namespace ConsoleApp1
 
             //Коллекция строк со всей инфой для записи в файл
             fullInfoArr = new ArrayList();
+
         }
-        
+
         public void addInfo()
         {
             Console.WriteLine("Информация о сотруднике: \n");
 
             Console.WriteLine("Имя:");
             string firstName = Console.ReadLine();
-            elementArr.Add(firstName);
 
             Console.WriteLine("Фамилия:");
             string lastName = Console.ReadLine();
-            elementArr.Add(lastName);
 
             Console.WriteLine("Пол (м/ж):");
             string sex = Console.ReadLine();
-            elementArr.Add(sex);
 
             Console.WriteLine("Должность:");
             string appointment = Console.ReadLine();
-            elementArr.Add(appointment);
 
             Console.WriteLine("\nРабочая информация: \n");
 
             Console.WriteLine("Дата вступления в должность:");
             string date = Console.ReadLine();
-            elementArr.Add(date);
 
             Console.WriteLine("Оклад:");
             string val = Console.ReadLine();
             int salary = int.Parse(val);
-            elementArr.Add(salary);
-        }
+
+            string fullInfo = lastName + " " + firstName + ", " + sex + ", " + appointment + ", "
+                                         + date + ", " + salary;
+            //Добавить пользователя в коллекцию
+            fullInfoArr.Add(fullInfo);
+            }
         public void showAllList()
         {
-            int arrCount = elementArr.Count;
-            int num = 1;
-            for (int j = 0; j<arrCount; j += 6)
-            {
-                //Краткая информация
-                string text = num + ". " + elementArr[j + 1] + " " + elementArr[j] + ", "
-                                         + elementArr[j + 2] + ", " + elementArr[j + 3];
-                //Полная инфа
-                string fullInfo = num + ". " + elementArr[j + 1] + " " + elementArr[j] + ", "
-                                         + elementArr[j + 2] + ", " + elementArr[j + 3] + ", "
-                                         + elementArr[j + 4] + ", " + elementArr[j + 5];
-                //Заполнение коллекции
-                fullInfoArr.Add(fullInfo);
-                num++;
-                Console.Write(text);
-                Console.WriteLine("\n");
-            }
+            foreach (var person in fullInfoArr)
+                {
+                    Console.WriteLine(person);
+                }
+        }
+        public void showOnePerson()
+        {
+            int person;
+            Console.WriteLine("Введите порядковый номер:");
+            person = int.Parse(Console.ReadLine());
+            Console.WriteLine(fullInfoArr[person-1]);
         }
         public void writeToFile()
         {
             string textToWriteInAFile = "";
             foreach (var a in fullInfoArr)
             {
-                textToWriteInAFile += " " + (string)a + ";\n";
+                textToWriteInAFile += " " + (string)a + ";\r\n";
             }
             File.WriteAllText(filePath, textToWriteInAFile);
         }
         public void readFromFile()
         {
-            string readText = File.ReadAllText(filePath);
-            Console.WriteLine(readText);
+            
+            foreach (string line in File.ReadLines(filePath))
+            {
+                fullInfoArr.Add(line);
+            }
         }
     }
 
@@ -102,7 +99,7 @@ namespace ConsoleApp1
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
-                                    "3. Запись информации в файл \n4. Чтение из файла \n5. Выйти из программы\n\n");
+                                    "3. Вывести информацию об одном сотруднике \n4. Запись информации в файл\n5. Чтение из файла \n6. Выйти из программы\n\n");
                 i = int.Parse(Console.ReadLine());
                 switch (i)
                 {
@@ -110,23 +107,29 @@ namespace ConsoleApp1
                     case 1:
                         //Вынести в функцию
                         param.addInfo();
+
                         break;
                     //Вывести список всех сотрудников
                     case 2:
                         //Вынести в функцию
                         param.showAllList();
                         break;
-                    //Запись списка в файл
+                    //Вывести информацию об одном сотруднике
                     case 3:
+                        //Вынести в функцию
+                        param.showOnePerson();
+                        break;
+                    //Запись списка в файл
+                    case 4:
                         //I eta v funkciu
                         param.writeToFile();
                         break;
                     //Чтение данных из файла
-                    case 4:
+                    case 5:
                         //4itat' iz faila
                         param.readFromFile();
                         break;
-                    case 5:
+                    case 6:
                         Console.WriteLine("Закрыть приложение");
                         break;
                     default:
@@ -137,7 +140,7 @@ namespace ConsoleApp1
                 Console.ReadLine();
                 Console.Clear();
             }
-            while (i != 5);
+            while (i != 6);
         }
     }
 }
