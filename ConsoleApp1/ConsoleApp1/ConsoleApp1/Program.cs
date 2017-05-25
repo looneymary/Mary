@@ -10,19 +10,19 @@ namespace ConsoleApp1
 {
     class Program
     {
-    static void Main(string[] args)
+        static void Main(string[] args)
         {
             int i;
             //Коллекция отдельных элементов
             ArrayList elementArr = new ArrayList();
             //Коллекция строк со всей инфой для записи в файл
             ArrayList fullInfoArr = new ArrayList();
-
+            //Путь к файлу
+            string filePath = @"D:\net\projects\looneyTypeOfCoding\ConsoleApp1\spisok.txt";
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n3. Запись информации в файл \n4. Чтение из файла \n5. Выйти из программы\n\n");
                 i = int.Parse(Console.ReadLine());
-
                 switch (i)
                 {
                     //Добавить информацию о сотруднике
@@ -51,55 +51,54 @@ namespace ConsoleApp1
                         elementArr.Add(salary);
                         break;
                     //Вывести список всех сотрудников
-                    case 2: 
+                    case 2:
                         //Вынести в функцию
                         int arrCount = elementArr.Count;
                         int num = 1;
-                        for (int j =0; j<arrCount; j+=6)
-                        {       
-                                //Краткая информация
-                                string text = num + ". "+elementArr[j + 1] + " " + elementArr[j] + ", "
-                                                                 + elementArr[j + 2] + ", " + elementArr[j + 3];
-
-                                //Полная инфа
-                                string fullInfo = num + ". " + elementArr[j + 1] + " " + elementArr[j] + ", "
-                                                                 + elementArr[j + 2] + ", " + elementArr[j + 3] + ", "
-                                                                 + elementArr[j + 4] + ", " + elementArr[j + 5];
-                                //Заполнение коллекции
-                                fullInfoArr.Add(fullInfo);
-                                num++;
-                                Console.Write(text);
-                                Console.WriteLine("\n");
+                        for (int j = 0; j < arrCount; j += 6)
+                        {
+                            //Краткая информация
+                            string text = num + ". " + elementArr[j + 1] + " " + elementArr[j] + ", "
+                                                             + elementArr[j + 2] + ", " + elementArr[j + 3];
+                            //Полная инфа
+                            string fullInfo = num + ". " + elementArr[j + 1] + " " + elementArr[j] + ", "
+                                                             + elementArr[j + 2] + ", " + elementArr[j + 3] + ", "
+                                                             + elementArr[j + 4] + ", " + elementArr[j + 5];
+                            //Заполнение коллекции
+                            fullInfoArr.Add(fullInfo);
+                            num++;
+                            Console.Write(text);
+                            Console.WriteLine("\n");
                         }
                         break;
                     //Запись списка в файл
                     case 3:
                         //I eta v funkciu
-                        string filePath = @"D:\net\projects\looneyTypeOfCoding\ConsoleApp1\spisok.txt";
                         string textToWriteInAFile = "";
                         foreach (var a in fullInfoArr)
                         {
-                            textToWriteInAFile +=" "+(string)a+";\n";                            
+                            textToWriteInAFile += " " + (string)a + ";\n";
                         }
-                        textToWriteInAFile += "\t";
                         File.WriteAllText(filePath, textToWriteInAFile);
                         break;
                     //Чтение данных из файла
                     case 4:
-                            //4itat' iz faila
+                        //4itat' iz faila
+                        string readText = File.ReadAllText(filePath);
+                        Console.WriteLine(readText);
+                        break;
                     case 5:
-                            Console.WriteLine("Закрыть приложение");
-                            break;
+                        Console.WriteLine("Закрыть приложение");
+                        break;
                     default:
                         Console.WriteLine("Такого элемента нет в списке меню");
                         break;
-                    }
+                }
                 Console.Write("\n\n\t\t\tВернуться к главному меню...");
                 Console.ReadLine();
                 Console.Clear();
-                }
-            while (i != 5);
             }
-        
+            while (i != 5);
+        }
     }
 }
