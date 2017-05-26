@@ -11,16 +11,12 @@ namespace ConsoleApp1
     class Params
     {
         private string filePath;
-        private ArrayList elementArr;
         private ArrayList fullInfoArr;
 
         public Params()
         {
             //Путь к файлу
             filePath = @"D:\net\projects\looneyTypeOfCoding\ConsoleApp1\spisok.txt";
-
-            //Коллекция отдельных элементов
-            elementArr = new ArrayList();
 
             //Коллекция строк со всей инфой для записи в файл
             fullInfoArr = new ArrayList();
@@ -110,6 +106,7 @@ namespace ConsoleApp1
 
                         break;
                     //Вывести список всех сотрудников
+                    //Не придумала как пронумеровать этот список
                     case 2:
                         //Вынести в функцию
                         param.showAllList();
@@ -125,6 +122,8 @@ namespace ConsoleApp1
                         param.writeToFile();
                         break;
                     //Чтение данных из файла
+                    //Не нравится, что дублируются данные при выборе чтения из файла и добавления в массив, 
+                    //но как это фильтровать тоже что-то не придумала
                     case 5:
                         //4itat' iz faila
                         param.readFromFile();
