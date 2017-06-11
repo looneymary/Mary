@@ -10,23 +10,24 @@ namespace ConsoleApp1
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             int i;
-            Developer developer = new Developer();
-            OfficeWorker officeWorker = new OfficeWorker();
             Methods methods = new Methods();
-
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
-                                    "3. Вывести информацию об одном сотруднике \n4. Запись информации в файл\n5. Чтение из файла \n6. Поиск по должности \n7. Выйти из программы\n\n");
+                                    "3. Вывести информацию об одном сотруднике \n4. Запись информации в файл\n5. Чтение из файла \n" +
+                                    "6. Поиск по должности \n7. Подсчёт по должности \n8. Удалить сотрудника \n9. Выйти из программы\n\n");
                 i = int.Parse(Console.ReadLine());
                 switch (i)
                 {
                     //Добавить информацию о сотруднике
-                    case 1:
-
+                    case 1:                        
+                        Developer developer = new Developer();
+                        OfficeWorker officeWorker = new OfficeWorker();
+                        
                         int type;
 
                         Console.WriteLine("Информация о сотруднике: \n");
@@ -37,47 +38,49 @@ namespace ConsoleApp1
                         {
                             developer.AddInfo();
                             //Добавить пользователя в коллекцию
-                            methods.fullInfoArr.Add(developer);
+                            methods.people.Add(developer);
                         }
                         else if (type == 2) 
                         {
                             officeWorker.AddInfo();
                             //Добавить пользователя в коллекцию
-                            methods.fullInfoArr.Add(officeWorker);
+                            methods.people.Add(officeWorker);
                         }
                         else
                         {
                             Console.WriteLine("Введены неверные данные");
-                        }
-                        
+                        }                        
                         break;
                     //Вывести список всех сотрудников
-                    case 2:
-                        string shapka = string.Format("| {0, 2} | {1, 10} | {2, 10} | {3, 3} | {4, 10} | {5, 29} | {6, 10} |", "№", "Фамилия", "Имя", "Пол", "Должность", "Дата вступления в должность", "Оклад");
-                        Console.WriteLine(shapka);
+                    case 2: 
                         methods.ShowAllList();
                         break;
                     //Вывести информацию об одном сотруднике
-                    case 3:
+                    case 3:                        
                         methods.ShowOnePerson();
                         break;
                     //Запись списка в файл
                     case 4:
                         methods.WriteToFile();
-                        Console.WriteLine("Запись данных прошла успешно.");
                         break;
                     //Чтение данных из файла
-                    case 5:
-                        methods.ReadFromFile();
-                        Console.WriteLine("Чтение данных прошло успешно.");
+                    case 5:                        
+                        methods.ReadFromFile();                        
                         break;
                     //Поиск по должности
                     case 6:
-                        //methods.SearchInfo();
-                        //methods.IsDeveloper();
+                        methods.SearchInfo(methods.people);                         
+                        break;
+                    //Подсчёт по должности
+                    case 7:
+                        methods.CountWorkers(methods.people);
+                        break;
+                    //Удалить сотрудника
+                    case 8:
                         methods.RemovePerson();
                         break;
-                    case 7:
+                    //Поиск по должности
+                    case 9:
                         Console.WriteLine("Закрыть приложение");                        
                         break;
                     default:
@@ -88,7 +91,7 @@ namespace ConsoleApp1
                 Console.ReadLine();
                 Console.Clear();
             }
-            while (i != 7);
+            while (i != 9);
         }
     }
 }

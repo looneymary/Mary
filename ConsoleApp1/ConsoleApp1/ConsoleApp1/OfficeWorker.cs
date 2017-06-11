@@ -12,11 +12,10 @@ namespace ConsoleApp1
         {            
         }
 
-        public override void ReadFromFile()
+        public override void ShowOnePerson()
         {
-            
-            
-
+            base.ShowOnePerson();
+            Console.WriteLine(str);
         }
     }
 }

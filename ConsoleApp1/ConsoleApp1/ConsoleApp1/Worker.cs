@@ -1,6 +1,10 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.IO;
+using System.Collections;
 
 namespace ConsoleApp1
 {
@@ -15,16 +19,13 @@ namespace ConsoleApp1
 
         protected string FilePath { get; set; }
         public string FullInfo { get; set; }
-        public ArrayList fullInfoArr;
+        public List<object> people;
 
         //Конструктор
         public Worker()
         {
             //Путь к файлу
             FilePath = string.Format("{0} spisok.txt", AppDomain.CurrentDomain.BaseDirectory);
-
-            //Коллекция строк со всей инфой для записи в файл
-            fullInfoArr = new ArrayList();
 
             FullInfo = "";
         }
