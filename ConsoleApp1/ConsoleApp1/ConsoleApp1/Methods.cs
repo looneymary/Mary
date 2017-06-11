@@ -85,14 +85,15 @@ namespace ConsoleApp1
         {
             foreach (var line in File.ReadLines(FilePath))
             {
+                Methods methods1 = new Methods();
                 string[] names = line.Split(' ');
-                this.LastName = names[0];
-                this.FirstName = names[1];
-                this.Sex = names[2];
-                this.Appointment = names[3];
-                this.Date = names[4];
-                this.Salary = int.Parse(names[5]);
-                people.Add(this);
+                methods1.LastName = names[0];
+                methods1.FirstName = names[1];
+                methods1.Sex = names[2];
+                methods1.Appointment = names[3];
+                methods1.Date = names[4];
+                methods1.Salary = int.Parse(names[5]);
+                people.Add(methods1);
             }
             Console.WriteLine("Чтение данных прошло успешно.");
         }
