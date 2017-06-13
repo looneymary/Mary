@@ -1,10 +1,12 @@
 ﻿using System;
+using ConsoleApp1.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
+
 
 namespace ConsoleApp1
 {
@@ -14,7 +16,9 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             int i;
-            Methods methods = new Methods();
+            Repository repository = new Repository();
+            WorkWithFile file = new WorkWithFile();
+            Viewer viewer = new Viewer();
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
@@ -23,7 +27,7 @@ namespace ConsoleApp1
                 i = int.Parse(Console.ReadLine());
                 switch (i)
                 {
-                    //Добавить информацию о сотруднике
+                    // Добавить информацию о сотруднике.
                     case 1:                        
                         Developer developer = new Developer();
                         OfficeWorker officeWorker = new OfficeWorker();
@@ -37,49 +41,50 @@ namespace ConsoleApp1
                         if (type == 1)
                         {
                             developer.AddInfo();
-                            //Добавить пользователя в коллекцию
-                            methods.people.Add(developer);
+                            // Добавить пользователя в коллекцию.
+                            repository.people.Add(developer);
                         }
                         else if (type == 2) 
                         {
                             officeWorker.AddInfo();
-                            //Добавить пользователя в коллекцию
-                            methods.people.Add(officeWorker);
+                            // Добавить пользователя в коллекцию.
+                            repository.people.Add(officeWorker);
                         }
                         else
                         {
                             Console.WriteLine("Введены неверные данные");
                         }                        
                         break;
-                    //Вывести список всех сотрудников
-                    case 2: 
-                        methods.ShowAllList();
+                    // Вывести список всех сотрудников.
+                    case 2:
+                        viewer.ShowAllList(repository.people);
                         break;
-                    //Вывести информацию об одном сотруднике
-                    case 3:                        
-                        methods.ShowOnePerson();
+                    // Вывести информацию об одном сотруднике.
+                    case 3:
+                        repository.ShowOnePerson(repository.people);
+                        viewer.ShowAllList(repository.onePerson);
                         break;
-                    //Запись списка в файл
+                    // Запись списка в файл.
                     case 4:
-                        methods.WriteToFile();
+                        file.WriteToFile(repository.people);
                         break;
-                    //Чтение данных из файла
+                    // Чтение данных из файла.
                     case 5:                        
-                        methods.ReadFromFile();                        
+                        file.ReadFromFile(repository.people);
                         break;
-                    //Поиск по должности
+                    // Поиск по должности.
                     case 6:
-                        methods.SearchInfo(methods.people);                         
+                        repository.SearchInfo(repository.people);                         
                         break;
-                    //Подсчёт по должности
+                    // Подсчёт по должности.
                     case 7:
-                        methods.CountWorkers(methods.people);
+                        repository.CountWorkers(repository.people);
                         break;
-                    //Удалить сотрудника
+                    // Удалить сотрудника.
                     case 8:
-                        methods.RemovePerson();
+                        repository.RemovePerson();
                         break;
-                    //Поиск по должности
+                    // Поиск по должности.
                     case 9:
                         Console.WriteLine("Закрыть приложение");                        
                         break;

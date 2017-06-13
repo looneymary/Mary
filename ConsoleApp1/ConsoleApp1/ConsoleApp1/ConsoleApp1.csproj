@@ -42,15 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Methods.cs" />
-    <Compile Include="Developer.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="WorkWithFile.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="Models\Developer.cs" />
+    <Compile Include="Viewer.cs" />
     <Compile Include="Worker.cs" />
-    <Compile Include="OfficeWorker.cs" />
+    <Compile Include="Models\OfficeWorker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 
-namespace ConsoleApp1
+namespace ConsoleApp1.Models
 {
-    class Developer : Methods
+    class Developer : Repository
     {
-
-        Methods methods = new Methods();
+        Repository repository = new Repository();
 
         public string DevLang { get; set; }
         public string Experience { get; set; }

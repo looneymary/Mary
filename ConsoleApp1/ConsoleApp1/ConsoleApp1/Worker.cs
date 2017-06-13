@@ -16,18 +16,19 @@ namespace ConsoleApp1
         public string Appointment { get; set; }
         public string Date { get; set; }
         public int Salary { get; set; }
-
-        protected string FilePath { get; set; }
+        
         public string FullInfo { get; set; }
-        public List<object> people;
-
-        //Конструктор
+        
+        // Конструктор.
         public Worker()
         {
-            //Путь к файлу
-            FilePath = string.Format("{0} spisok.txt", AppDomain.CurrentDomain.BaseDirectory);
-
             FullInfo = "";
+        }
+
+        // Переопределения метода ToString.
+        public override string ToString()
+        {
+            return String.Format("{0} {1} {2} {3} {4} {5}", LastName, FirstName, Sex, Appointment, Date, Salary);
         }
     }
 }

@@ -4,18 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace ConsoleApp1.Models
 {
-    class OfficeWorker : Methods
+    class OfficeWorker : Viewer
     {
         public OfficeWorker() : base()
         {            
-        }
-
-        public override void ShowOnePerson()
-        {
-            base.ShowOnePerson();
-            Console.WriteLine(str);
         }
     }
 }
