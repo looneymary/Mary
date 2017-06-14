@@ -99,4 +99,9 @@ namespace ConsoleApp1
             while (i != 9);
         }
     }
+
+    public class SomeClass
+    {
+        
+    }
 }
