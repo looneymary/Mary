@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace ConsoleApp1
 {
-    abstract class Worker
+    public abstract class Worker
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

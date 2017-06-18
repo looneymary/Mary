@@ -10,6 +10,9 @@ namespace ConsoleApp1.Models
 {
     class Developer : Repository
     {
+        public delegate int ValidValuesDelegate(string a, string b, string c, string d, string f, int g);
+        public event ValidValuesDelegate СheckingValid;
+
         Repository repository = new Repository();
 
         public string DevLang { get; set; }
@@ -33,6 +36,8 @@ namespace ConsoleApp1.Models
 
             Console.WriteLine("Уровень знаний:");
             Level = Console.ReadLine();
+
+            СheckingValid(FirstName, LastName, Sex, Appointment, Date, Salary);
         }
     }
 }

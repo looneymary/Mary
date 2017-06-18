@@ -9,7 +9,7 @@ using ConsoleApp1.Models;
 
 namespace ConsoleApp1
 {
-    class Repository : Worker
+    public class Repository : Worker
     {
         public List<Repository> people = new List<Repository>();
         public List<Repository> onePerson = new List<Repository>();
@@ -17,13 +17,12 @@ namespace ConsoleApp1
         public Repository() : base()
         {
         }
-        
         // Добавить.
         public virtual void AddInfo()
         {
             Console.WriteLine("Имя:");
             FirstName = Console.ReadLine();
-
+            
             Console.WriteLine("Фамилия:");
             LastName = Console.ReadLine();
 

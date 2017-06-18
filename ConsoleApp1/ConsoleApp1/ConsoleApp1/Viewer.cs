@@ -7,7 +7,7 @@ using ConsoleApp1.Models;
 
 namespace ConsoleApp1
 {
-    class Viewer : Repository
+    class Viewer
     {
         // Вывести всех.
         public void ShowAllList(List<Repository> people)

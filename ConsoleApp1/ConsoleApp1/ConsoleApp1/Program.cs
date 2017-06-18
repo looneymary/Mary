@@ -13,12 +13,14 @@ namespace ConsoleApp1
     class Program
     {
         
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             int i;
             Repository repository = new Repository();
             WorkWithFile file = new WorkWithFile();
             Viewer viewer = new Viewer();
+            MyExceptions ex = new MyExceptions();
+            
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
@@ -31,8 +33,11 @@ namespace ConsoleApp1
                     case 1:                        
                         Developer developer = new Developer();
                         OfficeWorker officeWorker = new OfficeWorker();
-                        
+                        officeWorker.СheckingValid += ex.CheckExceptions;
+                        developer.СheckingValid += ex.CheckExceptions;
+
                         int type;
+                        int res;
 
                         Console.WriteLine("Информация о сотруднике: \n");
 
@@ -41,14 +46,22 @@ namespace ConsoleApp1
                         if (type == 1)
                         {
                             developer.AddInfo();
-                            // Добавить пользователя в коллекцию.
-                            repository.people.Add(developer);
+                            res = ex.Result;
+                            if (res == 0)
+                            {
+                                // Добавить пользователя в коллекцию.
+                                repository.people.Add(developer);
+                            }
                         }
                         else if (type == 2) 
                         {
                             officeWorker.AddInfo();
-                            // Добавить пользователя в коллекцию.
-                            repository.people.Add(officeWorker);
+                            res = ex.Result;
+                            if (res == 0)
+                            { 
+                                // Добавить пользователя в коллекцию.
+                                repository.people.Add(officeWorker);
+                            }
                         }
                         else
                         {
