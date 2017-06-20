@@ -8,38 +8,36 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleApp1
 {
-    public class MyExceptions : Exception
+    public class CheckValidExceptions : Exception
     {
-        public int Result { get; set; }
-        public MyExceptions() { }
-        public MyExceptions(string message) : base(message) { }
-        public MyExceptions(string message, Exception ex) : base(message) { }
+        public int ValidResult { get; set; }
+        public CheckValidExceptions() { }
+        public CheckValidExceptions(string message) : base(message) { }
 
-        public int CheckExceptions(string a, string b, string c, string d, string f, int g)
+        public int CheckExceptions(string FirstName, string LastName, string Sex, string Appointment, 
+            string Date, int Salary)
         {
-            Repository rep = new Repository();
-            OfficeWorker office = new OfficeWorker();
-            MyExceptions exc = new MyExceptions();
+            CheckValidExceptions exc = new CheckValidExceptions();
 
             Console.WriteLine("Валидация данных.");
-            Result = 0;
+            ValidResult = 0;
             try
             {                
-                exc.StringCheck(a, "Имя");
-                exc.StringCheck(b, "Фамилия");
-                exc.StringCheck(c, "Пол");
-                exc.StringCheck(d, "Должность");
-                exc.DateCheck(f, "Дата вступления в должность");
-                exc.IntVal(g, "Оклад");
+                StringCheck(FirstName, "Имя");
+                StringCheck(LastName, "Фамилия");
+                StringCheck(Sex, "Пол");
+                StringCheck(Appointment, "Должность");
+                DateCheck(Date, "Дата вступления в должность");
+                IntVal(Salary, "Оклад");
             }
-            catch(MyExceptions ex)
+            catch(CheckValidExceptions ex)
             {
                 Console.WriteLine(ex.Message);
-                Result++;
-            }
+                ValidResult++;
+            }            
             finally
             {
-                if(Result == 0)
+                if(ValidResult == 0)
                 {
                     Console.WriteLine("Валидация прошла успешно.");
                 }
@@ -48,44 +46,43 @@ namespace ConsoleApp1
                     Console.WriteLine("Сотрудник не был добавлен. Повторите ввод.");
                 }
             }
-            return Result;
+            return ValidResult;
         }
 
         public void StringCheck(string var, string name)
         {
-            if (var == string.Empty || var == null)
+            if (String.IsNullOrEmpty(var))
             {
                string message = "Поле \""+name+"\" не было заполнено. Пожалуйста исправьте.";
-               throw new MyExceptions(message);
+               throw new CheckValidExceptions(message);
             }
 
-            Regex reg = new Regex(@"[А-Яа-я]");
+            Regex reg = new Regex(@"[А-Яа-яA-Za-z-]");
             MatchCollection mc = reg.Matches(var);
             if(mc.Count == 0)
             {
                 string message = "Поле \"" + name + "\" содержит недопустимые символы. Было введено: " + var;
-                throw new MyExceptions(message);
+                throw new CheckValidExceptions(message);
             }
         }
 
         public void DateCheck(string var, string name)
         {
-            Regex reg = new Regex(@"[0-9]+.[0-9]+.[0-9]+");
+            Regex reg = new Regex(@"(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d");
             MatchCollection mc = reg.Matches(var);
             if (mc.Count == 0)
             {
                 string message = "Поле \"" + name + "\" было заполнено не верно. Формат даты должен быть \"чч.мм.гггг\".";
-                throw new MyExceptions(message);
+                throw new CheckValidExceptions(message);
             }
         }
 
         public void IntVal(int intVal, string name)
         {
-            int s1 = intVal;
             if (intVal <= 0)
             {
                 string message = "Поле \"" + name + "\" было заполнено не верно. Значение должно быть большо 0.";
-                throw new MyExceptions(message);
+                throw new CheckValidExceptions(message);
             }
         }
     }

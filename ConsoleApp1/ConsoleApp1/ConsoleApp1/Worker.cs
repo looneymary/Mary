@@ -18,11 +18,10 @@ namespace ConsoleApp1
         public int Salary { get; set; }
         
         public string FullInfo { get; set; }
-        
+                
         // Конструктор.
         public Worker()
-        {
-            FullInfo = "";
+        {          
         }
 
         // Переопределения метода ToString.
