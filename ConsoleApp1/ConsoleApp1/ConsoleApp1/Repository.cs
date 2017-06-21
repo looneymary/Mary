@@ -9,21 +9,22 @@ using ConsoleApp1.Models;
 
 namespace ConsoleApp1
 {
-    class Repository : Worker
+    public class Repository : Worker
     {
         public List<Repository> people = new List<Repository>();
         public List<Repository> onePerson = new List<Repository>();
+        CheckValidExceptions ex = new CheckValidExceptions();
 
         public Repository() : base()
         {
         }
-        
         // Добавить.
         public virtual void AddInfo()
         {
+            CheckValidExceptions ex = new CheckValidExceptions();
             Console.WriteLine("Имя:");
             FirstName = Console.ReadLine();
-
+            
             Console.WriteLine("Фамилия:");
             LastName = Console.ReadLine();
 
@@ -39,8 +40,15 @@ namespace ConsoleApp1
             Date = Console.ReadLine();
 
             Console.WriteLine("Оклад:");
-            string Val = Console.ReadLine();
-            Salary = int.Parse(Val);
+            try
+            {                
+                string Val = Console.ReadLine();
+                Salary = int.Parse(Val);
+
+            }
+            catch (System.FormatException)
+            {                
+            } 
         }
 
         // Поиск.
@@ -84,7 +92,6 @@ namespace ConsoleApp1
         // Является ли разработчиком.
         public void IsDeveloper(Object obj)
         {
-            Repository repository = new Repository();
             Console.WriteLine("Является ли сотрудник разработчиком?");
             bool val = obj is Developer;
         }
@@ -97,6 +104,17 @@ namespace ConsoleApp1
             number -= 1;
             people.RemoveAt(number);
             Console.WriteLine("Сотрудник удалён");
+        }
+
+        public void AddPerson(Repository obj, CheckValidExceptions ex)
+        {
+            int countExceptions = ex.ValidResult;
+            Console.WriteLine(countExceptions);
+            if (countExceptions == 0)
+            {
+                // Добавить пользователя в коллекцию.
+                people.Add(obj);
+            }
         }
     }
 }

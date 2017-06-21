@@ -13,12 +13,14 @@ namespace ConsoleApp1
     class Program
     {
         
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             int i;
             Repository repository = new Repository();
             WorkWithFile file = new WorkWithFile();
             Viewer viewer = new Viewer();
+            CheckValidExceptions ex = new CheckValidExceptions();
+            
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
@@ -31,29 +33,36 @@ namespace ConsoleApp1
                     case 1:                        
                         Developer developer = new Developer();
                         OfficeWorker officeWorker = new OfficeWorker();
-                        
-                        int type;
+                        officeWorker.СheckingValid += ex.CheckExceptions;
+                        developer.СheckingValid += ex.CheckExceptions;
+
+                        int workerType;
 
                         Console.WriteLine("Информация о сотруднике: \n");
 
                         Console.WriteLine("Укажите тип:\n1). Разработчик \n2). Работник офиса \n ");
-                        type = int.Parse(Console.ReadLine());
-                        if (type == 1)
+                        try
                         {
-                            developer.AddInfo();
-                            // Добавить пользователя в коллекцию.
-                            repository.people.Add(developer);
+                            workerType = int.Parse(Console.ReadLine());
+                            if (workerType == 1)
+                            {
+                                developer.AddInfo();
+                                repository.AddPerson(developer, ex);
+                            }
+                            else if (workerType == 2)
+                            {
+                                officeWorker.AddInfo();
+                                repository.AddPerson(officeWorker, ex);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Введены неверные данные");
+                            }                            
                         }
-                        else if (type == 2) 
+                        catch
                         {
-                            officeWorker.AddInfo();
-                            // Добавить пользователя в коллекцию.
-                            repository.people.Add(officeWorker);
+                            Console.WriteLine("Введены неверные данные.");
                         }
-                        else
-                        {
-                            Console.WriteLine("Введены неверные данные");
-                        }                        
                         break;
                     // Вывести список всех сотрудников.
                     case 2:

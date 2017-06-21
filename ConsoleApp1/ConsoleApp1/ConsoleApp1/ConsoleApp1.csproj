@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckValidExceptions.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="WorkWithFile.cs" />
     <Compile Include="Repository.cs" />

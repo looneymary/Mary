@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace ConsoleApp1
 {
-    abstract class Worker
+    public abstract class Worker
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,11 +18,10 @@ namespace ConsoleApp1
         public int Salary { get; set; }
         
         public string FullInfo { get; set; }
-        
+                
         // Конструктор.
         public Worker()
-        {
-            FullInfo = "";
+        {          
         }
 
         // Переопределения метода ToString.
