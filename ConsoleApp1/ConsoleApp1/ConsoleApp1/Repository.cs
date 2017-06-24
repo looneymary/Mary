@@ -13,11 +13,14 @@ namespace ConsoleApp1
     {
         public List<Repository> people = new List<Repository>();
         public List<Repository> onePerson = new List<Repository>();
-        CheckValidExceptions ex = new CheckValidExceptions();
+        public List<Repository> developers = new List<Repository>();
+        public List<Repository> officeWorkers = new List<Repository>();
+        CheckValidExceptions ex = new CheckValidExceptions();        
 
         public Repository() : base()
         {
-        }
+        }              
+
         // Добавить.
         public virtual void AddInfo()
         {
@@ -28,8 +31,15 @@ namespace ConsoleApp1
             Console.WriteLine("Фамилия:");
             LastName = Console.ReadLine();
 
-            Console.WriteLine("Пол (м/ж):");
-            Sex = Console.ReadLine();
+            Console.WriteLine("Пол: м - 1/ ж - 2.");
+            try
+            {
+                string Val = Console.ReadLine();
+                Sex = (EnumHelper.TypeOfSex)int.Parse(Val);
+            }
+            catch (System.FormatException)
+            {
+            }
 
             Console.WriteLine("Должность:");
             Appointment = Console.ReadLine();
@@ -51,15 +61,16 @@ namespace ConsoleApp1
             } 
         }
 
-        // Поиск.
-        public virtual void SearchInfo(List<Repository> people)
+        // Search by appointment.
+        public virtual void SearchByAppointment(List<Repository> people)
         {
             Console.WriteLine("Введите должность: ");
             string SearchAppointment = Console.ReadLine();
-            var result = people.FindAll(x => (x.Appointment.Contains(SearchAppointment)));
-            if (result.Count > 0)
+            IEnumerable<Repository> selectPeople = people.Where(p => p.Appointment == SearchAppointment);
+            var count = people.Count(p => p.Appointment == SearchAppointment);
+            if (count > 0)
             {
-                foreach (var res in result)
+                foreach (var res in selectPeople)
                 {
                     Console.WriteLine(string.Format("{0} {1}", res.LastName, res.FirstName));
                 }
@@ -68,7 +79,26 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Поиск не дал результатов.");
             }
-           
+        }
+
+        //Search person by name.
+        public void SearchByName(List<Repository> people)
+        {
+            Console.WriteLine("Enter the name:");
+            string name = Console.ReadLine();
+            IEnumerable<Repository> searchResult = people.Where(p => p.FirstName == name);
+            var count = people.Count(p => p.FirstName == name);
+            if (count > 0)
+            {
+                foreach(var res in searchResult)
+                {
+                    Console.WriteLine(res);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Tse search returns no results.");
+            }
         }
 
         // Выбор одного сотрудника.
@@ -85,35 +115,94 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Введите должность: ");
             string CountAppointment = Console.ReadLine();
-            var result = people.FindAll(x => (x.Appointment.Contains(CountAppointment)));
-            Console.WriteLine("{0} : {1}", CountAppointment, result.Count);
+            var count = people.Count(p => p.Appointment == CountAppointment);
+            Console.WriteLine("{0} : {1}", CountAppointment, count);
         }
         
         // Является ли разработчиком.
-        public void IsDeveloper(Object obj)
+        public bool IsDeveloper(Object obj)
         {
-            Console.WriteLine("Является ли сотрудник разработчиком?");
             bool val = obj is Developer;
+            return val;
         }
         
         // Удаление сотрудника.
         public void RemovePerson()
         {
+            WorkWithFile file = new WorkWithFile();
+
             Console.WriteLine("Введите номер сотрудника: ");
             int number = int.Parse(Console.ReadLine());
             number -= 1;
+
+            RemoveFromAnyList(developers, people[number]);
+            RemoveFromAnyList(officeWorkers, people[number]);
             people.RemoveAt(number);
+
             Console.WriteLine("Сотрудник удалён");
+            file.WriteToFile(developers, officeWorkers);
         }
 
+        //Remove from developers/officeworkers
+        public void RemoveFromAnyList(List<Repository> obj1, Object obj2)
+        {
+            int i = -1;
+            foreach (var person in obj1)
+            {
+                if (person.Equals(obj2))
+                {
+                    i = obj1.IndexOf(person);
+                }
+            }
+            if (i >= 0)
+            {
+                obj1.RemoveAt(i);
+            }
+        }
+
+        // For checking exceptions in AddInfo.
         public void AddPerson(Repository obj, CheckValidExceptions ex)
         {
+            WorkWithFile file = new WorkWithFile();
+
             int countExceptions = ex.ValidResult;
-            Console.WriteLine(countExceptions);
             if (countExceptions == 0)
             {
                 // Добавить пользователя в коллекцию.
                 people.Add(obj);
+                SortPeopleInDifferentTables(obj);
+                file.AddPersonToFile(obj);
+            }
+        }
+
+        //Sort into different tables
+        public void SortPeopleInDifferentTables(Repository obj)
+        {
+            bool res = IsDeveloper(obj);
+            if (res == true)
+            {
+                developers.Add(obj);
+            }
+            else
+            {
+                officeWorkers.Add(obj);
+            }           
+        }
+
+        //Show people into different tables
+        public void ViewPeopleInDifferentTables()
+        {
+            Viewer viewer = new Viewer();
+
+            if (developers.Count > 0)
+            {
+                Console.WriteLine("Список разработчиков");
+                viewer.ShowAllList(developers);
+            }
+            if (officeWorkers.Count > 0)
+            {
+                Console.WriteLine("Список сотрудников офиса");
+                viewer.ShowAllList(officeWorkers);
             }
         }
     }

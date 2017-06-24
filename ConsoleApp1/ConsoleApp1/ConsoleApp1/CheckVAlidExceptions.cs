@@ -15,7 +15,7 @@ namespace ConsoleApp1
         public CheckValidExceptions(string message) : base(message) { }
 
         public int CheckExceptions(string FirstName, string LastName, string Sex, string Appointment, 
-            string Date, int Salary)
+                                   string Date, int Salary)
         {
             CheckValidExceptions exc = new CheckValidExceptions();
 

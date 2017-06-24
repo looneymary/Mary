@@ -10,9 +10,11 @@ namespace ConsoleApp1
 {
     public abstract class Worker
     {
+        public Guid _id;
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Sex { get; set; }
+        public EnumHelper.TypeOfSex Sex { get; set; }
         public string Appointment { get; set; }
         public string Date { get; set; }
         public int Salary { get; set; }

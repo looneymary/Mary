@@ -20,11 +20,13 @@ namespace ConsoleApp1
             WorkWithFile file = new WorkWithFile();
             Viewer viewer = new Viewer();
             CheckValidExceptions ex = new CheckValidExceptions();
-            
+
+            file.ReadFromFile(repository.people, repository.developers, repository.officeWorkers);
+
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
-                                    "3. Вывести информацию об одном сотруднике \n4. Запись информации в файл\n5. Чтение из файла \n" +
+                                    "3. Вывести информацию об одном сотруднике\n4. Запись в файл \n5. Чтение из файла\n" +
                                     "6. Поиск по должности \n7. Подсчёт по должности \n8. Удалить сотрудника \n9. Выйти из программы\n\n");
                 i = int.Parse(Console.ReadLine());
                 switch (i)
@@ -36,20 +38,20 @@ namespace ConsoleApp1
                         officeWorker.СheckingValid += ex.CheckExceptions;
                         developer.СheckingValid += ex.CheckExceptions;
 
-                        int workerType;
+                        EnumHelper.WorkerType workerType;
 
                         Console.WriteLine("Информация о сотруднике: \n");
 
                         Console.WriteLine("Укажите тип:\n1). Разработчик \n2). Работник офиса \n ");
                         try
                         {
-                            workerType = int.Parse(Console.ReadLine());
-                            if (workerType == 1)
+                            workerType = (EnumHelper.WorkerType)int.Parse(Console.ReadLine());
+                            if (workerType == EnumHelper.WorkerType.Developer)
                             {
                                 developer.AddInfo();
                                 repository.AddPerson(developer, ex);
                             }
-                            else if (workerType == 2)
+                            else if (workerType == EnumHelper.WorkerType.OfficeWorker)
                             {
                                 officeWorker.AddInfo();
                                 repository.AddPerson(officeWorker, ex);
@@ -67,23 +69,24 @@ namespace ConsoleApp1
                     // Вывести список всех сотрудников.
                     case 2:
                         viewer.ShowAllList(repository.people);
+                        repository.ViewPeopleInDifferentTables();
                         break;
                     // Вывести информацию об одном сотруднике.
                     case 3:
-                        repository.ShowOnePerson(repository.people);
+                        repository.ShowOnePerson(repository.people);                        
                         viewer.ShowAllList(repository.onePerson);
                         break;
                     // Запись списка в файл.
                     case 4:
-                        file.WriteToFile(repository.people);
+                        file.WriteToFile(repository.developers, repository.officeWorkers);
                         break;
                     // Чтение данных из файла.
                     case 5:                        
-                        file.ReadFromFile(repository.people);
+                        file.ReadFromFile(repository.people, repository.developers, repository.officeWorkers);
                         break;
                     // Поиск по должности.
                     case 6:
-                        repository.SearchInfo(repository.people);                         
+                        repository.SearchByAppointment(repository.people);
                         break;
                     // Подсчёт по должности.
                     case 7:

@@ -18,7 +18,7 @@ namespace ConsoleApp1.Models
         public override void AddInfo()
         {
             base.AddInfo();
-            СheckingValid(FirstName, LastName, Sex, Appointment, Date, Salary);            
+            СheckingValid(FirstName, LastName, Sex.ToString(), Appointment, Date, Salary);            
         }
     }
 }

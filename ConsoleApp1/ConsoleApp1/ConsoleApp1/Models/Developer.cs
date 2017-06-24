@@ -37,7 +37,7 @@ namespace ConsoleApp1.Models
             Console.WriteLine("Уровень знаний:");
             Level = Console.ReadLine();
 
-            СheckingValid(FirstName, LastName, Sex, Appointment, Date, Salary);
+            СheckingValid(FirstName, LastName, Sex.ToString(), Appointment, Date, Salary);
         }
     }
 }

@@ -10,13 +10,13 @@ namespace ConsoleApp1
 {
     class Config
     {
-        public string FilePath { get; set; }
+        public static readonly string _filePath;
 
         // Конструктор.
-        public Config()
+        static Config()
         {
             // Путь к файлу.
-            FilePath = string.Format("{0} spisok.txt", AppDomain.CurrentDomain.BaseDirectory);
+            _filePath = string.Format("{0} spisok.txt", AppDomain.CurrentDomain.BaseDirectory);
         }
     }
 }
