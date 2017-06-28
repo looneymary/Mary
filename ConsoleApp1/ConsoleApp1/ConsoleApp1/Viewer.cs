@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleApp1.Models;
+using ClassLibrary.Models;
+using ClassLibrary;
 
 namespace ConsoleApp1
 {
     class Viewer
     {
         // Вывести всех.
-        public void ShowAllList(List<Repository> people)
+        public void ShowAllList(List<Worker> people)
         {
             int i = 1;
             string TableHeader = string.Format("| {0, 2} | {1, 10} | {2, 10} | {3, 8} | {4, 10} | {5, 29} | {6, 10} |", 

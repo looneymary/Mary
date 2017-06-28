@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 
-namespace ConsoleApp1
+namespace ClassLibrary.Models
 {
     public abstract class Worker
     {
@@ -14,16 +14,22 @@ namespace ConsoleApp1
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public EnumHelper.TypeOfSex Sex { get; set; }
+        public EnumsForModels.TypeOfSex Sex { get; set; }
         public string Appointment { get; set; }
         public string Date { get; set; }
         public int Salary { get; set; }
         
         public string FullInfo { get; set; }
-                
+                        
         // Конструктор.
-        public Worker()
-        {          
+        public Worker(string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, int salary)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Sex = sex;
+            this.Appointment = appointment;
+            this.Date = date;
+            this.Salary = salary;
         }
 
         // Переопределения метода ToString.

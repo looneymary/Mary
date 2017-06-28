@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 namespace ConsoleApp1
 {
     public class EnumHelper
-    {
-        // Enum for sex.
-        public enum TypeOfSex : int { Male = 1, Female = 2};
-
-        // Enum for workerType.
-        public enum WorkerType : int { Developer = 1, OfficeWorker = 2 }
-        
+    {        
         //Найти в строке перечисления
         public static T ReturnEnumFromString<T>(String strWithEnum)
         {
@@ -23,7 +17,7 @@ namespace ConsoleApp1
 
             if (!typeof(T).IsEnum)
             {
-                throw new ArgumentException("you're fool");
+                throw new ArgumentException("There is no enums here.");
             }
 
             string[] values = strWithEnum.Split(' ');

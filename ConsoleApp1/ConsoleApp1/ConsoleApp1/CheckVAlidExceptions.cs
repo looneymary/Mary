@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleApp1.Models;
 using System.Text.RegularExpressions;
 
 namespace ConsoleApp1
@@ -14,21 +13,19 @@ namespace ConsoleApp1
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
-        public int CheckExceptions(string FirstName, string LastName, string Sex, string Appointment, 
-                                   string Date, int Salary)
+        public int CheckExceptions(string firstName, string lastName, string sex, string appointment, 
+                                   string date, int salary)
         {
-            CheckValidExceptions exc = new CheckValidExceptions();
-
             Console.WriteLine("Валидация данных.");
             ValidResult = 0;
             try
             {                
-                StringCheck(FirstName, "Имя");
-                StringCheck(LastName, "Фамилия");
-                StringCheck(Sex, "Пол");
-                StringCheck(Appointment, "Должность");
-                DateCheck(Date, "Дата вступления в должность");
-                IntVal(Salary, "Оклад");
+                StringCheck(firstName, "Имя");
+                StringCheck(lastName, "Фамилия");
+                StringCheck(sex, "Пол");
+                StringCheck(appointment, "Должность");
+                DateCheck(date, "Дата вступления в должность");
+                IntVal(salary, "Оклад");
             }
             catch(CheckValidExceptions ex)
             {
