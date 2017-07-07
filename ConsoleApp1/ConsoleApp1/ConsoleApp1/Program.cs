@@ -13,7 +13,7 @@ namespace ConsoleApp1
 {
     class Program
     {
-        public delegate int ValidValuesDelegate(string a, string b, string c, string d, string f, int g);
+        public delegate int ValidValuesDelegate(params string[] parametres);
         public static event ValidValuesDelegate СheckingValid;
 
         public static void Main(string[] args)
@@ -27,8 +27,8 @@ namespace ConsoleApp1
             do
             {
                 Console.Write("Меню:\n1. Ввести данные о сотруднике \n2. Вывести информацию о всех сотрудниках \n" +
-                                    "3. Вывести информацию об одном сотруднике\n4. Запись в файл \n5. Чтение из файла\n" +
-                                    "6. Поиск по должности \n7. Подсчёт по должности \n8. Удалить сотрудника \n9. Выйти из программы\n\n");
+                                    "3. Вывести информацию об одном сотруднике\n4. Поиск по должности \n" +
+                                    "5. Подсчёт по должности \n6. Удалить сотрудника \n7. Выйти из программы\n\n");
 
                 i = int.Parse(Console.ReadLine());
                 switch (i)
@@ -43,8 +43,8 @@ namespace ConsoleApp1
 
                         Console.WriteLine("Укажите тип:\n1). Разработчик \n2). Работник офиса \n ");
                         workerType = (EnumsForModels.WorkerType)int.Parse(Console.ReadLine());
-                        try
-                        {
+                        //try
+                        //{
                             Console.WriteLine("Имя:");
                             string firstName = Console.ReadLine();
 
@@ -68,48 +68,47 @@ namespace ConsoleApp1
 
                             if (workerType == EnumsForModels.WorkerType.Developer)
                             {
-                                Console.WriteLine("Enter development languages:");
+                                Console.WriteLine("Development languages:");
                                 string devLang = Console.ReadLine();
 
-                                Console.WriteLine("Enter experience:");
+                                Console.WriteLine("Experience:");
                                 string experience = Console.ReadLine();
 
-                                Console.WriteLine("Enter level:");
+                                Console.WriteLine("Level:");
                                 string level = Console.ReadLine();
 
-                                СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary);
+                                СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString(), devLang, 
+                                              experience, level);
 
                                 if (ex.ValidResult == 0)
                                 {
-                                    Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary);
-                                    //devLang, experience, level
-                                    repository.AddWorker(developer);
-                                    file.AddPersonToFile(developer);
+                                    Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary,
+                                                                        devLang, experience, level);
+                                    repository.AddWorker(developer);                                    
                                 }
                             }
                             else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
                             {
-                                СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary);
+                                СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString());
                                 if (ex.ValidResult == 0)
                                 {
                                     OfficeWorker office = new OfficeWorker(firstName, lastName, sex, appointment, date, salary);
                                     repository.AddWorker(office);
-                                    file.AddPersonToFile(office);
                                 }
                             }
                             else
                             {
                                 Console.WriteLine("Введены неверные данные");
                             }
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Введены неверные данные.");
-                        }
+                        //}
+                        //catch
+                        //{
+                            //Console.WriteLine("Введены неверные данные.");
+                        //}
                         break;
                     // Вывести список всех сотрудников.
                     case 2:
-                        file.ReadFromFile(repository.people);
+                        repository.GetWorkersFromFile();
                         Console.WriteLine("Workers");
                         viewer.ShowAllList(repository.people);
                         var dev = repository.DeveloperWorkers(repository.people);
@@ -129,29 +128,21 @@ namespace ConsoleApp1
                     case 3:
                         repository.ShowOnePerson(repository.people);
                         break;
-                    // Запись списка в файл.
-                    case 4:
-                        file.WriteToFile(repository.people);
-                        break;
-                    // Чтение данных из файла.
-                    case 5:
-                        file.ReadFromFile(repository.people);
-                        break;
+                    
                     // Поиск по должности.
-                    case 6:
+                    case 4:
                         repository.SearchByAppointment(repository.people);
                         break;
                     // Подсчёт по должности.
-                    case 7:
+                    case 5:
                         repository.CountWorkers(repository.people);
                         break;
                     // Удалить сотрудника.
-                    case 8:
+                    case 6:
                         repository.RemovePerson(repository.people);
-                        file.WriteToFile(repository.people);
                         break;
                     // Поиск по должности.
-                    case 9:
+                    case 7:
                         Console.WriteLine("Закрыть приложение");
                         break;
                     default:
@@ -162,7 +153,7 @@ namespace ConsoleApp1
                 Console.ReadLine();
                 Console.Clear();
             }
-            while (i != 9);
+            while (i != 7);
         }            
     }
 }

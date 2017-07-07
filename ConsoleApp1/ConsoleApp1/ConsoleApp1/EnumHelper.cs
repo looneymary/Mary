@@ -10,11 +10,7 @@ namespace ConsoleApp1
     {        
         //Найти в строке перечисления
         public static T ReturnEnumFromString<T>(String strWithEnum)
-        {
-            // For List at first ToString()
-            //string strWithEnum = people[num - 1].ToString();
-            //EnumHelper.ReturnEnumFromString<EnumHelper.TypeOfSex>(strWithEnum);
-
+        {           
             if (!typeof(T).IsEnum)
             {
                 throw new ArgumentException("There is no enums here.");

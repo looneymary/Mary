@@ -43,9 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckValidExceptions.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="EnumHelper.cs" />
-    <Compile Include="WorkWithFile.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj">
-      <Project>{73bc7b29-bbec-401a-9dd9-11fc57f57d5c}</Project>
+      <Project>{ce210726-560a-4fed-b32b-32f2791bf77a}</Project>
       <Name>ClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>

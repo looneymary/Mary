@@ -14,9 +14,9 @@ namespace ConsoleApp1
         public void ShowAllList(List<Worker> people)
         {
             int i = 1;
-            string TableHeader = string.Format("| {0, 2} | {1, 10} | {2, 10} | {3, 8} | {4, 10} | {5, 29} | {6, 10} |", 
+            string tableHeader = string.Format("| {0, 2} | {1, 10} | {2, 10} | {3, 8} | {4, 10} | {5, 29} | {6, 10} |", 
                 "№", "Фамилия", "Имя", "Пол", "Должность", "Дата вступления в должность", "Оклад");
-            Console.WriteLine(TableHeader);
+            Console.WriteLine(tableHeader);
             foreach (var person in people)
             {
                 Console.WriteLine(String.Format("| {0, 2} | {1, 10} | {2, 10} | {3, 8} | {4, 10} | {5, 29} | {6, 10} |",

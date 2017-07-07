@@ -13,10 +13,10 @@ namespace ClassLibrary.Models
         public string DevLang { get; set; }
         public string Experience { get; set; }
         public string Level { get; set; }
-
-        //string devLang, string experience, string level
+        
         public Developer(string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, 
-                                                   int salary) : base(firstName, lastName, sex, appointment, date, salary)
+                                                   int salary, string devLang, string experience, string level) 
+                                                   : base(firstName, lastName, sex, appointment, date, salary)
         {
             base.FirstName = firstName;
             base.LastName = lastName;
@@ -24,9 +24,15 @@ namespace ClassLibrary.Models
             base.Appointment = appointment;
             base.Date = date;
             base.Salary = salary;
-            //this.DevLang = devLang;
-            //this.Experience = experience;
-            //this.Level = level;
-        }        
+            this.DevLang = devLang;
+            this.Experience = experience;
+            this.Level = level;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8}", LastName, FirstName, Sex, Appointment, Date, Salary,
+                DevLang, Experience, Level);
+        }
     }
 }

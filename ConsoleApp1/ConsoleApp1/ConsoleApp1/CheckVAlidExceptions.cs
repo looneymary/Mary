@@ -13,19 +13,30 @@ namespace ConsoleApp1
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
-        public int CheckExceptions(string firstName, string lastName, string sex, string appointment, 
-                                   string date, int salary)
+        public enum NameOfStrings { FirstName, LastName, Sex, Appointment}
+
+        public int CheckExceptions(params string[] parametres)
         {
             Console.WriteLine("Валидация данных.");
             ValidResult = 0;
+            int i = 0;
             try
-            {                
-                StringCheck(firstName, "Имя");
-                StringCheck(lastName, "Фамилия");
-                StringCheck(sex, "Пол");
-                StringCheck(appointment, "Должность");
-                DateCheck(date, "Дата вступления в должность");
-                IntVal(salary, "Оклад");
+            {   foreach (string param in parametres)
+                {
+                    if (i == 4)
+                    {
+                        DateCheck(param, "Дата вступления в должность");
+                    }
+                    else if (i == 5)
+                    {
+                        IntVal(int.Parse(param), "Оклад");
+                    }
+                    else
+                    {
+                        StringCheck(param, i);
+                    }
+                    i++;
+                } 
             }
             catch(CheckValidExceptions ex)
             {
@@ -46,19 +57,19 @@ namespace ConsoleApp1
             return ValidResult;
         }
 
-        public void StringCheck(string var, string name)
+        public void StringCheck(string var, int name)
         {
             if (String.IsNullOrEmpty(var))
             {
-               string message = "Поле \""+name+"\" не было заполнено. Пожалуйста исправьте.";
+               string message = "Поле \""+ (NameOfStrings)name +"\" не было заполнено. Пожалуйста исправьте.";
                throw new CheckValidExceptions(message);
             }
 
-            Regex reg = new Regex(@"[А-Яа-яA-Za-z-]");
-            MatchCollection mc = reg.Matches(var);
+            Regex regForText = new Regex(@"[А-Яа-яA-Za-z-]");
+            MatchCollection mc = regForText.Matches(var);
             if(mc.Count == 0)
             {
-                string message = "Поле \"" + name + "\" содержит недопустимые символы. Было введено: " + var;
+                string message = "Поле \"" + (NameOfStrings)name + "\" содержит недопустимые символы. Было введено: " + var;
                 throw new CheckValidExceptions(message);
             }
         }

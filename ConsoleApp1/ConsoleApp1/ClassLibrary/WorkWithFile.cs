@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
-using ClassLibrary;
 using ClassLibrary.Models;
 
-namespace ConsoleApp1
+namespace ClassLibrary
 {
-    class WorkWithFile
+   public class WorkWithFile
     {
         public WorkWithFile()
         {
@@ -20,20 +19,20 @@ namespace ConsoleApp1
         public void WriteToFile(List<Worker> people)
         {
             Repository repository = new Repository();
-            string TextToWriteInAFile = "";
+            string textToWriteInAFile = "";
            
             foreach (var person in people)
             {
                 if (repository.IsDeveloper(person))
                 {
-                    TextToWriteInAFile += "Developer: " + person.ToString() + "\r\n";
+                    textToWriteInAFile += "Developer: " + person.ToString() + "\r\n";
                 }
                 else
                 {
-                    TextToWriteInAFile += "OfficeWorker: " + person.ToString() + "\r\n";
+                    textToWriteInAFile += "OfficeWorker: " + person.ToString() + "\r\n";
                 }
             }
-            File.WriteAllText(Config._filePath, TextToWriteInAFile);
+            File.WriteAllText(Config._filePath, textToWriteInAFile);
             Console.WriteLine("Запись данных прошла успешно.");
         }
 
@@ -55,7 +54,10 @@ namespace ConsoleApp1
                 
                 if(names[0] == "Developer:")
                 {
-                    Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary);
+                    string devLang = names[7];
+                    string experience = names[8];
+                    string level = names[9];
+                    Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary, devLang, experience, level);
                     people.Add(developer);
                 }
                 if(names[0] == "OfficeWorker:")
@@ -73,21 +75,21 @@ namespace ConsoleApp1
             Repository rep = new Repository();
             string[] stringCount = File.ReadAllLines(Config._filePath);
             int length = stringCount.Length;
-            string TextToWriteInAFile = "";
+            string textToWriteInAFile = "";
             if (stringCount.Count() != 0)
             {
-                stringCount[length-1] += System.Environment.NewLine;
+                textToWriteInAFile += System.Environment.NewLine;
             }
             if (rep.IsDeveloper(obj) == true)
             {
-                TextToWriteInAFile += "Developer: ";
+                textToWriteInAFile += "Developer: ";
             }
             else
             {
-                TextToWriteInAFile += "OfficeWorker: ";
+                textToWriteInAFile += "OfficeWorker: ";
             }
-            TextToWriteInAFile += obj.ToString();
-            File.AppendAllText(Config._filePath, TextToWriteInAFile);
+            textToWriteInAFile += obj.ToString();
+            File.AppendAllText(Config._filePath, textToWriteInAFile);
             Console.WriteLine("Запись данных прошла успешно.");
         }
     }

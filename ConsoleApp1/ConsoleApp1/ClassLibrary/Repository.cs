@@ -12,14 +12,13 @@ namespace ClassLibrary
     public class Repository
     {
         public List<Worker> people = new List<Worker>();
-        public List<Repository> onePerson = new List<Repository>();
-        public List<Repository> developers = new List<Repository>();
-        public List<Repository> officeWorkers = new List<Repository>();
 
         // Добавить.
         public virtual void AddWorker(Worker obj)
-        {            
+        {
+            WorkWithFile file = new WorkWithFile();
             people.Add(obj);
+            file.AddPersonToFile(obj);
         }
         
         // Выбор одного сотрудника.
@@ -34,10 +33,9 @@ namespace ClassLibrary
         public virtual void SearchByAppointment(List<Worker> people)
         {
             Console.WriteLine("Введите должность: ");
-            string SearchAppointment = Console.ReadLine();
-            IEnumerable<Worker> selectPeople = people.Where(p => p.Appointment == SearchAppointment);
-            var count = people.Count(p => p.Appointment == SearchAppointment);
-            if (count > 0)
+            string searchAppointment = Console.ReadLine();
+            IEnumerable<Worker> selectPeople = people.Where(p => p.Appointment == searchAppointment);
+            if (selectPeople.Count() > 0 )
             {
                 foreach (var res in selectPeople)
                 {
@@ -74,9 +72,9 @@ namespace ClassLibrary
         public void CountWorkers(List<Worker> people)
         {
             Console.WriteLine("Введите должность: ");
-            string CountAppointment = Console.ReadLine();
-            var count = people.Count(p => p.Appointment == CountAppointment);
-            Console.WriteLine("{0} : {1}", CountAppointment, count);
+            string countAppointment = Console.ReadLine();
+            var count = people.Count(p => p.Appointment == countAppointment);
+            Console.WriteLine("{0} : {1}", countAppointment, count);
         }
         
         // Is he developer.
@@ -89,19 +87,29 @@ namespace ClassLibrary
         // Delete worker.
         public void RemovePerson(List<Worker> people)
         {
+            WorkWithFile file = new WorkWithFile();
+
             Console.WriteLine("Введите номер сотрудника: ");
             int number = int.Parse(Console.ReadLine());
             number -= 1;
             
             people.RemoveAt(number);
+            file.WriteToFile(people);
 
             Console.WriteLine("Сотрудник удалён");
         }
 
         public List<Worker> DeveloperWorkers(List<Worker> people)
         {
-            var developers = people.OfType<Developer>();
-            List<Worker> dev = developers.ToList<Worker>();
+            List<Worker> dev = new List<Worker>();
+            foreach (var person in people)
+            {
+                if (IsDeveloper(person))
+                {
+                    
+                    dev.Add(person);
+                }
+            }
             return dev;
         }
 
@@ -112,5 +120,10 @@ namespace ClassLibrary
             return office;
         }
 
+        public void GetWorkersFromFile()
+        {
+            WorkWithFile file = new WorkWithFile();
+            file.ReadFromFile(people);
+        }
     }
 }

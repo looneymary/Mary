@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 
-namespace ConsoleApp1
+namespace ClassLibrary
 {
     class Config
     {
