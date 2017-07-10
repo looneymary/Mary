@@ -20,20 +20,23 @@ namespace ClassLibrary
             people.Add(obj);
             file.AddPersonToFile(obj);
         }
-        
+
         // Выбор одного сотрудника.
-        public virtual void ShowOnePerson(List<Worker> people)
+        public virtual void ShowOnePerson(List<Worker> people, int indexNumber)
         {
-            Console.WriteLine("Введите порядковый номер:");
-            int num = int.Parse(Console.ReadLine());
-            Console.WriteLine(people.Where((x, i) => i == (num - 1)).First().ToString());
+            if (people.Count > indexNumber)
+            {
+                Console.WriteLine(people.Where((x, i) => i == (indexNumber - 1)).First().ToString());
+            }
+            else
+            {
+                Console.WriteLine("Сотрудник с таким порядковым номером не найден.");
+            }
         }
         
         // Search by appointment.
-        public virtual void SearchByAppointment(List<Worker> people)
-        {
-            Console.WriteLine("Введите должность: ");
-            string searchAppointment = Console.ReadLine();
+        public virtual void SearchByAppointment(List<Worker> people, string searchAppointment)
+        {            
             IEnumerable<Worker> selectPeople = people.Where(p => p.Appointment == searchAppointment);
             if (selectPeople.Count() > 0 )
             {
@@ -49,12 +52,11 @@ namespace ClassLibrary
         }
 
         //Search person by name.
-        public void SearchByName(List<Worker> people)
+        public void SearchByName(List<Worker> people, string searchingName)
         {
-            Console.WriteLine("Enter the name:");
-            string name = Console.ReadLine();
-            IEnumerable<Worker> searchResult = people.Where(p => p.FirstName == name);
-            var count = people.Count(p => p.FirstName == name);
+            
+            IEnumerable<Worker> searchResult = people.Where(p => p.FirstName == searchingName);
+            var count = people.Count(p => p.FirstName == searchingName);
             if (count > 0)
             {
                 foreach(var res in searchResult)
@@ -69,10 +71,8 @@ namespace ClassLibrary
         }
 
         // Count workers.
-        public void CountWorkers(List<Worker> people)
-        {
-            Console.WriteLine("Введите должность: ");
-            string countAppointment = Console.ReadLine();
+        public void CountWorkers(List<Worker> people, string countAppointment)
+        {            
             var count = people.Count(p => p.Appointment == countAppointment);
             Console.WriteLine("{0} : {1}", countAppointment, count);
         }
@@ -85,18 +85,22 @@ namespace ClassLibrary
         }
         
         // Delete worker.
-        public void RemovePerson(List<Worker> people)
+        public void RemovePerson(List<Worker> people, int number)
         {
             WorkWithFile file = new WorkWithFile();
-
-            Console.WriteLine("Введите номер сотрудника: ");
-            int number = int.Parse(Console.ReadLine());
             number -= 1;
-            
-            people.RemoveAt(number);
-            file.WriteToFile(people);
+            if(people.Count > number)
+            {
+                people.RemoveAt(number);
+                file.WriteToFile(people);
 
-            Console.WriteLine("Сотрудник удалён");
+                Console.WriteLine("Сотрудник удалён");
+            }
+            else
+            {
+                Console.WriteLine("Сотрудник с таким порядковым номером не найден.");
+            }
+            
         }
 
         public List<Worker> DeveloperWorkers(List<Worker> people)

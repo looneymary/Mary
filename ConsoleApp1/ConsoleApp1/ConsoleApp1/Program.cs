@@ -43,8 +43,8 @@ namespace ConsoleApp1
 
                         Console.WriteLine("Укажите тип:\n1). Разработчик \n2). Работник офиса \n ");
                         workerType = (EnumsForModels.WorkerType)int.Parse(Console.ReadLine());
-                        //try
-                        //{
+                        try
+                        {
                             Console.WriteLine("Имя:");
                             string firstName = Console.ReadLine();
 
@@ -100,11 +100,11 @@ namespace ConsoleApp1
                             {
                                 Console.WriteLine("Введены неверные данные");
                             }
-                        //}
-                        //catch
-                        //{
-                            //Console.WriteLine("Введены неверные данные.");
-                        //}
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Введены неверные данные.");
+                        }
                         break;
                     // Вывести список всех сотрудников.
                     case 2:
@@ -126,20 +126,27 @@ namespace ConsoleApp1
                         break;
                     // Вывести информацию об одном сотруднике.
                     case 3:
-                        repository.ShowOnePerson(repository.people);
-                        break;
-                    
+                        Console.WriteLine("Введите порядковый номер:");
+                        int indexNumber = int.Parse(Console.ReadLine());
+                        repository.ShowOnePerson(repository.people, indexNumber);
+                        break;                    
                     // Поиск по должности.
                     case 4:
-                        repository.SearchByAppointment(repository.people);
+                        Console.WriteLine("Введите должность: ");
+                        string searchAppointment = Console.ReadLine();
+                        repository.SearchByAppointment(repository.people, searchAppointment);
                         break;
                     // Подсчёт по должности.
                     case 5:
-                        repository.CountWorkers(repository.people);
+                        Console.WriteLine("Enter the appointment:");
+                        string countAppointment = Console.ReadLine();
+                        repository.CountWorkers(repository.people, countAppointment);
                         break;
                     // Удалить сотрудника.
                     case 6:
-                        repository.RemovePerson(repository.people);
+                        Console.WriteLine("Введите номер сотрудника: ");
+                        int number = int.Parse(Console.ReadLine());
+                        repository.RemovePerson(repository.people, number);
                         break;
                     // Поиск по должности.
                     case 7:
