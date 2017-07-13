@@ -22,59 +22,65 @@ namespace ClassLibrary
         }
 
         // Выбор одного сотрудника.
-        public virtual void ShowOnePerson(List<Worker> people, int indexNumber)
-        {
+        public virtual string ShowOnePerson(List<Worker> people, int indexNumber)
+        {             
+            string result = "";
             if (people.Count > indexNumber)
             {
-                Console.WriteLine(people.Where((x, i) => i == (indexNumber - 1)).First().ToString());
+                result = people.Where((x, i) => i == (indexNumber - 1)).First().ToString();
             }
             else
             {
-                Console.WriteLine("Сотрудник с таким порядковым номером не найден.");
+                result = "Сотрудник с таким порядковым номером не найден.";
             }
+            return result;
         }
         
         // Search by appointment.
-        public virtual void SearchByAppointment(List<Worker> people, string searchAppointment)
-        {            
+        public virtual string SearchByAppointment(List<Worker> people, string searchAppointment)
+        {
             IEnumerable<Worker> selectPeople = people.Where(p => p.Appointment == searchAppointment);
+            string result = "";
             if (selectPeople.Count() > 0 )
             {
                 foreach (var res in selectPeople)
                 {
-                    Console.WriteLine(string.Format("{0} {1}", res.LastName, res.FirstName));
+                    result += string.Format("{0} {1}", res.LastName, res.FirstName) + "\n";
                 }
             }
             else
             {
-                Console.WriteLine("Поиск не дал результатов.");
+                result = "The search returns no results.";
             }
+            return result;
         }
 
         //Search person by name.
-        public void SearchByName(List<Worker> people, string searchingName)
-        {
-            
+        public string SearchByName(List<Worker> people, string searchingName)
+        {            
             IEnumerable<Worker> searchResult = people.Where(p => p.FirstName == searchingName);
             var count = people.Count(p => p.FirstName == searchingName);
+            string result = "";
             if (count > 0)
             {
                 foreach(var res in searchResult)
                 {
-                     Console.WriteLine(res);
+                    result += res.ToString() + "\n";
                 }
             }
             else
             {
-                Console.WriteLine("Tse search returns no results.");
+                result = "The search returns no results.";
             }
+            return result;
         }
 
         // Count workers.
-        public void CountWorkers(List<Worker> people, string countAppointment)
+        public string CountWorkers(List<Worker> people, string countAppointment)
         {            
             var count = people.Count(p => p.Appointment == countAppointment);
-            Console.WriteLine("{0} : {1}", countAppointment, count);
+            string result = string.Format("{0} : {1}", countAppointment, count);
+            return result;
         }
         
         // Is he developer.
@@ -85,22 +91,23 @@ namespace ClassLibrary
         }
         
         // Delete worker.
-        public void RemovePerson(List<Worker> people, int number)
+        public string RemovePerson(List<Worker> people, int number)
         {
             WorkWithFile file = new WorkWithFile();
             number -= 1;
+            string result = "";
             if(people.Count > number)
             {
                 people.RemoveAt(number);
                 file.WriteToFile(people);
 
-                Console.WriteLine("Сотрудник удалён");
+                result = "Сотрудник удалён";
             }
             else
             {
-                Console.WriteLine("Сотрудник с таким порядковым номером не найден.");
+                result = "Сотрудник с таким порядковым номером не найден.";
             }
-            
+            return result;
         }
 
         public List<Worker> DeveloperWorkers(List<Worker> people)

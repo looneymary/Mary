@@ -128,25 +128,29 @@ namespace ConsoleApp1
                     case 3:
                         Console.WriteLine("Введите порядковый номер:");
                         int indexNumber = int.Parse(Console.ReadLine());
-                        repository.ShowOnePerson(repository.people, indexNumber);
+                        string onePerson = repository.ShowOnePerson(repository.people, indexNumber);
+                        Console.WriteLine(onePerson);
                         break;                    
                     // Поиск по должности.
                     case 4:
                         Console.WriteLine("Введите должность: ");
                         string searchAppointment = Console.ReadLine();
-                        repository.SearchByAppointment(repository.people, searchAppointment);
+                        string result = repository.SearchByAppointment(repository.people, searchAppointment);
+                        Console.WriteLine(result);
                         break;
                     // Подсчёт по должности.
                     case 5:
                         Console.WriteLine("Enter the appointment:");
                         string countAppointment = Console.ReadLine();
-                        repository.CountWorkers(repository.people, countAppointment);
+                        string countResult = repository.CountWorkers(repository.people, countAppointment);
+                        Console.WriteLine(countResult);
                         break;
                     // Удалить сотрудника.
                     case 6:
                         Console.WriteLine("Введите номер сотрудника: ");
                         int number = int.Parse(Console.ReadLine());
-                        repository.RemovePerson(repository.people, number);
+                        string removeResult = repository.RemovePerson(repository.people, number);
+                        Console.WriteLine(removeResult);
                         break;
                     // Поиск по должности.
                     case 7:
