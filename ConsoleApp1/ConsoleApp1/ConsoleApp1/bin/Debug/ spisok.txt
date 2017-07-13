@@ -1,2 +1,5 @@
-1 1 1 1 1 1
-2 2 2 2 2 2
+OfficeWorker: r r Male r 11.11.1999 2
+Developer: л л Male л 11.11.1999 1 л л л
+OfficeWorker: e e Male e 11.11.1999 1
+OfficeWorker: w w Female w 11.11.1999 1
+OfficeWorker: w w Male w 11.11.1999 1
