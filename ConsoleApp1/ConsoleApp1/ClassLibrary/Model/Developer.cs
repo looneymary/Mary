@@ -13,9 +13,9 @@ namespace ClassLibrary.Models
         public string DevLang { get; set; }
         public string Experience { get; set; }
         public string Level { get; set; }
-
-        public Developer(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date,
-                                                   int salary, string devLang, string experience, string level)
+        
+        public Developer(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, 
+                                                   int salary, string devLang, string experience, string level) 
                                                    : base(id, firstName, lastName, sex, appointment, date, salary)
         {
             base._id = id;

@@ -9,12 +9,12 @@ using ClassLibrary.Models;
 
 namespace ClassLibrary
 {
-    public class WorkWithFile
+   public class WorkWithFile
     {
         public WorkWithFile()
         {
         }
-
+        
         /// <summary>
         /// Write information to file
         /// </summary>
@@ -23,7 +23,7 @@ namespace ClassLibrary
         {
             Repository repository = new Repository();
             string textToWriteInAFile = "";
-
+           
             foreach (var person in people)
             {
                 if (repository.IsDeveloper(person))
@@ -59,7 +59,7 @@ namespace ClassLibrary
                 string date = names[7];
                 int salary = int.Parse(names[8]);
 
-                if (names[1] == "Developer:")
+                if(names[1] == "Developer:")
                 {
                     string devLang = names[9];
                     string experience = names[10];
@@ -67,12 +67,12 @@ namespace ClassLibrary
                     Developer developer = new Developer(id, firstName, lastName, sex, appointment, date, salary, devLang, experience, level);
                     people.Add(developer);
                 }
-                if (names[1] == "OfficeWorker:")
+                if(names[1] == "OfficeWorker:")
                 {
                     OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary);
                     people.Add(office);
                 }
-            }
+            }            
             Console.WriteLine("Reading data was successful.");
         }
 
@@ -92,7 +92,7 @@ namespace ClassLibrary
                 textToWriteInAFile += System.Environment.NewLine;
             }
             if (rep.IsDeveloper(obj) == true)
-            {
+            {                
                 textToWriteInAFile += index + " Developer: ";
             }
             else

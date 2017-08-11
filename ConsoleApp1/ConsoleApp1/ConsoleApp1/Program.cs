@@ -35,10 +35,10 @@ namespace ConsoleApp1
             {
                 do
                 {
-                    Console.Write("Menu:\n1. Add info about a worker \n2. Show info about all workers \n" +
-                                        "3. Show info about one worker \n4. Searching by appointment \n" +
-                                        "5. Counting by appointment \n6. Delete worker \n7. Quite the program\n\n");
-
+                Console.Write("Menu:\n1. Add info about a worker \n2. Show info about all workers \n" +
+                                    "3. Show info about one worker \n4. Searching by appointment \n" +
+                                    "5. Counting by appointment \n6. Delete worker \n7. Quite the program\n\n");
+                
                     i = int.Parse(Console.ReadLine());
                     switch (i)
                     {
@@ -184,14 +184,14 @@ namespace ConsoleApp1
                     Console.Write("\n\n\t\t\tReturn to main menu...");
                     Console.ReadLine();
                     Console.Clear();
-
+                
                 }
                 while (i != 7);
             }
-            catch (System.FormatException exc)
+            catch(System.FormatException exc)
             {
                 Console.WriteLine(exc.Message);
             }
-        }
+        }            
     }
 }

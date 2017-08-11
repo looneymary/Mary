@@ -37,7 +37,7 @@ namespace ClassLibrary
         {
             this.people.Add(obj);
             file.AddPersonToFile(obj);
-        }
+        }        
 
         /// <summary>
         /// Get one worker with some index number
@@ -45,7 +45,7 @@ namespace ClassLibrary
         /// <param name="indexNumber">Parameter for search</param>
         /// <returns>Information of selected worker in string format</returns>
         public virtual string ShowOnePerson(int indexNumber)
-        {
+        {             
             string result = "";
             if (this.people.Count >= indexNumber)
             {
@@ -57,7 +57,7 @@ namespace ClassLibrary
             }
             return result;
         }
-
+        
         /// <summary>
         /// Get all workers with selected appointment
         /// </summary>
@@ -67,7 +67,7 @@ namespace ClassLibrary
         {
             IEnumerable<Worker> selectPeople = this.people.Where(p => p.Appointment == searchAppointment);
             string result = "";
-            if (selectPeople.Count() > 0)
+            if (selectPeople.Count() > 0 )
             {
                 foreach (var res in selectPeople)
                 {
@@ -87,13 +87,13 @@ namespace ClassLibrary
         /// <param name="searchingName">Parameter for search</param>
         /// <returns>The list of workers with selectes name in string format</returns>
         public string SearchByName(string searchingName)
-        {
+        {            
             IEnumerable<Worker> searchResult = this.people.Where(p => p.FirstName == searchingName);
             var count = this.people.Count(p => p.FirstName == searchingName);
             string result = "";
             if (count > 0)
             {
-                foreach (var res in searchResult)
+                foreach(var res in searchResult)
                 {
                     result += res.ToString() + "\n";
                 }
@@ -111,7 +111,7 @@ namespace ClassLibrary
         /// <param name="countAppointment">Parameter for count</param>
         /// <returns>List of appointments and employees' first name and last name holding these positions</returns>
         public string CountWorkers(string countAppointment)
-        {
+        {            
             var count = this.people.Count(p => p.Appointment == countAppointment);
             string result = string.Format("{0} : {1}", countAppointment, count);
             return result;
@@ -127,7 +127,7 @@ namespace ClassLibrary
             bool val = obj is Developer;
             return val;
         }
-
+        
         /// <summary>
         /// Search and remove worker with selected index from list and from file
         /// </summary>
@@ -137,11 +137,11 @@ namespace ClassLibrary
         {
             string result = "";
             var index = people.FindAll(person => person._id == number);
-            if (index.Count() != 0)
+            if(index.Count() != 0)
             {
-                foreach (var person in people.OrderBy(person => person._id))
+                foreach( var person in people.OrderBy(person => person._id))
                 {
-                    if (person._id == number)
+                    if(person._id == number)
                     {
                         people.Remove(person);
                     }
@@ -187,7 +187,7 @@ namespace ClassLibrary
         public void GetWorkersFromFile()
         {
             file.ReadFromFile(this.people);
-        }
+        }        
 
         /// <summary>
         /// Call a method that detects and adds a index number to worker
@@ -212,10 +212,10 @@ namespace ClassLibrary
                     }
                     else
                     {
-                        index = int.Parse(elements[0]) - 1;
+                        index = int.Parse(elements[0]) -1;
                         return index;
                     }
-                }
+                }                
             }
             return index;
         }

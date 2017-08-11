@@ -13,7 +13,7 @@ namespace ConsoleApp1
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
-        public enum NameOfStrings { FirstName, LastName, Sex, Appointment }
+        public enum NameOfStrings { FirstName, LastName, Sex, Appointment}
 
         /// <summary>
         /// Valid values and count exceptions
@@ -26,8 +26,7 @@ namespace ConsoleApp1
             ValidResult = 0;
             int i = 0;
             try
-            {
-                foreach (string param in parametres)
+            {   foreach (string param in parametres)
                 {
                     if (i == 4)
                     {
@@ -42,16 +41,16 @@ namespace ConsoleApp1
                         StringCheck(param, i);
                     }
                     i++;
-                }
+                } 
             }
-            catch (CheckValidExceptions ex)
+            catch(CheckValidExceptions ex)
             {
                 Console.WriteLine(ex.Message);
                 ValidResult++;
-            }
+            }            
             finally
             {
-                if (ValidResult == 0)
+                if(ValidResult == 0)
                 {
                     Console.WriteLine("Validation was successful.");
                 }
@@ -72,13 +71,13 @@ namespace ConsoleApp1
         {
             if (String.IsNullOrEmpty(var))
             {
-                string message = "The field \"" + (NameOfStrings)name + "\" wasn't filled. Please, correct it.";
-                throw new CheckValidExceptions(message);
+               string message = "The field \""+ (NameOfStrings)name +"\" wasn't filled. Please, correct it.";
+               throw new CheckValidExceptions(message);
             }
 
             Regex regForText = new Regex(@"[А-Яа-яA-Za-z-]");
             MatchCollection mc = regForText.Matches(var);
-            if (mc.Count == 0)
+            if(mc.Count == 0)
             {
                 string message = "The field \"" + (NameOfStrings)name + "\" conteins invalid characters. " + var + " was introdused.";
                 throw new CheckValidExceptions(message);

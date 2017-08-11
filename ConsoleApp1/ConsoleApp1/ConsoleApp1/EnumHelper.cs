@@ -15,7 +15,7 @@ namespace ConsoleApp1
         /// <param name="strWithEnum">String what probably contains enums</param>
         /// <returns>Enum value</returns>
         public T ReturnEnumFromString<T>(String strWithEnum)
-        {
+        {           
             if (!typeof(T).IsEnum)
             {
                 throw new ArgumentException("There is no enums here.");
@@ -38,9 +38,9 @@ namespace ConsoleApp1
                         return default(T);
                     }
                 }
-                catch (ArgumentException)
+                catch(ArgumentException)
                 {
-                }
+                }                
             }
             return default(T);
         }

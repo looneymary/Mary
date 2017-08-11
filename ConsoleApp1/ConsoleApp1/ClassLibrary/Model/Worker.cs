@@ -18,9 +18,9 @@ namespace ClassLibrary.Models
         public string Appointment { get; set; }
         public string Date { get; set; }
         public int Salary { get; set; }
-
+        
         public string FullInfo { get; set; }
-
+                        
         // Constructor.
         public Worker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, int salary)
         {

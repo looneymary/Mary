@@ -8,7 +8,7 @@ namespace ClassLibrary.Models
 {
     public class OfficeWorker : Worker
     {
-        public OfficeWorker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment,
+        public OfficeWorker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, 
                             string date, int salary) : base(id, firstName, lastName, sex, appointment, date, salary)
         {
             base._id = id;

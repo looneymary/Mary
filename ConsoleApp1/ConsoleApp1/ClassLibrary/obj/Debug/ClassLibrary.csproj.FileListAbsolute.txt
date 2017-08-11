@@ -5,6 +5,5 @@ D:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\obj\Debu
 D:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\obj\Debug\ClassLibrary.csprojResolveAssemblyReference.cache
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\bin\Debug\ClassLibrary.dll
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\bin\Debug\ClassLibrary.pdb
-F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\obj\Debug\ClassLibrary.csprojResolveAssemblyReference.cache
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\obj\Debug\ClassLibrary.dll
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ClassLibrary\obj\Debug\ClassLibrary.pdb
