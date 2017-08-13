@@ -13,7 +13,7 @@ namespace ConsoleApp1
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
-        public enum NameOfStrings { FirstName, LastName, Sex, Appointment}
+        public enum NameOfStrings { FirstName, LastName, Sex, Appointment, Date, Salary, Development_languages, Experience, Level}
 
         /// <summary>
         /// Valid values and count exceptions

@@ -16,29 +16,21 @@ namespace ConsoleApp1
         public delegate int ValidValuesDelegate(params string[] parametres);
         public static event ValidValuesDelegate СheckingValid;
 
-        public delegate int ValidWorkerEnumDelegate(string ValidWorkerEnum);
-        public static event ValidWorkerEnumDelegate ValidWorkerEnum;
-
-        public delegate int ValidSexEnumDelegate(string ValidEnums);
-        public static event ValidSexEnumDelegate ValidSexEnum;
-
         public static void Main(string[] args)
         {
-            int i;
+            int i = 0;
             Repository repository = new Repository();
             Viewer viewer = new Viewer();
             CheckValidExceptions ex = new CheckValidExceptions();
-            ValidEnum valid = new ValidEnum();
-
-
-            try
+                        
+            do
             {
-                do
+                try
                 {
-                Console.Write("Menu:\n1. Add info about a worker \n2. Show info about all workers \n" +
-                                    "3. Show info about one worker \n4. Searching by appointment \n" +
-                                    "5. Counting by appointment \n6. Delete worker \n7. Quite the program\n\n");
-                
+                    Console.Write("Menu:\n1. Add info about a worker \n2. Show info about all workers \n" +
+                                "3. Show info about one worker \n4. Searching by appointment \n" +
+                                "5. Counting by appointment \n6. Delete worker \n7. Quit the program\n\n");
+                    
                     i = int.Parse(Console.ReadLine());
                     switch (i)
                     {
@@ -47,18 +39,17 @@ namespace ConsoleApp1
 
                             EnumsForModels.WorkerType workerType;
                             СheckingValid += ex.CheckExceptions;
-                            ValidWorkerEnum += valid.ValidEnums<EnumsForModels.WorkerType>;
-                            ValidSexEnum += valid.ValidEnums<EnumsForModels.TypeOfSex>;
 
                             Console.WriteLine("Information: \n");
 
                             Console.WriteLine("Select type:\n1). Developer \n2). Office worker \n ");
-                            workerType = (EnumsForModels.WorkerType)int.Parse(Console.ReadLine());
-                            int resultValid = ValidWorkerEnum(workerType.ToString());
-                            if (resultValid == 1)
+                            try
                             {
-                                try
+                                var workerEnum = int.Parse(Console.ReadLine());
+                                bool isWorkerTypeDefined = Enum.IsDefined(typeof(EnumsForModels.TypeOfSex), workerEnum);
+                                if (isWorkerTypeDefined == true)
                                 {
+                                    workerType = (EnumsForModels.WorkerType)workerEnum;
                                     int id = repository.AddIndexNumber();
 
                                     Console.WriteLine("First name:");
@@ -69,10 +60,11 @@ namespace ConsoleApp1
 
                                     Console.WriteLine("Sex: m - 1/ f - 2.");
 
-                                    EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)int.Parse(Console.ReadLine());
-                                    resultValid = ValidSexEnum(sex.ToString());
-                                    if (resultValid == 1)
+                                    int sexType = int.Parse(Console.ReadLine());
+                                    bool isSexTypeDefined = Enum.IsDefined(typeof(EnumsForModels.TypeOfSex), sexType);
+                                    if (isSexTypeDefined == true)
                                     {
+                                        EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)sexType;
                                         Console.WriteLine("Appointment:");
                                         string appointment = Console.ReadLine();
 
@@ -104,32 +96,31 @@ namespace ConsoleApp1
                                                                                 devLang, experience, level);
                                                 repository.AddWorker(developer);
                                             }
-                                        }
-                                        else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
-                                        {
-                                            СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString());
-                                            if (ex.ValidResult == 0)
-                                            {
-                                                OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary);
-                                                repository.AddWorker(office);
                                             }
+                                            else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
+                                            {
+                                                СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString());
+                                                if (ex.ValidResult == 0)
+                                                {
+                                                    OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary);
+                                                    repository.AddWorker(office);
+                                                }
                                         }
                                         else
                                         {
                                             Console.WriteLine("Incorrect data was entered.");
                                         }
-                                    }
+                                    }                                    
                                 }
-                                catch
-                                {
-                                    Console.WriteLine("Incorrect data was entered.");
-                                }
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Incorrect data was entered.");
                             }
                             break;
                         // List all workers.
                         case 2:
                             List<Worker> workers = repository.GetList();
-                            repository.GetWorkersFromFile();
                             Console.WriteLine("Workers");
                             viewer.ShowAllList(workers);
                             var dev = repository.DeveloperWorkers();
@@ -181,17 +172,16 @@ namespace ConsoleApp1
                             Console.WriteLine("There is no such item in menu.");
                             break;
                     }
-                    Console.Write("\n\n\t\t\tReturn to main menu...");
-                    Console.ReadLine();
-                    Console.Clear();
-                
                 }
-                while (i != 7);
+                catch
+                {
+                    Console.WriteLine("Incorrect data was entered.");
+                }
+                Console.Write("\n\n\t\t\tReturn to main menu...");
+                Console.ReadLine();
+                Console.Clear();
             }
-            catch(System.FormatException exc)
-            {
-                Console.WriteLine(exc.Message);
-            }
+            while (i != 7);
         }            
     }
 }

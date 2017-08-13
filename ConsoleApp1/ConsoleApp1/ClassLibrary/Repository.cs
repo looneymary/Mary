@@ -18,6 +18,15 @@ namespace ClassLibrary
         {
             people = new List<Worker>();
             file = new WorkWithFile();
+            GetWorkersFromFile();
+        }
+
+        /// <summary>
+        /// Call a method of reading information from file
+        /// </summary>
+        private void GetWorkersFromFile()
+        {
+            file.ReadFromFile(this.people);
         }
 
         /// <summary>
@@ -180,15 +189,7 @@ namespace ClassLibrary
             List<Worker> office = officeWorkers.ToList<Worker>();
             return office;
         }
-
-        /// <summary>
-        /// Call a method of reading information from file
-        /// </summary>
-        public void GetWorkersFromFile()
-        {
-            file.ReadFromFile(this.people);
-        }        
-
+        
         /// <summary>
         /// Call a method that detects and adds a index number to worker
         /// </summary>

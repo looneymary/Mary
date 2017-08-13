@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="CheckValidExceptions.cs" />
     <Compile Include="EnumHelper.cs" />
-    <Compile Include="ValidEnum.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
