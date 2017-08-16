@@ -69,7 +69,8 @@ namespace ClassLibrary
                 }
                 if(names[1] == "OfficeWorker:")
                 {
-                    OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary);
+                    int yearsInService = int.Parse(names[9]);
+                    OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary, yearsInService);
                     people.Add(office);
                 }
             }            

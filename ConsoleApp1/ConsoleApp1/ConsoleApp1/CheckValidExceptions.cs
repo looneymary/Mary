@@ -13,7 +13,7 @@ namespace ConsoleApp1
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
-        public enum NameOfStrings { FirstName, LastName, Sex, Appointment, Date, Salary, Development_languages, Experience, Level}
+        public enum NameOfStrings { FirstName, LastName, Sex, Appointment, Date, Salary, Years_in_service, Development_languages, Experience, Level}
 
         /// <summary>
         /// Valid values and count exceptions
@@ -35,6 +35,10 @@ namespace ConsoleApp1
                     else if (i == 5)
                     {
                         IntVal(int.Parse(param), "Salary");
+                    }
+                    else if (i == 6)
+                    {
+                        IntVal(int.Parse(param), "How many years in service");
                     }
                     else
                     {

@@ -8,180 +8,69 @@ using System.Collections;
 using ClassLibrary;
 using ClassLibrary.Models;
 
-
 namespace ConsoleApp1
 {
     class Program
-    {
-        public delegate int ValidValuesDelegate(params string[] parametres);
-        public static event ValidValuesDelegate СheckingValid;
-
+    {        
         public static void Main(string[] args)
         {
-            int i = 0;
-            Repository repository = new Repository();
-            Viewer viewer = new Viewer();
-            CheckValidExceptions ex = new CheckValidExceptions();
-                        
+            int typedEnumValue = 0;
+            Actions actions = new Actions();
+
             do
             {
+                Console.Write("Menu:\n1. Add info about a worker \n2. Show info about all workers \n" +
+                        "3. Show info about one worker \n4. Searching by appointment \n" +
+                        "5. Counting by appointment \n6. Delete worker \n7. Quit the program\n\n");
+
                 try
                 {
-                    Console.Write("Menu:\n1. Add info about a worker \n2. Show info about all workers \n" +
-                                "3. Show info about one worker \n4. Searching by appointment \n" +
-                                "5. Counting by appointment \n6. Delete worker \n7. Quit the program\n\n");
-                    
-                    i = int.Parse(Console.ReadLine());
-                    switch (i)
+                    typedEnumValue = (int)(Actions.ActionsEnum)int.Parse(Console.ReadLine());
+
+                    switch (typedEnumValue)
                     {
                         // Add info about worker.
                         case 1:
-
-                            EnumsForModels.WorkerType workerType;
-                            СheckingValid += ex.CheckExceptions;
-
-                            Console.WriteLine("Information: \n");
-
-                            Console.WriteLine("Select type:\n1). Developer \n2). Office worker \n ");
-                            try
-                            {
-                                var workerEnum = int.Parse(Console.ReadLine());
-                                bool isWorkerTypeDefined = Enum.IsDefined(typeof(EnumsForModels.TypeOfSex), workerEnum);
-                                if (isWorkerTypeDefined == true)
-                                {
-                                    workerType = (EnumsForModels.WorkerType)workerEnum;
-                                    int id = repository.AddIndexNumber();
-
-                                    Console.WriteLine("First name:");
-                                    string firstName = Console.ReadLine();
-
-                                    Console.WriteLine("Last name:");
-                                    string lastName = Console.ReadLine();
-
-                                    Console.WriteLine("Sex: m - 1/ f - 2.");
-
-                                    int sexType = int.Parse(Console.ReadLine());
-                                    bool isSexTypeDefined = Enum.IsDefined(typeof(EnumsForModels.TypeOfSex), sexType);
-                                    if (isSexTypeDefined == true)
-                                    {
-                                        EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)sexType;
-                                        Console.WriteLine("Appointment:");
-                                        string appointment = Console.ReadLine();
-
-                                        Console.WriteLine("Working information: \n");
-
-                                        Console.WriteLine("The date of taking office :");
-                                        string date = Console.ReadLine();
-
-                                        Console.WriteLine("Salary:");
-                                        int salary = int.Parse(Console.ReadLine());
-
-                                        if (workerType == EnumsForModels.WorkerType.Developer)
-                                        {
-                                            Console.WriteLine("Development languages:");
-                                            string devLang = Console.ReadLine();
-
-                                            Console.WriteLine("Experience:");
-                                            string experience = Console.ReadLine();
-
-                                            Console.WriteLine("Level:");
-                                            string level = Console.ReadLine();
-
-                                            СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString(), devLang,
-                                                          experience, level);
-
-                                            if (ex.ValidResult == 0)
-                                            {
-                                                Developer developer = new Developer(id, firstName, lastName, sex, appointment, date, salary,
-                                                                                devLang, experience, level);
-                                                repository.AddWorker(developer);
-                                            }
-                                            }
-                                            else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
-                                            {
-                                                СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString());
-                                                if (ex.ValidResult == 0)
-                                                {
-                                                    OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary);
-                                                    repository.AddWorker(office);
-                                                }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Incorrect data was entered.");
-                                        }
-                                    }                                    
-                                }
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Incorrect data was entered.");
-                            }
+                            actions.CreateWorker();
                             break;
                         // List all workers.
                         case 2:
-                            List<Worker> workers = repository.GetList();
-                            Console.WriteLine("Workers");
-                            viewer.ShowAllList(workers);
-                            var dev = repository.DeveloperWorkers();
-                            if (dev.Count() > 0)
-                            {
-                                Console.WriteLine("List of developers");
-                                viewer.ShowAllList(repository.DeveloperWorkers());
-                            }
-                            var officeWorkers = repository.OfficeWorkers();
-                            if (officeWorkers.Count() > 0)
-                            {
-                                Console.WriteLine("List of office workers");
-                                viewer.ShowAllList(repository.OfficeWorkers());
-                            }
+                            actions.ShowWorkers();
                             break;
                         // Show info about one worker.
                         case 3:
-                            Console.WriteLine("Enter the index number:");
-                            int indexNumber = int.Parse(Console.ReadLine());
-                            string onePerson = repository.ShowOnePerson(indexNumber);
-                            Console.WriteLine(onePerson);
+                            actions.ShowOneWorker();
                             break;
                         // Searching by appointment.
                         case 4:
-                            Console.WriteLine("Enter an appointment: ");
-                            string searchAppointment = Console.ReadLine();
-                            string result = repository.SearchByAppointment(searchAppointment);
-                            Console.WriteLine(result);
+                            actions.SeachByAppoiintment();
                             break;
                         // Counting by appointment.
                         case 5:
-                            Console.WriteLine("Enter an appointment:");
-                            string countAppointment = Console.ReadLine();
-                            string countResult = repository.CountWorkers(countAppointment);
-                            Console.WriteLine(countResult);
+                            actions.SeachByName();
                             break;
                         // Delete worker.
                         case 6:
-                            Console.WriteLine("Enter the worker's index number: ");
-                            int number = int.Parse(Console.ReadLine());
-                            string removeResult = repository.RemovePerson(number);
-                            Console.WriteLine(removeResult);
+                            actions.DeleteWorker();
                             break;
-                        // Quite the program.
+                        // Quit the program.
                         case 7:
-                            Console.WriteLine("Quite the program.");
+                            actions.QuitProgram();
                             break;
                         default:
-                            Console.WriteLine("There is no such item in menu.");
+                            Console.WriteLine("There is no such item in main menu.");
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("Incorrect data was entered.");
+                    Console.WriteLine("Incorrect value was entered.");
                 }
                 Console.Write("\n\n\t\t\tReturn to main menu...");
                 Console.ReadLine();
                 Console.Clear();
             }
-            while (i != 7);
-        }            
+            while (typedEnumValue != 7);
+        }
     }
 }
