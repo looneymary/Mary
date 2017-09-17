@@ -5,9 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace ClassLibrary.Models
 {
+    [Serializable]
+    [XmlInclude(typeof(Developer))]
+    [XmlInclude(typeof(OfficeWorker))]
     public abstract class Worker
     {
         public Int32 _id;
@@ -22,6 +29,11 @@ namespace ClassLibrary.Models
         public string FullInfo { get; set; }
                         
         // Constructor.
+        public Worker()
+        {
+
+        }
+
         public Worker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, int salary)
         {
             this._id = id;
@@ -39,7 +51,7 @@ namespace ClassLibrary.Models
         /// <returns>The string with properties</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} {6}", _id, LastName, FirstName, Sex, Appointment, Date, Salary);
+            return String.Format("{0} {1} {2} {3} {4} {5} {6}", _id, FirstName, LastName, Sex, Appointment, Date, Salary);
         }
     }
 }

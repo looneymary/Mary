@@ -1,2 +1,3 @@
-1 Developer: 1 Mary Lu Female Developer 11.11.1999 10000 C# 1 day Junior
+1 Developer: 1 Mary Lu Female Developer 11.11.1999 10000 C# 1 day
 2 OfficeWorker: 2 Ted Bundy Male Office_Manager 11.11.1999 200 10
+3 OfficeWorker: 3 Max Fray Male Writer 11.11.1999 11 12

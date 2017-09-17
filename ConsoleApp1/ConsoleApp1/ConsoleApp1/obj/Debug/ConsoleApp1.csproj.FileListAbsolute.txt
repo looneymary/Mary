@@ -14,3 +14,4 @@ F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ConsoleApp1\bin\Debug
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ConsoleApp1\bin\Debug\ClassLibrary.pdb
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.exe
 F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
+F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache

@@ -11,14 +11,24 @@ namespace ClassLibrary
 {
     public class Repository
     {
+        
         private List<Worker> people;
         private WorkWithFile file;
+        private WorkWithXml xml; 
 
         public Repository()
         {
             people = new List<Worker>();
             file = new WorkWithFile();
-            GetWorkersFromFile();
+            xml = new WorkWithXml();
+
+            #region Xml
+            GetWorkersFromXml();
+            #endregion
+
+            #region File
+            //GetWorkersFromFile();
+            #endregion
         }
 
         /// <summary>
@@ -26,7 +36,15 @@ namespace ClassLibrary
         /// </summary>
         private void GetWorkersFromFile()
         {
-            file.ReadFromFile(this.people);
+            file.ReadFromFile(people);           
+        }
+
+        /// <summary>
+        /// Call a method of reading information from Xml-document 
+        /// </summary>
+        private void GetWorkersFromXml()
+        {            
+            xml.ReadFromXml(people);
         }
 
         /// <summary>
@@ -45,8 +63,17 @@ namespace ClassLibrary
         public virtual void AddWorker(Worker obj)
         {
             this.people.Add(obj);
-            file.AddPersonToFile(obj);
-        }        
+
+            #region work with xml
+            WorkWithXml xml = new WorkWithXml();
+            var xmlObj = xml.ReadFromXmlInOneString();
+            xml.AddWorker(xmlObj, obj);
+            #endregion
+
+            #region work with file            
+            //file.AddPersonToFile(obj);
+            #endregion
+        }
 
         /// <summary>
         /// Get one worker with some index number
@@ -155,7 +182,13 @@ namespace ClassLibrary
                         people.Remove(person);
                     }
                 }
-                file.WriteToFile(people);
+                #region File
+                //file.WriteToFile(people);
+                #endregion
+
+                #region Xml
+                xml.RewriteXml(people);
+                #endregion
 
                 result = "The worker was deleted.";
             }
@@ -197,7 +230,15 @@ namespace ClassLibrary
         public int AddIndexNumber()
         {
             int index = 1;
-            GetWorkersFromFile();
+
+            #region File
+            //GetWorkersFromFile();
+            #endregion
+
+            #region Xml
+            GetWorkersFromXml();
+            #endregion
+
             if (people.Count == 0)
             {
                 return index;

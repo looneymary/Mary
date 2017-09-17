@@ -8,12 +8,18 @@ using System.Collections;
 
 namespace ClassLibrary.Models
 {
+    [Serializable]
     public class Developer : Worker
     {
         public string DevLang { get; set; }
         public string Experience { get; set; }
         public string Level { get; set; }
         
+        public Developer()
+        {
+
+        }
+
         public Developer(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, 
                                                    int salary, string devLang, string experience, string level) 
                                                    : base(id, firstName, lastName, sex, appointment, date, salary)
@@ -36,7 +42,7 @@ namespace ClassLibrary.Models
         /// <returns>The string, contains properties of worker</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", _id, LastName, FirstName, Sex, Appointment, Date, Salary,
+            return String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", _id, FirstName, LastName, Sex, Appointment, Date, Salary,
                 DevLang, Experience, Level);
         }
     }

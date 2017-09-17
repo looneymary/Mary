@@ -25,7 +25,7 @@ namespace ConsoleApp1
         /// Add info about worker (case 1)
         /// </summary>
         public void CreateWorker()
-        {     
+        {
             EnumsForModels.WorkerType workerType;
             СheckingValid += ex.CheckExceptions;
 
@@ -66,7 +66,6 @@ namespace ConsoleApp1
 
                     Console.WriteLine("Salary:");
                     int salary = int.Parse(Console.ReadLine());
-
                     if (workerType == EnumsForModels.WorkerType.Developer)
                     {
                         Console.WriteLine("Development languages:");
@@ -119,18 +118,26 @@ namespace ConsoleApp1
         public void ShowWorkers()
         {
             List<Worker> workers = repository.GetList();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Workers");
+            //Console.ForegroundColor = ConsoleColor.White;
             viewer.ShowAllList(workers);
             var dev = repository.DeveloperWorkers();
             if (dev.Count() > 0)
             {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("List of developers");
+                Console.ForegroundColor = ConsoleColor.White;
                 viewer.ShowAllList(repository.DeveloperWorkers());
             }
             var officeWorkers = repository.OfficeWorkers();
             if (officeWorkers.Count() > 0)
             {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("List of office workers");
+                Console.ForegroundColor = ConsoleColor.White;
                 viewer.ShowAllList(repository.OfficeWorkers());
             }
         }
@@ -143,7 +150,7 @@ namespace ConsoleApp1
             Console.WriteLine("Enter the index number:");
             int indexNumber = int.Parse(Console.ReadLine());
             string onePerson = repository.ShowOnePerson(indexNumber);
-            Console.WriteLine(onePerson);            
+            Console.WriteLine(onePerson);
         }
 
         /// <summary>
@@ -185,6 +192,12 @@ namespace ConsoleApp1
         public void QuitProgram()
         {
             Console.WriteLine("Quite the program.");
+        }
+
+        public void Valid()
+        {
+            ValidXml valid = new ValidXml();
+            valid.Validate(Config._xmlPath, Config._xsdPath);
         }
     }
 }

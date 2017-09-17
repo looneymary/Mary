@@ -13,8 +13,6 @@ namespace ConsoleApp1
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
-        public enum NameOfStrings { FirstName, LastName, Sex, Appointment, Date, Salary, Years_in_service, Development_languages, Experience, Level}
-
         /// <summary>
         /// Valid values and count exceptions
         /// </summary>
@@ -24,28 +22,24 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Validation of data.");
             ValidResult = 0;
-            int i = 0;
             try
-            {   foreach (string param in parametres)
+            {  
+                StringCheck(parametres[0].ToString(), "First name");
+                StringCheck(parametres[1].ToString(), "Last name");
+                StringCheck(parametres[2].ToString(), "Sex");
+                StringCheck(parametres[3].ToString(), "Appointment");
+                DateCheck(parametres[4].ToString(), "Date of taking office");
+                IntVal(int.Parse(parametres[5].ToString()), "Salary");
+                if (parametres.Length == 7)
                 {
-                    if (i == 4)
-                    {
-                        DateCheck(param, "Date of taking office");
-                    }
-                    else if (i == 5)
-                    {
-                        IntVal(int.Parse(param), "Salary");
-                    }
-                    else if (i == 6)
-                    {
-                        IntVal(int.Parse(param), "How many years in service");
-                    }
-                    else
-                    {
-                        StringCheck(param, i);
-                    }
-                    i++;
-                } 
+                    IntVal(int.Parse(parametres[6].ToString()), "How many years in service");
+                }
+                if(parametres.Length == 9)
+                {
+                    StringCheck(parametres[6].ToString(), "Development language");
+                    IntVal(int.Parse(parametres[7].ToString()), "Experience");
+                    StringCheck(parametres[8].ToString(), "Level");
+                }
             }
             catch(CheckValidExceptions ex)
             {
@@ -71,11 +65,11 @@ namespace ConsoleApp1
         /// </summary>
         /// <param name="var">The value what need to valid</param>
         /// <param name="name">The name of field</param>
-        public void StringCheck(string var, int name)
+        public void StringCheck(string var, string name)
         {
             if (String.IsNullOrEmpty(var))
             {
-               string message = "The field \""+ (NameOfStrings)name +"\" wasn't filled. Please, correct it.";
+               string message = "The field \""+ name +"\" wasn't filled. Please, correct it.";
                throw new CheckValidExceptions(message);
             }
 
@@ -83,7 +77,7 @@ namespace ConsoleApp1
             MatchCollection mc = regForText.Matches(var);
             if(mc.Count == 0)
             {
-                string message = "The field \"" + (NameOfStrings)name + "\" conteins invalid characters. " + var + " was introdused.";
+                string message = "The field \"" + name + "\" conteins invalid characters. " + var + " was introdused.";
                 throw new CheckValidExceptions(message);
             }
         }
