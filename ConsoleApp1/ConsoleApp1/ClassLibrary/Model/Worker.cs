@@ -13,6 +13,8 @@ using System.Xml.Serialization;
 namespace ClassLibrary.Models
 {
     [Serializable]
+    [XmlInclude(typeof(Developer))]
+    [XmlInclude(typeof(OfficeWorker))]
     public abstract class Worker
     {
         public Int32 _id;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfWorker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Worker type="Developer">
+  <Worker xsi:type="Developer">
     <id>1</id>
     <FirstName>Mary</FirstName>
     <LastName>Lu</LastName>
@@ -12,7 +12,7 @@
     <Experience>1</Experience>
     <Level>day</Level>
   </Worker>
-  <OfficeWorker>
+  <Worker xsi:type="OfficeWorker">
     <id>2</id>
     <FirstName>Ted</FirstName>
     <LastName>Bundy</LastName>
@@ -21,8 +21,8 @@
     <Date>11.11.1999</Date>
     <Salary>200</Salary>
     <YearsInService>10</YearsInService>
-  </OfficeWorker>
-  <OfficeWorker>
+  </Worker>
+  <Worker xsi:type="OfficeWorker">
     <id>3</id>
     <FirstName>Max</FirstName>
     <LastName>Fray</LastName>
@@ -31,5 +31,5 @@
     <Date>11.11.1999</Date>
     <Salary>11</Salary>
     <YearsInService>12</YearsInService>
-  </OfficeWorker>
+  </Worker>
 </ArrayOfWorker>
