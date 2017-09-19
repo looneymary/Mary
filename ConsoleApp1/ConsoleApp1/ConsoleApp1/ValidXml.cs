@@ -16,22 +16,24 @@ namespace ConsoleApp1
 {
     class ValidXml
     {
-        
-
+        /// <summary>
+        /// Valid xml-document
+        /// </summary>
+        /// <param name="xmlPath">Path to the xml-document</param>
+        /// <param name="xsdPath">Path to the xsd-schema</param>
         public void Validate(string xmlPath, string xsdPath)
         {
             XDocument xmlFile = XDocument.Load(xmlPath);
             XmlSchemaSet xsdSchema = new XmlSchemaSet();
             xsdSchema.Add(null, xsdPath);
-            bool errors = false;
-            xmlFile.Validate(xsdSchema, (o, e) =>
-            {
-                Console.WriteLine("{0}", e.Message);
-                errors = true;
-            });
-            Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");
+            xmlFile.Validate(xsdSchema, ValidationEventHandler);
         }
 
+        /// <summary>
+        /// Validation event for xml validate
+        /// </summary>
+        /// <param name="sender">The source of the event</param>
+        /// <param name="e">The event data</param>
         public void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
             switch (e.Severity)

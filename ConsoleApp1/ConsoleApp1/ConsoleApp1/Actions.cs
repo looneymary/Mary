@@ -194,6 +194,9 @@ namespace ConsoleApp1
             Console.WriteLine("Quite the program.");
         }
 
+        /// <summary>
+        /// Call a method of validation xml-documents
+        /// </summary>
         public void Valid()
         {
             ValidXml valid = new ValidXml();

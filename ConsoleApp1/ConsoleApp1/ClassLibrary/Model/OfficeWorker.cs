@@ -13,7 +13,6 @@ namespace ClassLibrary.Models
 
         public OfficeWorker()
         {
-
         }
 
         public OfficeWorker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, 

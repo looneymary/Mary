@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace ClassLibrary.Models
 {
-    [Serializable]
+    [Serializable]    
     public class Developer : Worker
     {
         public string DevLang { get; set; }
@@ -17,7 +21,6 @@ namespace ClassLibrary.Models
         
         public Developer()
         {
-
         }
 
         public Developer(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, 

@@ -13,8 +13,6 @@ using System.Xml.Serialization;
 namespace ClassLibrary.Models
 {
     [Serializable]
-    [XmlInclude(typeof(Developer))]
-    [XmlInclude(typeof(OfficeWorker))]
     public abstract class Worker
     {
         public Int32 _id;
@@ -31,7 +29,6 @@ namespace ClassLibrary.Models
         // Constructor.
         public Worker()
         {
-
         }
 
         public Worker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, int salary)

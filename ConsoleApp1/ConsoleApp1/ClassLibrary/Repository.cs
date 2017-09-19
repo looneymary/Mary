@@ -42,7 +42,7 @@ namespace ClassLibrary
         /// <summary>
         /// Call a method of reading information from Xml-document 
         /// </summary>
-        private void GetWorkersFromXml()
+        public void GetWorkersFromXml()
         {            
             xml.ReadFromXml(people);
         }

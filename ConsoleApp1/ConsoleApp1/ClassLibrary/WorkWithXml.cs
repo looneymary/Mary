@@ -15,15 +15,23 @@ namespace ClassLibrary
 {
     public class WorkWithXml
     {
+        /// <summary>
+        /// Read from xml-document and put data in the string
+        /// </summary>
+        /// <returns>The string with all strings from the xml-document</returns>
         public string ReadFromXmlInOneString()
         {
-            using (StreamReader sr = new StreamReader(Config._xmlPath))
+            using (StreamReader streamReader = new StreamReader(Config._xmlPath))
             {
-                String line = sr.ReadToEnd();
+                String line = streamReader.ReadToEnd();
                 return line;
             }
         }
 
+        /// <summary>
+        /// Read from xml-documet and add info in List<Worker>
+        /// </summary>
+        /// <param name="people">List of workers</param>
         public void ReadFromXml(List<Worker> people)
         {
             people.Clear();
@@ -32,7 +40,8 @@ namespace ClassLibrary
             using (StreamReader sr = new StreamReader(Config._xmlPath))
             {
                 var deserializeWorkers = (List<Worker>)serializer.Deserialize(sr);
-                foreach(var line in deserializeWorkers)
+                Console.WriteLine(deserializeWorkers.Count);
+                foreach (var line in deserializeWorkers)
                 {
                     string[] names = line.ToString().Split(' ');
 
@@ -58,10 +67,15 @@ namespace ClassLibrary
                         OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary, yearsInService);
                         people.Add(office);
                     }
-                }                
-            }                
+                }
+            }
         }
-
+    
+        /// <summary>
+        /// Add new worker in xml-document
+        /// </summary>
+        /// <param name="xml">Data of xml-documetn in one string</param>
+        /// <param name="worker">Object that need to add in xml-document</param>
         public void AddWorker(string xml, Worker worker)
         {
             Repository repository = new Repository();
@@ -71,13 +85,11 @@ namespace ClassLibrary
             var stringReader = new StringReader(xml);
             XDocument xmlDocument = XDocument.Load(stringReader);
             var workers = xmlDocument.Element("ArrayOfWorker");
-            XNamespace ns = "http://www.w3.org/2001/XMLSchema-instance";
             if (repository.IsDeveloper(worker) == true)
             {                
                 developer = (Developer)worker;
-                workers.Add(new XElement("Worker",
-                                new XAttribute(ns + "type", "Developer"),
-                    new XElement("_id", developer._id),
+                workers.Add(new XElement("Developer",
+                    new XElement("id", developer._id),
                     new XElement("FirstName", developer.FirstName),
                     new XElement("LastName", developer.LastName),
                     new XElement("Sex", developer.Sex),
@@ -92,9 +104,8 @@ namespace ClassLibrary
             else
             {
                 office = (OfficeWorker)worker;
-                workers.Add(new XElement("Worker",
-                                new XAttribute(ns + "type", "OfficeWorker"),
-                    new XElement("_id", office._id),
+                workers.Add(new XElement("OfficeWorker",
+                    new XElement("id", office._id),
                     new XElement("FirstName", office.FirstName),
                     new XElement("LastName", office.LastName),
                     new XElement("Sex", office.Sex),
@@ -108,6 +119,11 @@ namespace ClassLibrary
             workers.Save(Config._xmlPath);
         }
 
+        /// <summary>
+        /// Serialize list of workers
+        /// </summary>
+        /// <param name="workers">List of workers</param>
+        /// <returns></returns>
         public string SerializeObject(List<Worker> workers)
         {
             using (StringWriter stringwriter = new System.IO.StringWriter())
@@ -119,6 +135,10 @@ namespace ClassLibrary
             }
         }
 
+        /// <summary>
+        /// Rewrite xml-document after some changes
+        /// </summary>
+        /// <param name="workers">List of workers</param>
         public void RewriteXml(List<Worker> workers)
         {            
             string stringForRewrite = SerializeObject(workers);

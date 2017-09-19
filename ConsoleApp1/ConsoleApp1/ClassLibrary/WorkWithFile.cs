@@ -28,11 +28,11 @@ namespace ClassLibrary
             {
                 if (repository.IsDeveloper(person))
                 {
-                    textToWriteInAFile += person._id + " Developer: " + person.ToString() + "\r\n";
+                    textToWriteInAFile += person.ToString() + "\r\n";
                 }
                 else
                 {
-                    textToWriteInAFile += person._id + " OfficeWorker: " + person.ToString() + "\r\n";
+                    textToWriteInAFile += person.ToString() + "\r\n";
                 }
             }
             File.WriteAllText(Config._filePath, textToWriteInAFile);
@@ -51,25 +51,25 @@ namespace ClassLibrary
             {
                 string[] names = line.Split(' ');
 
-                int id = int.Parse(names[2]);
-                string firstName = names[3];
-                string lastName = names[4];
-                EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)Enum.Parse(typeof(EnumsForModels.TypeOfSex), names[5]);
-                string appointment = names[6];
-                string date = names[7];
-                int salary = int.Parse(names[8]);
+                int id = int.Parse(names[0]);
+                string firstName = names[1];
+                string lastName = names[2];
+                EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)Enum.Parse(typeof(EnumsForModels.TypeOfSex), names[3]);
+                string appointment = names[4];
+                string date = names[5];
+                int salary = int.Parse(names[6]);
 
-                if(names[1] == "Developer:")
+                if(names.Length == 10)
                 {
-                    string devLang = names[9];
-                    string experience = names[10];
-                    string level = names[11];
+                    string devLang = names[7];
+                    string experience = names[8];
+                    string level = names[9];
                     Developer developer = new Developer(id, firstName, lastName, sex, appointment, date, salary, devLang, experience, level);
                     people.Add(developer);
                 }
-                if(names[1] == "OfficeWorker:")
+                if(names.Length == 8)
                 {
-                    int yearsInService = int.Parse(names[9]);
+                    int yearsInService = int.Parse(names[7]);
                     OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary, yearsInService);
                     people.Add(office);
                 }
@@ -91,14 +91,6 @@ namespace ClassLibrary
             if (stringCount != 0)
             {
                 textToWriteInAFile += System.Environment.NewLine;
-            }
-            if (rep.IsDeveloper(obj) == true)
-            {                
-                textToWriteInAFile += index + " Developer: ";
-            }
-            else
-            {
-                textToWriteInAFile += index + " OfficeWorker: ";
             }
             textToWriteInAFile += obj.ToString();
             File.AppendAllText(Config._filePath, textToWriteInAFile);
