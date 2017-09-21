@@ -22,13 +22,7 @@ namespace ConsoleApp1
 
         public Actions()
         {
-            #region Xml
             repository.GetWorkersFromXml();
-            #endregion
-
-            #region File
-            //GetWorkersFromFile();
-            #endregion
         }
 
         public enum ActionsEnum { CreateWorker = 1, ShowWorkers = 2, ShowOneWorker = 3, SeachByAppoiintment = 4, SeachByName = 5, DeleteWorker = 6, QuitProgram = 7 };
@@ -107,7 +101,6 @@ namespace ConsoleApp1
                         СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString(), yearsInService.ToString());
                         if (ex.ValidResult == 0)
                         {
-
                             OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary, yearsInService);
                             repository.AddWorker(office);
                         }

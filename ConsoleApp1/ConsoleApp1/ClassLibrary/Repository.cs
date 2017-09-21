@@ -19,24 +19,13 @@ namespace ClassLibrary
         [XmlArrayItem("Developer", typeof(Developer))]
         [XmlArrayItem("OfficeWorker", typeof(OfficeWorker))]
         public List<Worker> People { get; set; }
-
-        private WorkWithFile file;
         private WorkWithXml xml;
 
         public Repository()
         {
             People = new List<Worker>();
-            file = new WorkWithFile();
             xml = new WorkWithXml();
-        }
-
-        /// <summary>
-        /// Call a method of reading information from file
-        /// </summary>
-        private void GetWorkersFromFile()
-        {
-            file.ReadFromFile(People);           
-        }
+        }        
 
         /// <summary>
         /// Call a method of reading information from Xml-document 
@@ -63,18 +52,11 @@ namespace ClassLibrary
         public virtual void AddWorker(Worker obj)
         {
             this.People.Add(obj);
-
-            #region work with xml;
             var xmlObj = xml.ReadFromXmlInOneString();
             if(xmlObj != null)
             {
                 xml.AddWorker(xmlObj, obj);
             }
-            #endregion
-
-            #region work with file            
-            //file.AddPersonToFile(obj);
-            #endregion
         }
 
         /// <summary>
@@ -184,13 +166,7 @@ namespace ClassLibrary
                         People.Remove(person);
                     }
                 }
-                #region File
-                //file.WriteToFile(people);
-                #endregion
-
-                #region Xml
                 xml.RewriteXml(People);
-                #endregion
 
                 result = "The worker was deleted.";
             }
@@ -232,14 +208,8 @@ namespace ClassLibrary
         public int AddIndexNumber()
         {
             int index = 1;
-
-            #region File
-            //GetWorkersFromFile();
-            #endregion
-
-            #region Xml
+            
             GetWorkersFromXml();
-            #endregion
 
             if (People.Count == 0)
             {
