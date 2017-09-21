@@ -6,29 +6,28 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 using ClassLibrary.Models;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace ClassLibrary
 {
     public class Repository
     {
-        
-        private List<Worker> people;
+        [XmlArray("Workers")]
+        [XmlArrayItem("Developer", typeof(Developer))]
+        [XmlArrayItem("OfficeWorker", typeof(OfficeWorker))]
+        public List<Worker> People { get; set; }
+
         private WorkWithFile file;
-        private WorkWithXml xml; 
+        private WorkWithXml xml;
 
         public Repository()
         {
-            people = new List<Worker>();
+            People = new List<Worker>();
             file = new WorkWithFile();
             xml = new WorkWithXml();
-
-            #region Xml
-            GetWorkersFromXml();
-            #endregion
-
-            #region File
-            //GetWorkersFromFile();
-            #endregion
         }
 
         /// <summary>
@@ -36,15 +35,16 @@ namespace ClassLibrary
         /// </summary>
         private void GetWorkersFromFile()
         {
-            file.ReadFromFile(people);           
+            file.ReadFromFile(People);           
         }
 
         /// <summary>
         /// Call a method of reading information from Xml-document 
         /// </summary>
         public void GetWorkersFromXml()
-        {            
-            xml.ReadFromXml(people);
+        {
+            People.Clear();
+            People = xml.ReadFromXml();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace ClassLibrary
         /// <returns>The list of all workers</returns>
         public List<Worker> GetList()
         {
-            return people;
+            return People;
         }
 
         /// <summary>
@@ -62,12 +62,14 @@ namespace ClassLibrary
         /// <param name="obj">Object with properties of worker</param>
         public virtual void AddWorker(Worker obj)
         {
-            this.people.Add(obj);
+            this.People.Add(obj);
 
-            #region work with xml
-            WorkWithXml xml = new WorkWithXml();
+            #region work with xml;
             var xmlObj = xml.ReadFromXmlInOneString();
-            xml.AddWorker(xmlObj, obj);
+            if(xmlObj != null)
+            {
+                xml.AddWorker(xmlObj, obj);
+            }
             #endregion
 
             #region work with file            
@@ -83,9 +85,9 @@ namespace ClassLibrary
         public virtual string ShowOnePerson(int indexNumber)
         {             
             string result = "";
-            if (this.people.Count >= indexNumber)
+            if (this.People.Count >= indexNumber)
             {
-                result = this.people.OrderBy(id => id._id).Where((x, i) => i == (indexNumber - 1)).First().ToString();
+                result = this.People.OrderBy(id => id._id).Where((x, i) => i == (indexNumber - 1)).First().ToString();
             }
             else
             {
@@ -101,7 +103,7 @@ namespace ClassLibrary
         /// <returns>The list of workers' first name and last name with selected appointment</returns>
         public virtual string SearchByAppointment(string searchAppointment)
         {
-            IEnumerable<Worker> selectPeople = this.people.Where(p => p.Appointment == searchAppointment);
+            IEnumerable<Worker> selectPeople = this.People.Where(p => p.Appointment == searchAppointment);
             string result = "";
             if (selectPeople.Count() > 0 )
             {
@@ -124,8 +126,8 @@ namespace ClassLibrary
         /// <returns>The list of workers with selectes name in string format</returns>
         public string SearchByName(string searchingName)
         {            
-            IEnumerable<Worker> searchResult = this.people.Where(p => p.FirstName == searchingName);
-            var count = this.people.Count(p => p.FirstName == searchingName);
+            IEnumerable<Worker> searchResult = this.People.Where(p => p.FirstName == searchingName);
+            var count = this.People.Count(p => p.FirstName == searchingName);
             string result = "";
             if (count > 0)
             {
@@ -148,7 +150,7 @@ namespace ClassLibrary
         /// <returns>List of appointments and employees' first name and last name holding these positions</returns>
         public string CountWorkers(string countAppointment)
         {            
-            var count = this.people.Count(p => p.Appointment == countAppointment);
+            var count = this.People.Count(p => p.Appointment == countAppointment);
             string result = string.Format("{0} : {1}", countAppointment, count);
             return result;
         }
@@ -172,14 +174,14 @@ namespace ClassLibrary
         public string RemovePerson(int number)
         {
             string result = "";
-            var index = people.FindAll(person => person._id == number);
+            var index = People.FindAll(person => person._id == number);
             if(index.Count() != 0)
             {
-                foreach( var person in people.OrderBy(person => person._id))
+                foreach( var person in People.OrderBy(person => person._id))
                 {
                     if(person._id == number)
                     {
-                        people.Remove(person);
+                        People.Remove(person);
                     }
                 }
                 #region File
@@ -187,7 +189,7 @@ namespace ClassLibrary
                 #endregion
 
                 #region Xml
-                xml.RewriteXml(people);
+                xml.RewriteXml(People);
                 #endregion
 
                 result = "The worker was deleted.";
@@ -205,7 +207,7 @@ namespace ClassLibrary
         /// <returns>The list of "Developers"</returns>
         public List<Worker> DeveloperWorkers()
         {
-            var dev = from person in this.people
+            var dev = from person in this.People
                       where IsDeveloper(person)
                       select person;
             List<Worker> developers = dev.ToList<Worker>();
@@ -218,7 +220,7 @@ namespace ClassLibrary
         /// <returns>The list of "Office workers"</returns>
         public List<Worker> OfficeWorkers()
         {
-            var officeWorkers = this.people.OfType<OfficeWorker>();
+            var officeWorkers = this.People.OfType<OfficeWorker>();
             List<Worker> office = officeWorkers.ToList<Worker>();
             return office;
         }
@@ -239,13 +241,13 @@ namespace ClassLibrary
             GetWorkersFromXml();
             #endregion
 
-            if (people.Count == 0)
+            if (People.Count == 0)
             {
                 return index;
             }
             else
             {
-                foreach (var id in people.OrderBy(id => id._id))
+                foreach (var id in People.OrderBy(id => id._id))
                 {
                     string[] elements = id.ToString().Split(' ');
                     if (index == int.Parse(elements[0]))

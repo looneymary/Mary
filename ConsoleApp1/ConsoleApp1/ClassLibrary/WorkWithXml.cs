@@ -15,6 +15,8 @@ namespace ClassLibrary
 {
     public class WorkWithXml
     {
+        ValidXml valid = new ValidXml();
+
         /// <summary>
         /// Read from xml-document and put data in the string
         /// </summary>
@@ -23,8 +25,15 @@ namespace ClassLibrary
         {
             using (StreamReader streamReader = new StreamReader(Config._xmlPath))
             {
-                String line = streamReader.ReadToEnd();
-                return line;
+                if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+                {
+                    String line = streamReader.ReadToEnd();
+                    return line;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -32,45 +41,19 @@ namespace ClassLibrary
         /// Read from xml-documet and add info in List<Worker>
         /// </summary>
         /// <param name="people">List of workers</param>
-        public void ReadFromXml(List<Worker> people)
+        public List<Worker> ReadFromXml()
         {
-            people.Clear();
-
-            var serializer = new XmlSerializer(typeof(List<Worker>));
-            using (StreamReader sr = new StreamReader(Config._xmlPath))
+            var deserializeXml = DeserializeXml(Config._xmlPath);
+            if(deserializeXml != null)
             {
-                var deserializeWorkers = (List<Worker>)serializer.Deserialize(sr);
-                Console.WriteLine(deserializeWorkers.Count);
-                foreach (var line in deserializeWorkers)
-                {
-                    string[] names = line.ToString().Split(' ');
-
-                    int id = int.Parse(names[0]);
-                    string firstName = names[1];
-                    string lastName = names[2];
-                    EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)Enum.Parse(typeof(EnumsForModels.TypeOfSex), names[3]);
-                    string appointment = names[4];
-                    string date = names[5];
-                    int salary = int.Parse(names[6]);
-
-                    if (names.Length == 10)
-                    {
-                        string devLang = names[7];
-                        string experience = names[8];
-                        string level = names[9];
-                        Developer developer = new Developer(id, firstName, lastName, sex, appointment, date, salary, devLang, experience, level);
-                        people.Add(developer);
-                    }
-                    if (names.Length == 8)
-                    {
-                        int yearsInService = int.Parse(names[7]);
-                        OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary, yearsInService);
-                        people.Add(office);
-                    }
-                }
+                return deserializeXml.People;
             }
+            else
+            {
+                return null;
+            }            
         }
-    
+
         /// <summary>
         /// Add new worker in xml-document
         /// </summary>
@@ -84,12 +67,15 @@ namespace ClassLibrary
 
             var stringReader = new StringReader(xml);
             XDocument xmlDocument = XDocument.Load(stringReader);
-            var workers = xmlDocument.Element("ArrayOfWorker");
+            var repositoryArray = xmlDocument.Element("Repository");
+            var workers = repositoryArray.Element("Workers");
+
+            XNamespace ns = "http://www.w3.org/2001/XMLSchema-instance";
             if (repository.IsDeveloper(worker) == true)
-            {                
+            {
                 developer = (Developer)worker;
                 workers.Add(new XElement("Developer",
-                    new XElement("id", developer._id),
+                    new XElement("_id", developer._id),
                     new XElement("FirstName", developer.FirstName),
                     new XElement("LastName", developer.LastName),
                     new XElement("Sex", developer.Sex),
@@ -105,7 +91,7 @@ namespace ClassLibrary
             {
                 office = (OfficeWorker)worker;
                 workers.Add(new XElement("OfficeWorker",
-                    new XElement("id", office._id),
+                    new XElement("_id", office._id),
                     new XElement("FirstName", office.FirstName),
                     new XElement("LastName", office.LastName),
                     new XElement("Sex", office.Sex),
@@ -116,7 +102,7 @@ namespace ClassLibrary
                 ));
             }
 
-            workers.Save(Config._xmlPath);
+            repositoryArray.Save(Config._xmlPath);
         }
 
         /// <summary>
@@ -140,11 +126,33 @@ namespace ClassLibrary
         /// </summary>
         /// <param name="workers">List of workers</param>
         public void RewriteXml(List<Worker> workers)
-        {            
+        {
             string stringForRewrite = SerializeObject(workers);
             var stringReader = new StringReader(stringForRewrite);
             XDocument xmlDocument = XDocument.Load(stringReader);
             xmlDocument.Save(Config._xmlPath);
         }
+
+        /// <summary>
+        /// Deserialize data of xml-document
+        /// </summary>
+        /// <param name="fileName">Path to xmk-document</param>
+        /// <returns></returns>
+        public Repository DeserializeXml(string fileName)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Repository));
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+                {
+                    return (Repository)serializer.Deserialize(sr);
+                }
+                else
+                {
+                    Console.WriteLine("Xml-document isn't valid");
+                    return null;
+                }
+            }
+        }        
     }
 }

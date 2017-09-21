@@ -47,7 +47,6 @@
     <Compile Include="Actions.cs" />
     <Compile Include="CheckValidExceptions.cs" />
     <Compile Include="EnumHelper.cs" />
-    <Compile Include="ValidXml.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

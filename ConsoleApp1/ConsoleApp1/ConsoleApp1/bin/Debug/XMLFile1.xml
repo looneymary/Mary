@@ -1,35 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ArrayOfWorker xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Worker xsi:type="Developer">
-    <id>1</id>
-    <FirstName>Mary</FirstName>
-    <LastName>Lu</LastName>
-    <Sex>Female</Sex>
-    <Appointment>Developer</Appointment>
-    <Date>11.11.1999</Date>
-    <Salary>10000</Salary>
-    <DeveloperLanguage>C#</DeveloperLanguage>
-    <Experience>1</Experience>
-    <Level>day</Level>
-  </Worker>
-  <Worker xsi:type="OfficeWorker">
-    <id>2</id>
-    <FirstName>Ted</FirstName>
-    <LastName>Bundy</LastName>
-    <Sex>Male</Sex>
-    <Appointment>Office_Manager</Appointment>
-    <Date>11.11.1999</Date>
-    <Salary>200</Salary>
-    <YearsInService>10</YearsInService>
-  </Worker>
-  <Worker xsi:type="OfficeWorker">
-    <id>3</id>
-    <FirstName>Max</FirstName>
-    <LastName>Fray</LastName>
-    <Sex>Male</Sex>
-    <Appointment>Writer</Appointment>
-    <Date>11.11.1999</Date>
-    <Salary>11</Salary>
-    <YearsInService>12</YearsInService>
-  </Worker>
-</ArrayOfWorker>
+<Repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Workers>
+    <Developer>
+      <_id>1</_id>
+      <FirstName>Mary</FirstName>
+      <LastName>Lu</LastName>
+      <Sex>Female</Sex>
+      <Appointment>Developer</Appointment>
+      <Date>11.11.1999</Date>
+      <Salary>10000</Salary>
+      <DeveloperLanguage>C#</DeveloperLanguage>
+      <Experience>1</Experience>
+      <Level>day</Level>
+    </Developer>
+    <OfficeWorker>
+      <_id>2</_id>
+      <FirstName>Ted</FirstName>
+      <LastName>Bundy</LastName>
+      <Sex>Male</Sex>
+      <Appointment>Office_Manager</Appointment>
+      <Date>11.11.1999</Date>
+      <Salary>200</Salary>
+      <YearsInService>10</YearsInService>
+    </OfficeWorker>
+    <OfficeWorker>
+      <_id>3</_id>
+      <FirstName>Max</FirstName>
+      <LastName>Fray</LastName>
+      <Sex>Male</Sex>
+      <Appointment>Writer</Appointment>
+      <Date>11.11.1999</Date>
+      <Salary>11</Salary>
+      <YearsInService>12</YearsInService>
+    </OfficeWorker>
+  </Workers>
+</Repository>

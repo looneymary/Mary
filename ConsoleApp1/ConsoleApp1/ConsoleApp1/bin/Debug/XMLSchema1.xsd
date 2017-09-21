@@ -4,36 +4,42 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
-  <xsd:element name="ArrayOfWorker">
+  <xsd:element name="Repository">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="Developer" >
+        <xsd:element name="Workers">
           <xsd:complexType>
             <xsd:sequence>
-              <xsd:element name ="id" type ="xs:int" />
-              <xsd:element name ="FirstName" type ="xs:string" />
-              <xsd:element name ="LastName" type ="xs:string" />
-              <xsd:element name ="Sex" type ="xs:string" />
-              <xsd:element name ="Appointment" type ="xs:string" />
-              <xsd:element name ="Date" type ="xs:string" />
-              <xsd:element name ="Salary" type ="xs:int" />
-              <xsd:element name ="DeveloperLanguage" type ="xs:string" />
-              <xsd:element name ="Experience" type ="xs:int" />
-              <xsd:element name ="Level" type ="xs:string" />
-            </xsd:sequence>
-          </xsd:complexType>
-        </xsd:element>
-        <xsd:element maxOccurs="unbounded" name="OfficeWorker">
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:element name ="id" type ="xs:int" />
-              <xsd:element name ="FirstName" type ="xs:string" />
-              <xsd:element name ="LastName" type ="xs:string" />              
-              <xsd:element name ="Sex" type ="xs:string" />
-              <xsd:element name ="Appointment" type ="xs:string" />
-              <xsd:element name ="Date" type ="xs:string" />
-              <xsd:element name ="Salary" type ="xs:int" />
-              <xsd:element name ="YearsInService" type="xs:string" />
+              <xsd:element name="Developer" >
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name ="_id" type ="xs:int" />
+                    <xsd:element name ="FirstName" type ="xs:string" />
+                    <xsd:element name ="LastName" type ="xs:string" />
+                    <xsd:element name ="Sex" type ="xs:string" />
+                    <xsd:element name ="Appointment" type ="xs:string" />
+                    <xsd:element name ="Date" type ="xs:string" />
+                    <xsd:element name ="Salary" type ="xs:int" />
+                    <xsd:element name ="DeveloperLanguage" type ="xs:string" />
+                    <xsd:element name ="Experience" type ="xs:int" />
+                    <xsd:element name ="Level" type ="xs:string" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element maxOccurs="unbounded" name="OfficeWorker">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name ="_id" type ="xs:int" />
+                    <xsd:element name ="FirstName" type ="xs:string" />
+                    <xsd:element name ="LastName" type ="xs:string" />              
+                    <xsd:element name ="Sex" type ="xs:string" />
+                    <xsd:element name ="Appointment" type ="xs:string" />
+                    <xsd:element name ="Date" type ="xs:string" />
+                    <xsd:element name ="Salary" type ="xs:int" />
+                    <xsd:element name ="YearsInService" type="xs:string" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>

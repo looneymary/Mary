@@ -36,7 +36,6 @@ namespace ConsoleApp1
                         // List all workers.
                         case 2:
                             actions.ShowWorkers();
-                            actions.Valid();
                             break;
                         // Show info about one worker.
                         case 3:

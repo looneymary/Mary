@@ -12,14 +12,26 @@ namespace ConsoleApp1
 {
     class Actions
     {
-        public enum ActionsEnum { CreateWorker = 1, ShowWorkers = 2, ShowOneWorker = 3, SeachByAppoiintment = 4, SeachByName = 5, DeleteWorker = 6, QuitProgram = 7 };
-
         public delegate int ValidValuesDelegate(params string[] parametres);
         public static event ValidValuesDelegate СheckingValid;
 
         Repository repository = new Repository();
         Viewer viewer = new Viewer();
         CheckValidExceptions ex = new CheckValidExceptions();
+        WorkWithXml xml = new WorkWithXml();
+
+        public Actions()
+        {
+            #region Xml
+            repository.GetWorkersFromXml();
+            #endregion
+
+            #region File
+            //GetWorkersFromFile();
+            #endregion
+        }
+
+        public enum ActionsEnum { CreateWorker = 1, ShowWorkers = 2, ShowOneWorker = 3, SeachByAppoiintment = 4, SeachByName = 5, DeleteWorker = 6, QuitProgram = 7 };
 
         /// <summary>
         /// Add info about worker (case 1)
@@ -192,15 +204,6 @@ namespace ConsoleApp1
         public void QuitProgram()
         {
             Console.WriteLine("Quite the program.");
-        }
-
-        /// <summary>
-        /// Call a method of validation xml-documents
-        /// </summary>
-        public void Valid()
-        {
-            ValidXml valid = new ValidXml();
-            valid.Validate(Config._xmlPath, Config._xsdPath);
         }
     }
 }
