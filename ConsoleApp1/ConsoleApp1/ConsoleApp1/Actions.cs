@@ -188,6 +188,7 @@ namespace ConsoleApp1
             Console.WriteLine("Enter the worker's index number: ");
             int number = int.Parse(Console.ReadLine());
             string removeResult = repository.RemovePerson(number);
+
             Console.WriteLine(removeResult);
         }
 

@@ -23,8 +23,8 @@ namespace ConsoleApp1
                         "3. Show info about one worker \n4. Searching by appointment \n" +
                         "5. Counting by appointment \n6. Delete worker \n7. Quit the program\n\n");
 
-                try
-                {
+                //try
+                //{
                     typedEnumValue = (int)(Actions.ActionsEnum)int.Parse(Console.ReadLine());
 
                     switch (typedEnumValue)
@@ -61,11 +61,11 @@ namespace ConsoleApp1
                             Console.WriteLine("There is no such item in main menu.");
                             break;
                     }
-                }
-                catch
-                {
-                    Console.WriteLine("Incorrect value was entered.");
-                }
+                //}
+                //catch
+                //{
+                //    Console.WriteLine("Incorrect value was entered.");
+                //}
                 Console.Write("\n\n\t\t\tReturn to main menu...");
                 Console.ReadLine();
                 Console.Clear();

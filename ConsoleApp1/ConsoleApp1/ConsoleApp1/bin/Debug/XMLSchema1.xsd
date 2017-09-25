@@ -10,7 +10,7 @@
         <xsd:element name="Workers">
           <xsd:complexType>
             <xsd:sequence>
-              <xsd:element name="Developer" >
+              <xsd:element maxOccurs="unbounded" name="Developer">
                 <xsd:complexType>
                   <xsd:sequence>
                     <xsd:element name ="_id" type ="xs:int" />

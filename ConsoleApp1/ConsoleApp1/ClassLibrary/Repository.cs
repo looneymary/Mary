@@ -163,12 +163,13 @@ namespace ClassLibrary
                 {
                     if(person._id == number)
                     {
-                        People.Remove(person);
+                        if(xml.RemoveFromXml(Config._xmlPath, number))
+                        {
+                            People.Remove(person);
+                            result = "The worker was deleted.";
+                        }                        
                     }
                 }
-                xml.RewriteXml(People);
-
-                result = "The worker was deleted.";
             }
             else
             {
