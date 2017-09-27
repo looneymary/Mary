@@ -11,14 +11,14 @@
       <Salary>10000</Salary>
       <DeveloperLanguage>C#</DeveloperLanguage>
       <Experience>1</Experience>
-      <Level>day</Level>
+      <Level>Day</Level>
     </Developer>
     <OfficeWorker>
       <_id>2</_id>
       <FirstName>Ted</FirstName>
       <LastName>Bundy</LastName>
       <Sex>Male</Sex>
-      <Appointment>Office_Manager</Appointment>
+      <Appointment>Office manager</Appointment>
       <Date>11.11.1999</Date>
       <Salary>200</Salary>
       <YearsInService>10</YearsInService>

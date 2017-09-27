@@ -9,6 +9,8 @@ namespace ConsoleApp1
 {
     public class CheckValidExceptions : Exception
     {
+        public enum NameOfElement { FirstName = 0, LastName = 1, Sex = 2, Appointment = 3, Date = 4, Salary = 5, DeveloperLanguage = 6, Experience = 7, Level = 8, YearsInService = 9 }
+
         public int ValidResult { get; set; }
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
@@ -17,28 +19,36 @@ namespace ConsoleApp1
         /// Valid values and count exceptions
         /// </summary>
         /// <param name="parametres">The array of properties of workers</param>
-        /// <returns>Number of found exceptions</returns>
+        /// <returns>Count of found exceptions</returns>
         public int CheckExceptions(params string[] parametres)
         {
             Console.WriteLine("Validation of data.");
             ValidResult = 0;
             try
-            {  
-                StringCheck(parametres[0].ToString(), "First name");
-                StringCheck(parametres[1].ToString(), "Last name");
-                StringCheck(parametres[2].ToString(), "Sex");
-                StringCheck(parametres[3].ToString(), "Appointment");
-                DateCheck(parametres[4].ToString(), "Date of taking office");
-                IntVal(int.Parse(parametres[5].ToString()), "Salary");
-                if (parametres.Length == 7)
+            {
+                for (int i = 0; i < parametres.Length; i++)
                 {
-                    IntVal(int.Parse(parametres[6].ToString()), "How many years in service");
-                }
-                if(parametres.Length == 9)
-                {
-                    StringCheck(parametres[6].ToString(), "Development language");
-                    IntVal(int.Parse(parametres[7].ToString()), "Experience");
-                    StringCheck(parametres[8].ToString(), "Level");
+
+                    if (i == 4)
+                    {
+                        DateCheck(parametres[i], ((NameOfElement)i).ToString());
+                    }
+                    else if (i == 5)
+                    {
+                        IntVal(int.Parse(parametres[i]), ((NameOfElement)i).ToString());
+                    }
+                    else if (parametres.Length == 7 && i == 6)
+                    {
+                        IntVal(int.Parse(parametres[i]), ((NameOfElement)9).ToString());
+                    }
+                    else if (parametres.Length == 9 && i == 7)
+                    {
+                        IntVal(int.Parse(parametres[i]), ((NameOfElement)i).ToString());
+                    }
+                    else
+                    {
+                        StringCheck(parametres[i], ((NameOfElement)i).ToString());
+                    }
                 }
             }
             catch(CheckValidExceptions ex)
@@ -61,11 +71,76 @@ namespace ConsoleApp1
         }
 
         /// <summary>
-        /// Validation of string values
+        /// 
         /// </summary>
-        /// <param name="var">The value what need to valid</param>
-        /// <param name="name">The name of field</param>
-        public void StringCheck(string var, string name)
+        /// <param name="value">New value</param>
+        /// <param name="numOfElement">Number of updating element in enum NameOfElement</param>
+        /// <returns>Count of found exceptions</returns>
+        public int CheckXmlExeptions(string value, int numOfElement)
+        {
+            ValidResult = 0;
+            numOfElement -= 1;
+            try
+            {
+                switch ((NameOfElement)numOfElement)
+                {
+                    case NameOfElement.FirstName:
+                    case NameOfElement.LastName:
+                    case NameOfElement.Sex:
+                    case NameOfElement.Appointment:
+                        StringCheck(value, ((NameOfElement)numOfElement).ToString());                        
+                        return ValidResult;
+                    case NameOfElement.Date:
+                        DateCheck(value, ((NameOfElement)numOfElement).ToString());
+                        return ValidResult;
+                    case NameOfElement.Salary:
+                        IntVal(int.Parse(value), ((NameOfElement)numOfElement).ToString());
+                        return ValidResult;
+                    case NameOfElement.DeveloperLanguage:
+                        StringCheck(value, ((NameOfElement)numOfElement).ToString());
+                        return ValidResult;
+                    case NameOfElement.Experience:
+                        IntVal(int.Parse(value), ((NameOfElement)numOfElement).ToString());
+                        return ValidResult;
+                    case NameOfElement.Level:
+                        StringCheck(value, ((NameOfElement)numOfElement).ToString());
+                        return ValidResult;
+                    case NameOfElement.YearsInService:
+                        IntVal(int.Parse(value), ((NameOfElement)numOfElement).ToString());
+                        return ValidResult;
+                }
+            }
+            catch (CheckValidExceptions ex)
+            {
+                Console.WriteLine(ex.Message);
+                ValidResult++;
+            }
+            catch
+            {
+                ValidResult++;
+            }
+            finally
+            {
+                if (ValidResult == 0)
+                {
+                    Console.WriteLine("Validation was successful.");
+                }
+                else
+                {
+                    Console.WriteLine("The employee wasn't update. Repeat input.");
+                }
+            }
+
+            return ValidResult;
+        }
+
+
+    /// <summary>
+    /// Validation of string values
+    /// </summary>
+    /// <param name="var">The value what need to valid</param>
+    /// <param name="name">The name of field</param>
+    public void StringCheck(string var, string name)
         {
             if (String.IsNullOrEmpty(var))
             {

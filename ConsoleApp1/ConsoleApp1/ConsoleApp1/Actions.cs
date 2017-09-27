@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections;
 using ClassLibrary;
 using ClassLibrary.Models;
+using System.Globalization;
 
 namespace ConsoleApp1
 {
@@ -14,6 +15,9 @@ namespace ConsoleApp1
     {
         public delegate int ValidValuesDelegate(params string[] parametres);
         public static event ValidValuesDelegate СheckingValid;
+
+        public delegate int ValidXmlValuesDelegate(string value, int i);
+        public static event ValidXmlValuesDelegate СheckingXmlValid;
 
         Repository repository = new Repository();
         Viewer viewer = new Viewer();
@@ -198,6 +202,36 @@ namespace ConsoleApp1
         public void QuitProgram()
         {
             Console.WriteLine("Quite the program.");
+        }
+
+        /// <summary>
+        /// Update value in xml-document
+        /// </summary>
+        public void UpdateXml()
+        {
+            СheckingXmlValid += ex.CheckXmlExeptions;
+
+            Console.WriteLine("Enter id of worker you want to update:");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Chose element what you want to update.");
+            Console.WriteLine("1 - first name\n2 - last name\n3 - sex: Male/Female \n4 - appointment\n5 - date\n6 - salary");
+            Console.WriteLine();
+            Console.WriteLine("For developers:\n7 - developer language\n8 - experiience\n9 - level");
+            Console.WriteLine();
+            Console.WriteLine("For office workers:\n10 - years in service");
+            int numOfElement = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter new value:");
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+            string value = ti.ToTitleCase(Console.ReadLine());
+
+            СheckingXmlValid(value, numOfElement);
+            if (ex.ValidResult == 0)
+            {
+                xml.UpdateXml(Config._xmlPath, id, numOfElement, value);
+                repository.GetWorkersFromXml();
+            }
         }
     }
 }

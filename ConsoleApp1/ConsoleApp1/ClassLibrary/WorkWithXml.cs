@@ -15,6 +15,9 @@ namespace ClassLibrary
 {
     public class WorkWithXml
     {
+        public enum ElementsOfXml { FirstName = 1, LastNAme = 2, Sex = 3, Appointment = 4, Date = 5, Salary = 6,
+                                    DeveloperLanguage = 7, Experience = 8, Level = 9, YearsInService = 10 } 
+
         ValidXml valid = new ValidXml();
 
         /// <summary>
@@ -137,19 +140,16 @@ namespace ClassLibrary
                 XmlElement xRoot = xDoc.DocumentElement;
                 foreach (XmlNode xnode in xRoot)
                 {
-                    foreach (XmlNode childnode in xnode.ChildNodes)
+                    foreach (XmlNode childNode in xnode.ChildNodes)
                     {
-                        foreach (XmlNode child in childnode.ChildNodes)
+                        foreach (XmlNode child in childNode.ChildNodes)
                         {
-                            if (child.Name == "_id")
+                            if (child.Name == "_id" && int.Parse(child.InnerText) == id)
                             {
-                                if (int.Parse(child.InnerText) == id)
-                                {
-                                    parent = child.ParentNode;
-                                    xnode.RemoveChild(parent);
-                                    xDoc.Save(fileName);
-                                    return true;
-                                }
+                                parent = child.ParentNode;
+                                xnode.RemoveChild(parent);
+                                xDoc.Save(fileName);
+                                return true;
                             }
                         }
                     }
@@ -183,5 +183,53 @@ namespace ClassLibrary
                 }
             }
         }        
+
+        /// <summary>
+        /// Update xnl-document
+        /// </summary>
+        /// <param name="fileName">The path of xml-document </param>
+        /// <returns>Result of updating</returns>
+        public bool UpdateXml(string fileName, int id, int numOfElement, string value)
+        {
+            ElementsOfXml elementName = (ElementsOfXml)numOfElement;
+
+            XmlNode parent;
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load(fileName);
+            if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+            {
+                XmlElement xRoot = xDoc.DocumentElement;
+                foreach (XmlNode xnode in xRoot)
+                {
+                    foreach (XmlNode childNode in xnode.ChildNodes)
+                    {
+                        foreach (XmlNode child in childNode.ChildNodes)
+                        {                            
+                            if (child.Name == "_id" && int.Parse(child.InnerText) == id)
+                            {
+                                parent = child.ParentNode;
+                                foreach(XmlNode updateChild in parent)
+                                {
+                                    if (updateChild.Name == elementName.ToString())
+                                    {
+                                        updateChild.InnerText = value;
+                                        Console.WriteLine(updateChild.InnerText);
+                                        xDoc.Save(fileName);
+                                        return true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("wrong id");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
