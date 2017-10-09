@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<XmlRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Workers>
     <Developer>
-      <_id>1</_id>
+      <_id>{27525868-ab33-42b4-9e57-6d9e73a363b5}</_id>
       <FirstName>Mary</FirstName>
       <LastName>Lu</LastName>
       <Sex>Female</Sex>
@@ -14,7 +14,7 @@
       <Level>Day</Level>
     </Developer>
     <OfficeWorker>
-      <_id>2</_id>
+      <_id>{aa35972b-1469-4f7f-ac4f-6c2214d56af9}</_id>
       <FirstName>Ted</FirstName>
       <LastName>Bundy</LastName>
       <Sex>Male</Sex>
@@ -24,7 +24,7 @@
       <YearsInService>10</YearsInService>
     </OfficeWorker>
     <OfficeWorker>
-      <_id>3</_id>
+      <_id>{463e4973-1c94-4374-9147-ef2b49bf63fb}</_id>
       <FirstName>Max</FirstName>
       <LastName>Fray</LastName>
       <Sex>Male</Sex>
@@ -33,5 +33,15 @@
       <Salary>11</Salary>
       <YearsInService>12</YearsInService>
     </OfficeWorker>
+    <OfficeWorker>
+      <_id>{0925946c-5db0-43a6-b75f-0edbcfddbb80}</_id>
+      <FirstName>F</FirstName>
+      <LastName>Y</LastName>
+      <Sex>Male</Sex>
+      <Appointment>T</Appointment>
+      <Date>11.11.1999</Date>
+      <Salary>1</Salary>
+      <YearsInService>1</YearsInService>
+    </OfficeWorker>
   </Workers>
-</Repository>
+</XmlRepository>

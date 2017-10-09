@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{8BEBA915-161E-41EF-82FC-D472817ECEE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerViewer", "ConsoleApp1\WorkerViewer.csproj", "{8BEBA915-161E-41EF-82FC-D472817ECEE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{CE210726-560A-4FED-B32B-32F2791BF77A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "ClassLibrary\DataAccess.csproj", "{CE210726-560A-4FED-B32B-32F2791BF77A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "ClassLibrary1\BusinessLayer.csproj", "{FE7E5FEC-C540-4F12-BCC8-1954FA518DE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{CE210726-560A-4FED-B32B-32F2791BF77A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE210726-560A-4FED-B32B-32F2791BF77A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE210726-560A-4FED-B32B-32F2791BF77A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE7E5FEC-C540-4F12-BCC8-1954FA518DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE7E5FEC-C540-4F12-BCC8-1954FA518DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE7E5FEC-C540-4F12-BCC8-1954FA518DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE7E5FEC-C540-4F12-BCC8-1954FA518DE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C2B740A-B9E2-44C1-B2A8-01E62E7E2456}
 	EndGlobalSection
 EndGlobal

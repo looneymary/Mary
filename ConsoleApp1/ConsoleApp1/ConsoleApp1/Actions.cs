@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
-using ClassLibrary;
-using ClassLibrary.Models;
+using DataAccess;
+using DataAccess.Models;
 using System.Globalization;
+using BusinessLayer;
 
-namespace ConsoleApp1
+namespace WorkerViewer
 {
     class Actions
     {
@@ -19,14 +20,16 @@ namespace ConsoleApp1
         public delegate int ValidXmlValuesDelegate(string value, int i);
         public static event ValidXmlValuesDelegate СheckingXmlValid;
 
-        Repository repository = new Repository();
+        XmlRepository repository = new XmlRepository();
         Viewer viewer = new Viewer();
         CheckValidExceptions ex = new CheckValidExceptions();
         WorkWithXml xml = new WorkWithXml();
+        BusinessLayerClass business = new BusinessLayerClass();
+
+        TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
         public Actions()
         {
-            repository.GetWorkersFromXml();
         }
 
         public enum ActionsEnum { CreateWorker = 1, ShowWorkers = 2, ShowOneWorker = 3, SeachByAppoiintment = 4, SeachByName = 5, DeleteWorker = 6, QuitProgram = 7 };
@@ -50,13 +53,13 @@ namespace ConsoleApp1
             if (isWorkerTypeDefined)
             {
                 workerType = (EnumsForModels.WorkerType)workerEnum;
-                int id = repository.AddIndexNumber();
 
                 Console.WriteLine("First name:");
-                string firstName = Console.ReadLine();
+                
+                string firstName = ti.ToTitleCase(Console.ReadLine());
 
                 Console.WriteLine("Last name:");
-                string lastName = Console.ReadLine();
+                string lastName = ti.ToTitleCase(Console.ReadLine());
 
                 Console.WriteLine("Sex: m - 1/ f - 2.");
 
@@ -67,34 +70,34 @@ namespace ConsoleApp1
                 {
                     EnumsForModels.TypeOfSex sex = (EnumsForModels.TypeOfSex)sexType;
                     Console.WriteLine("Appointment:");
-                    string appointment = Console.ReadLine();
+                    string appointment = ti.ToTitleCase(Console.ReadLine());
 
                     Console.WriteLine("Working information: \n");
 
                     Console.WriteLine("The date of taking office :");
-                    string date = Console.ReadLine();
+                    string date = ti.ToTitleCase(Console.ReadLine());
 
                     Console.WriteLine("Salary:");
                     int salary = int.Parse(Console.ReadLine());
                     if (workerType == EnumsForModels.WorkerType.Developer)
                     {
                         Console.WriteLine("Development languages:");
-                        string devLang = Console.ReadLine();
+                        string devLang = ti.ToTitleCase(Console.ReadLine());
 
                         Console.WriteLine("Experience:");
                         string experience = Console.ReadLine();
 
                         Console.WriteLine("Level:");
-                        string level = Console.ReadLine();
+                        string level = ti.ToTitleCase(Console.ReadLine());
 
                         СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString(), devLang,
                                       experience, level);
 
                         if (ex.ValidResult == 0)
                         {
-                            Developer developer = new Developer(id, firstName, lastName, sex, appointment, date, salary,
+                            Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary,
                                                             devLang, experience, level);
-                            repository.AddWorker(developer);
+                            repository.Create(developer);
                         }
                     }
                     else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
@@ -105,8 +108,8 @@ namespace ConsoleApp1
                         СheckingValid(firstName, lastName, sex.ToString(), appointment, date, salary.ToString(), yearsInService.ToString());
                         if (ex.ValidResult == 0)
                         {
-                            OfficeWorker office = new OfficeWorker(id, firstName, lastName, sex, appointment, date, salary, yearsInService);
-                            repository.AddWorker(office);
+                            OfficeWorker office = new OfficeWorker(firstName, lastName, sex, appointment, date, salary, yearsInService);
+                            repository.Create(office);
                         }
                     }
                 }
@@ -126,29 +129,24 @@ namespace ConsoleApp1
         /// </summary>
         public void ShowWorkers()
         {
-            List<Worker> workers = repository.GetList();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Workers");
-            //Console.ForegroundColor = ConsoleColor.White;
+            IEnumerable<Worker> workers = repository.Get("Workers/*");
             viewer.ShowAllList(workers);
-            var dev = repository.DeveloperWorkers();
-            if (dev.Count() > 0)
-            {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("List of developers");
-                Console.ForegroundColor = ConsoleColor.White;
-                viewer.ShowAllList(repository.DeveloperWorkers());
-            }
-            var officeWorkers = repository.OfficeWorkers();
-            if (officeWorkers.Count() > 0)
-            {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("List of office workers");
-                Console.ForegroundColor = ConsoleColor.White;
-                viewer.ShowAllList(repository.OfficeWorkers());
-            }
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("List of developers");
+            Console.ForegroundColor = ConsoleColor.White;
+            IEnumerable<Worker> devWorkers = repository.Get("Workers/Developer");
+            viewer.ShowAllList(devWorkers);
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("List of office workers");
+            Console.ForegroundColor = ConsoleColor.White;
+            IEnumerable<Worker> officeWorkers = repository.Get("Workers/OfficeWorker");
+            viewer.ShowAllList(officeWorkers);
         }
 
         /// <summary>
@@ -158,8 +156,7 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Enter the index number:");
             int indexNumber = int.Parse(Console.ReadLine());
-            string onePerson = repository.ShowOnePerson(indexNumber);
-            Console.WriteLine(onePerson);
+            business.ShowOnePerson(indexNumber);            
         }
 
         /// <summary>
@@ -168,20 +165,18 @@ namespace ConsoleApp1
         public void SeachByAppoiintment()
         {
             Console.WriteLine("Enter an appointment: ");
-            string searchAppointment = Console.ReadLine();
-            string result = repository.SearchByAppointment(searchAppointment);
-            Console.WriteLine(result);
+            string searchAppointment = ti.ToTitleCase(Console.ReadLine());
+            business.SearchByAppointment(searchAppointment);
         }
 
         /// <summary>
         /// Counting by appointment (case 5)
         /// </summary>
-        public void SeachByName()
+        public void CountAppointment()
         {
             Console.WriteLine("Enter an appointment:");
-            string countAppointment = Console.ReadLine();
-            string countResult = repository.CountWorkers(countAppointment);
-            Console.WriteLine(countResult);
+            string countAppointment = ti.ToTitleCase(Console.ReadLine());
+            Console.WriteLine(business.CountWorkers(countAppointment));
         }
 
         /// <summary>
@@ -189,19 +184,22 @@ namespace ConsoleApp1
         /// </summary>
         public void DeleteWorker()
         {
+            Worker worker = new Developer();
             Console.WriteLine("Enter the worker's index number: ");
-            int number = int.Parse(Console.ReadLine());
-            string removeResult = repository.RemovePerson(number);
+            int index = int.Parse(Console.ReadLine());
 
-            Console.WriteLine(removeResult);
-        }
-
-        /// <summary>
-        /// Quit the program (case 7)
-        /// </summary>
-        public void QuitProgram()
-        {
-            Console.WriteLine("Quite the program.");
+            if (repository.Get("Workers/*[" + index + "]").Count() > 0)
+            {
+                foreach (var person in repository.Get("Workers/*[" + index + "]"))
+                {
+                    worker._id = person._id;
+                    repository.Delete(worker._id);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Incorrect index");
+            }
         }
 
         /// <summary>
@@ -210,9 +208,22 @@ namespace ConsoleApp1
         public void UpdateXml()
         {
             СheckingXmlValid += ex.CheckXmlExeptions;
+            Worker worker = new Developer();
 
-            Console.WriteLine("Enter id of worker you want to update:");
-            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the worker's index number: ");
+            int index = int.Parse(Console.ReadLine());
+
+            if (repository.Get("Workers/*[" + index + "]").Count() > 0)
+            {
+                foreach (var person in repository.Get("Workers/*[" + index + "]"))
+                {
+                    worker._id = person._id;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Incorrect index");
+            }
 
             Console.WriteLine("Chose element what you want to update.");
             Console.WriteLine("1 - first name\n2 - last name\n3 - sex: Male/Female \n4 - appointment\n5 - date\n6 - salary");
@@ -229,9 +240,16 @@ namespace ConsoleApp1
             СheckingXmlValid(value, numOfElement);
             if (ex.ValidResult == 0)
             {
-                xml.UpdateXml(Config._xmlPath, id, numOfElement, value);
-                repository.GetWorkersFromXml();
+                xml.UpdateXml(Config._xmlPath, worker._id, numOfElement, value);
             }
+        }
+
+        /// <summary>
+        /// Quit the program (case 7)
+        /// </summary>
+        public void QuitProgram()
+        {
+            Console.WriteLine("Quite the program.");
         }
     }
 }

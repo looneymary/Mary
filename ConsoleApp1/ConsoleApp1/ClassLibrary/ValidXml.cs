@@ -7,12 +7,12 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using ClassLibrary;
-using ClassLibrary.Models;
+using DataAccess;
+using DataAccess.Models;
 using System.ComponentModel;
 using System.IO;
 
-namespace ClassLibrary
+namespace DataAccess
 {
     public class ValidXml
     {

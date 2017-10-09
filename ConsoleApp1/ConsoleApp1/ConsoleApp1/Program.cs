@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
-using ClassLibrary;
-using ClassLibrary.Models;
+using DataAccess;
+using DataAccess.Models;
 
-namespace ConsoleApp1
+namespace WorkerViewer
 {
     class Program
     {        
@@ -23,8 +23,8 @@ namespace ConsoleApp1
                         "3. Show info about one worker \n4. Searching by appointment \n" +
                         "5. Counting by appointment \n6. Delete worker \n7. Update worker \n8. Quit the program\n\n");
 
-                try
-                {
+                //try
+                //{
                     typedEnumValue = (int)(Actions.ActionsEnum)int.Parse(Console.ReadLine());
 
                     switch (typedEnumValue)
@@ -47,7 +47,7 @@ namespace ConsoleApp1
                             break;
                         // Counting by appointment.
                         case 5:
-                            actions.SeachByName();
+                            actions.CountAppointment();
                             break;
                         // Delete worker.
                         case 6:
@@ -65,11 +65,11 @@ namespace ConsoleApp1
                             Console.WriteLine("There is no such item in main menu.");
                             break;
                     }
-                }
-                catch
-                {
-                    Console.WriteLine("Incorrect value was entered.");
-                }
+                //}
+                //catch
+                //{
+                //    Console.WriteLine("Incorrect value was entered.");
+                //}
                 Console.Write("\n\n\t\t\tReturn to main menu...");
                 Console.ReadLine();
                 Console.Clear();

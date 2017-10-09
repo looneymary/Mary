@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace ConsoleApp1
+namespace WorkerViewer
 {
     public class CheckValidExceptions : Exception
     {
@@ -51,14 +51,14 @@ namespace ConsoleApp1
                     }
                 }
             }
-            catch(CheckValidExceptions ex)
+            catch (CheckValidExceptions ex)
             {
                 Console.WriteLine(ex.Message);
                 ValidResult++;
-            }            
+            }
             finally
             {
-                if(ValidResult == 0)
+                if (ValidResult == 0)
                 {
                     Console.WriteLine("Validation was successful.");
                 }
@@ -88,7 +88,7 @@ namespace ConsoleApp1
                     case NameOfElement.LastName:
                     case NameOfElement.Sex:
                     case NameOfElement.Appointment:
-                        StringCheck(value, ((NameOfElement)numOfElement).ToString());                        
+                        StringCheck(value, ((NameOfElement)numOfElement).ToString());
                         return ValidResult;
                     case NameOfElement.Date:
                         DateCheck(value, ((NameOfElement)numOfElement).ToString());
@@ -135,22 +135,22 @@ namespace ConsoleApp1
         }
 
 
-    /// <summary>
-    /// Validation of string values
-    /// </summary>
-    /// <param name="var">The value what need to valid</param>
-    /// <param name="name">The name of field</param>
-    public void StringCheck(string var, string name)
+        /// <summary>
+        /// Validation of string values
+        /// </summary>
+        /// <param name="var">The value what need to valid</param>
+        /// <param name="name">The name of field</param>
+        public void StringCheck(string var, string name)
         {
             if (String.IsNullOrEmpty(var))
             {
-               string message = "The field \""+ name +"\" wasn't filled. Please, correct it.";
-               throw new CheckValidExceptions(message);
+                string message = "The field \"" + name + "\" wasn't filled. Please, correct it.";
+                throw new CheckValidExceptions(message);
             }
 
             Regex regForText = new Regex(@"[А-Яа-яA-Za-z-]");
             MatchCollection mc = regForText.Matches(var);
-            if(mc.Count == 0)
+            if (mc.Count == 0)
             {
                 string message = "The field \"" + name + "\" conteins invalid characters. " + var + " was introdused.";
                 throw new CheckValidExceptions(message);

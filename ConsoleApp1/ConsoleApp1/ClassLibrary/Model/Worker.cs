@@ -10,14 +10,14 @@ using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace ClassLibrary.Models
+namespace DataAccess.Models
 {
     [Serializable]
     [XmlInclude(typeof(Developer))]
     [XmlInclude(typeof(OfficeWorker))]
     public abstract class Worker
     {
-        public Int32 _id;
+        public Guid _id;
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -33,9 +33,9 @@ namespace ClassLibrary.Models
         {
         }
 
-        public Worker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, int salary)
+        public Worker(string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, int salary)
         {
-            this._id = id;
+            this._id = Guid.NewGuid();
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Sex = sex;
@@ -50,7 +50,7 @@ namespace ClassLibrary.Models
         /// <returns>The string with properties</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} {6}", _id, FirstName, LastName, Sex, Appointment, Date, Salary);
+            return String.Format("{0} {1} {2} {3} {4} {5} ", FirstName, LastName, Sex, Appointment, Date, Salary);
         }
     }
 }

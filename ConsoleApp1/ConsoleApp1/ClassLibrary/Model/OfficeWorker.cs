@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary.Models
+namespace DataAccess.Models
 {
     [Serializable]
     public class OfficeWorker : Worker
@@ -15,10 +15,10 @@ namespace ClassLibrary.Models
         {
         }
 
-        public OfficeWorker(int id, string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, 
-                            string date, int salary, int yearsInService) : base(id, firstName, lastName, sex, appointment, date, salary)
+        public OfficeWorker(string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, 
+                            string date, int salary, int yearsInService) : base(firstName, lastName, sex, appointment, date, salary)
         {
-            base._id = id;
+            base._id = Guid.NewGuid();
             base.FirstName = firstName;
             base.LastName = lastName;
             base.Sex = sex;
@@ -34,7 +34,7 @@ namespace ClassLibrary.Models
         /// <returns>The string, contains properties of worker</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} {6} {7}", _id, FirstName, LastName, Sex, Appointment, Date, Salary, YearsInService);
+            return String.Format("{0} {1} {2} {3} {4} {5} {6} ", FirstName, LastName, Sex, Appointment, Date, Salary, YearsInService);
         }
     }
 }

@@ -3,8 +3,14 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
->
-  <xsd:element name="Repository">
+>  
+  <xsd:simpleType name="GUID">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}"/>
+    </xsd:restriction>
+  </xsd:simpleType> 
+      
+  <xsd:element name="XmlRepository">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element name="Workers">
@@ -13,7 +19,7 @@
               <xsd:element maxOccurs="unbounded" name="Developer">
                 <xsd:complexType>
                   <xsd:sequence>
-                    <xsd:element name ="_id" type ="xs:int" />
+                    <xsd:element name ="_id" type ="GUID" />
                     <xsd:element name ="FirstName" type ="xs:string" />
                     <xsd:element name ="LastName" type ="xs:string" />
                     <xsd:element name ="Sex" type ="xs:string" />
@@ -29,7 +35,7 @@
               <xsd:element maxOccurs="unbounded" name="OfficeWorker">
                 <xsd:complexType>
                   <xsd:sequence>
-                    <xsd:element name ="_id" type ="xs:int" />
+                    <xsd:element name ="_id" type ="GUID" />
                     <xsd:element name ="FirstName" type ="xs:string" />
                     <xsd:element name ="LastName" type ="xs:string" />              
                     <xsd:element name ="Sex" type ="xs:string" />
