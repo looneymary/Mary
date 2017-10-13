@@ -71,7 +71,7 @@ namespace WorkerViewer
         }
 
         /// <summary>
-        /// 
+        /// Valid xml-elements and count exceptions
         /// </summary>
         /// <param name="value">New value</param>
         /// <param name="numOfElement">Number of updating element in enum NameOfElement</param>
@@ -133,7 +133,6 @@ namespace WorkerViewer
 
             return ValidResult;
         }
-
 
         /// <summary>
         /// Validation of string values

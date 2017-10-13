@@ -156,13 +156,53 @@ namespace DataAccess
         /// <param name="worker">object "Worker" for update</param>        
         public void Update(Worker worker)
         {
+            Developer developer = new Developer();
+            OfficeWorker office = new OfficeWorker();
 
-        }    
+            StreamReader streamReader = new StreamReader(Config._xmlPath);
+            XDocument xmlDocument = XDocument.Load(streamReader);
+            var repositoryArray = xmlDocument.Element("XmlRepository");
+            var workers = repositoryArray.Element("Workers").Elements();
+
+            foreach(var xNode in workers)
+            {
+                if (Guid.Parse(xNode.Element("_id").Value) == worker._id)
+                {
+                    if (IsDeveloper(worker) == true)
+                    {
+                        developer = (Developer)worker;
+                        xNode.SetElementValue("FirstName", developer.FirstName);
+                        xNode.SetElementValue("LastName", developer.LastName);
+                        xNode.SetElementValue("Sex", developer.Sex.ToString());
+                        xNode.SetElementValue("Appointment", developer.Appointment);
+                        xNode.SetElementValue("Date", developer.Date);
+                        xNode.SetElementValue("Salary", developer.Salary.ToString());
+                        xNode.SetElementValue("DeveloperLanguage", developer.DevLang);
+                        xNode.SetElementValue("Experience", developer.Experience.ToString());
+                        xNode.SetElementValue("Level", developer.Level);
+                    }
+                    else
+                    {
+                        office = (OfficeWorker)worker;
+                        xNode.SetElementValue("FirstName", office.FirstName);
+                        xNode.SetElementValue("LastName", office.LastName);
+                        xNode.SetElementValue("Sex", office.Sex.ToString());
+                        xNode.SetElementValue("Appointment", office.Appointment);
+                        xNode.SetElementValue("Date", office.Date);
+                        xNode.SetElementValue("Salary", office.Salary.ToString());
+                        xNode.SetElementValue("YearsInService", office.YearsInService.ToString());
+                    }
+                    streamReader.Close();
+                    repositoryArray.Save(Config._xmlPath);
+                    break;
+                }
+            }
+        }
 
         /// <summary>
-        /// Find anf remove worker by id from xml
-        /// </summary>
-        /// <param name="id">Worker's id</param>
+            /// Find anf remove worker by id from xml
+            /// </summary>
+            /// <param name="id">Worker's id</param>
         public void Delete(Guid id)
         {            
             XElement xDoc = XElement.Load(Config._xmlPath);
@@ -176,7 +216,7 @@ namespace DataAccess
                     Console.WriteLine("Removing was sucсessful");
                 }
             }
-        }        
+        }
 
         //ВЫНЕСТИ В БИЗНЕС
         /// <summary>

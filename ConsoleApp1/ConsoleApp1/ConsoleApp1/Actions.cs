@@ -9,6 +9,10 @@ using DataAccess;
 using DataAccess.Models;
 using System.Globalization;
 using BusinessLayer;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace WorkerViewer
 {
@@ -25,6 +29,7 @@ namespace WorkerViewer
         CheckValidExceptions ex = new CheckValidExceptions();
         WorkWithXml xml = new WorkWithXml();
         BusinessLayerClass business = new BusinessLayerClass();
+        ValidXml valid = new ValidXml();
 
         TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
@@ -33,6 +38,12 @@ namespace WorkerViewer
         }
 
         public enum ActionsEnum { CreateWorker = 1, ShowWorkers = 2, ShowOneWorker = 3, SeachByAppoiintment = 4, SeachByName = 5, DeleteWorker = 6, QuitProgram = 7 };
+
+        public enum ElementsOfXml
+        {
+            FirstName = 1, LastName = 2, Sex = 3, Appointment = 4, Date = 5, Salary = 6,
+            DeveloperLanguage = 7, Experience = 8, Level = 9, YearsInService = 10
+        }
 
         /// <summary>
         /// Add info about worker (case 1)
@@ -54,15 +65,13 @@ namespace WorkerViewer
             {
                 workerType = (EnumsForModels.WorkerType)workerEnum;
 
-                Console.WriteLine("First name:");
-                
+                Console.WriteLine("First name:");                
                 string firstName = ti.ToTitleCase(Console.ReadLine());
 
                 Console.WriteLine("Last name:");
                 string lastName = ti.ToTitleCase(Console.ReadLine());
 
                 Console.WriteLine("Sex: m - 1/ f - 2.");
-
                 int sexType = int.Parse(Console.ReadLine());
 
                 bool isSexTypeDefined = Enum.IsDefined(typeof(EnumsForModels.TypeOfSex), sexType);
@@ -207,41 +216,127 @@ namespace WorkerViewer
         /// </summary>
         public void UpdateXml()
         {
-            СheckingXmlValid += ex.CheckXmlExeptions;
-            Worker worker = new Developer();
+            Developer dev = new Developer();
+            OfficeWorker office = new OfficeWorker();
+
+            string newValue;
 
             Console.WriteLine("Enter the worker's index number: ");
             int index = int.Parse(Console.ReadLine());
+            
+            СheckingXmlValid += ex.CheckXmlExeptions;
+            
+            XElement xDoc = XElement.Load(Config._xmlPath);
 
-            if (repository.Get("Workers/*[" + index + "]").Count() > 0)
+            if (!valid.Validate(Config._xmlPath, Config._xsdPath))
             {
-                foreach (var person in repository.Get("Workers/*[" + index + "]"))
+                IEnumerable<Worker> workers = repository.Get("Workers/*[" + index + "]");
+                if (workers.Count() == 1)
                 {
-                    worker._id = person._id;
+                    foreach (var worker in workers)
+                    {
+                        Console.WriteLine("Enter new value or press \"Enter\" to continue;");
+                        
+                        if (repository.IsDeveloper(worker))
+                        {
+                            dev = (Developer)worker;
+                            office = (OfficeWorker)worker;
+                            for (int i = 0; i < 10; i++)
+                            {
+                                if (i == 0) continue;
+
+                                Console.WriteLine(((ElementsOfXml)i).ToString());
+                                if (i == 3) Console.WriteLine("Male/Female");
+                                newValue = ti.ToTitleCase(Console.ReadLine());
+                                if (newValue.Length > 0)
+                                {
+                                    СheckingXmlValid(newValue, i);
+                                    if (ex.ValidResult == 0)
+                                    {
+                                        if (i == 1) dev.FirstName = newValue;
+                                        if (i == 2) dev.LastName = newValue;
+                                        if (i == 4) dev.Appointment = newValue;
+                                        if (i == 5) dev.Date = newValue;
+                                        if (i == 6) dev.Salary = int.Parse(newValue);
+                                        if (i == 7) dev.DevLang = newValue;
+                                        if (i == 6) dev.Experience = newValue;
+                                        if (i == 7) dev.Level = newValue;
+                                        if (i == 3)
+                                        {
+                                            if (newValue == "Male")
+                                            {
+                                                office.Sex = (EnumsForModels.TypeOfSex)1;
+                                            }
+                                            else if (i == 3 && newValue == "Female")
+                                            {
+                                                office.Sex = (EnumsForModels.TypeOfSex)2;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Incorrect value");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            repository.Update(dev);
+                        }                    
+                        else
+                        {
+                            office = (OfficeWorker)worker;
+                            for (int i = 0; i < 8; i++)
+                            {
+                                if (i == 0) continue;
+                                if (i == 7) i = 10;
+                                
+                                Console.WriteLine(((ElementsOfXml)i).ToString());
+                                if (i == 3) Console.WriteLine("Male/Female");
+                                newValue = ti.ToTitleCase(Console.ReadLine());
+                                if (newValue.Length > 0)
+                                {
+                                    
+                                    СheckingXmlValid(newValue, i);
+                                    if (ex.ValidResult == 0)
+                                    {
+                                        if (i == 1) office.FirstName = newValue;
+                                        if (i == 2) office.LastName = newValue;                                        
+                                        if (i == 4) office.Appointment = newValue;
+                                        if (i == 5) office.Date = newValue;
+                                        if (i == 6) office.Salary = int.Parse(newValue);
+                                        if (i == 7) office.YearsInService = int.Parse(newValue);
+                                        if (i == 3)
+                                        {
+                                            if (newValue == "Male")
+                                            {
+                                                office.Sex = (EnumsForModels.TypeOfSex)1;
+                                            }
+                                            else if (i == 3 && newValue == "Female")
+                                            {
+                                                office.Sex = (EnumsForModels.TypeOfSex)2;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Incorrect value");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }                                
+                            }
+                            repository.Update(office);
+                        }
+                    }
                 }
-            }
-            else
-            {
-                Console.WriteLine("Incorrect index");
-            }
-
-            Console.WriteLine("Chose element what you want to update.");
-            Console.WriteLine("1 - first name\n2 - last name\n3 - sex: Male/Female \n4 - appointment\n5 - date\n6 - salary");
-            Console.WriteLine();
-            Console.WriteLine("For developers:\n7 - developer language\n8 - experiience\n9 - level");
-            Console.WriteLine();
-            Console.WriteLine("For office workers:\n10 - years in service");
-            int numOfElement = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter new value:");
-            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
-            string value = ti.ToTitleCase(Console.ReadLine());
-
-            СheckingXmlValid(value, numOfElement);
-            if (ex.ValidResult == 0)
-            {
-                xml.UpdateXml(Config._xmlPath, worker._id, numOfElement, value);
-            }
+            }            
         }
 
         /// <summary>

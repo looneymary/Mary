@@ -15,8 +15,8 @@ namespace DataAccess
 {
     public class WorkWithXml
     {
-        public enum ElementsOfXml { FirstName = 1, LastName = 2, Sex = 3, Appointment = 4, Date = 5, Salary = 6,
-                                    DeveloperLanguage = 7, Experience = 8, Level = 9, YearsInService = 10 } 
+        public enum ElementsOfXml { FirstName = 0, LastName = 1, Sex = 2, Appointment = 3, Date = 4, Salary = 5,
+                                    DeveloperLanguage = 6, Experience = 7, Level = 8, YearsInService = 9 } 
 
         ValidXml valid = new ValidXml();
 
@@ -93,34 +93,6 @@ namespace DataAccess
                     return null;
                 }
             }
-        }        
-
-        /// <summary>
-        /// Update xnl-document
-        /// </summary>
-        /// <param name="fileName">The path of xml-document </param>
-        /// <returns>Result of updating</returns>
-        public bool UpdateXml(string fileName, Guid id, int numOfElement, string value)
-        {
-            ElementsOfXml elementName = (ElementsOfXml)numOfElement;
-            
-            XElement xDoc = XElement.Load(fileName);
-
-            if (!valid.Validate(Config._xmlPath, Config._xsdPath))
-            {
-                IEnumerable<XElement> elements = xDoc.Element("Workers").Elements();
-
-                foreach (XElement xNode in elements)
-                {
-                    if (Guid.Parse(xNode.Element("_id").Value) == id)
-                    {
-                        xNode.Element(elementName.ToString()).Value = value;
-                        xDoc.Save(fileName);
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        }                
     }
 }
