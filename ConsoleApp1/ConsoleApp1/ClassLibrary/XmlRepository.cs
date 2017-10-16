@@ -20,13 +20,13 @@ namespace DataAccess
         [XmlArrayItem("OfficeWorker", typeof(OfficeWorker))]
         public List<Worker> People { get; set; }
 
-        private WorkWithXml xml;
+        private WorkWithXml _xml;
         ValidXml valid = new ValidXml();
 
         public XmlRepository()
         {
             People = new List<Worker>();
-            xml = new WorkWithXml();
+            this._xml = new WorkWithXml();
         }
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace DataAccess
         /// </summary>
         /// <param name="filter">Filter for search</param>
         /// <returns>List of workers what found</returns>
-        public IEnumerable<Worker> Get(string filter)
+        public IEnumerable<Worker> Get(string filter, string xmlPath, string xsdPath)
         {
             List<Worker> Workers = new List<Worker>();
             XmlDocument doc = new XmlDocument();
-            doc.Load(Config._xmlPath);
+            doc.Load(xmlPath);
 
-            if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+            if (!valid.Validate(xmlPath, xsdPath))
             {
                 XmlElement _root = doc.DocumentElement;
 
@@ -95,7 +95,7 @@ namespace DataAccess
                     }
 
                 }
-            } 
+            }
             return Workers;
         }
 
@@ -103,98 +103,104 @@ namespace DataAccess
         /// Add new worker in xml-document
         /// </summary>
         /// <param name="worker">Object that need to add in xml-document</param>
-        public void Create(Worker worker)
+        public void Create(Worker worker, string xmlPath, string xsdPath)
         {
             XmlRepository repository = new XmlRepository();
             Developer developer = new Developer();
             OfficeWorker office = new OfficeWorker();
 
-            var streamReader = new StreamReader(Config._xmlPath);
+            var streamReader = new StreamReader(xmlPath);
             XDocument xmlDocument = XDocument.Load(streamReader);
-            var repositoryArray = xmlDocument.Element("XmlRepository");
-            var workers = repositoryArray.Element("Workers");
-
-            XNamespace ns = "http://www.w3.org/2001/XMLSchema-instance";
-            if (repository.IsDeveloper(worker) == true)
+            if(!valid.Validate(xmlPath, xsdPath))
             {
-                developer = (Developer)worker;
-                workers.AddFirst(new XElement("Developer",
-                    new XElement("_id", "{"+ developer._id + "}"),
-                    new XElement("FirstName", developer.FirstName),
-                    new XElement("LastName", developer.LastName),
-                    new XElement("Sex", developer.Sex),
-                    new XElement("Appointment", developer.Appointment),
-                    new XElement("Date", developer.Date),
-                    new XElement("Salary", developer.Salary),
-                    new XElement("DeveloperLanguage", developer.DevLang),
-                    new XElement("Experience", developer.Experience),
-                    new XElement("Level", developer.Level)
-                ));
-            }
-            else
-            {
-                office = (OfficeWorker)worker;
-                workers.Add(new XElement("OfficeWorker",
-                    new XElement("_id", "{" + office._id + "}"),
-                    new XElement("FirstName", office.FirstName),
-                    new XElement("LastName", office.LastName),
-                    new XElement("Sex", office.Sex),
-                    new XElement("Appointment", office.Appointment),
-                    new XElement("Date", office.Date),
-                    new XElement("Salary", office.Salary),
-                    new XElement("YearsInService", office.YearsInService)
-                ));
-            }
+                var repositoryArray = xmlDocument.Element("XmlRepository");
+                var workers = repositoryArray.Element("Workers");
 
-            streamReader.Close();
-            repositoryArray.Save(Config._xmlPath);
+                XNamespace ns = "http://www.w3.org/2001/XMLSchema-instance";
+                if (worker is Developer == true)
+                {
+                    developer = (Developer)worker;
+                    workers.AddFirst(new XElement("Developer",
+                        new XElement("_id", "{" + developer._id + "}"),
+                        new XElement("FirstName", developer.FirstName),
+                        new XElement("LastName", developer.LastName),
+                        new XElement("Sex", developer.Sex),
+                        new XElement("Appointment", developer.Appointment),
+                        new XElement("Date", developer.Date),
+                        new XElement("Salary", developer.Salary),
+                        new XElement("DeveloperLanguage", developer.DevLang),
+                        new XElement("Experience", developer.Experience),
+                        new XElement("Level", developer.Level)
+                    ));
+                }
+                else
+                {
+                    office = (OfficeWorker)worker;
+                    workers.Add(new XElement("OfficeWorker",
+                        new XElement("_id", "{" + office._id + "}"),
+                        new XElement("FirstName", office.FirstName),
+                        new XElement("LastName", office.LastName),
+                        new XElement("Sex", office.Sex),
+                        new XElement("Appointment", office.Appointment),
+                        new XElement("Date", office.Date),
+                        new XElement("Salary", office.Salary),
+                        new XElement("YearsInService", office.YearsInService)
+                    ));
+                }
+
+                streamReader.Close();
+                repositoryArray.Save(xmlPath);
+            }
         }
 
         /// <summary>
         /// Update element in xml-document
         /// </summary>
         /// <param name="worker">object "Worker" for update</param>        
-        public void Update(Worker worker)
+        public void Update(Worker worker, string xmlPath, string xsdPath)
         {
             Developer developer = new Developer();
             OfficeWorker office = new OfficeWorker();
 
-            StreamReader streamReader = new StreamReader(Config._xmlPath);
+            StreamReader streamReader = new StreamReader(xmlPath);
             XDocument xmlDocument = XDocument.Load(streamReader);
-            var repositoryArray = xmlDocument.Element("XmlRepository");
-            var workers = repositoryArray.Element("Workers").Elements();
-
-            foreach(var xNode in workers)
+            if(!valid.Validate(xmlPath, xsdPath))
             {
-                if (Guid.Parse(xNode.Element("_id").Value) == worker._id)
+                var repositoryArray = xmlDocument.Element("XmlRepository");
+                var workers = repositoryArray.Element("Workers").Elements();
+
+                foreach (var xNode in workers)
                 {
-                    if (IsDeveloper(worker) == true)
+                    if (Guid.Parse(xNode.Element("_id").Value) == worker._id)
                     {
-                        developer = (Developer)worker;
-                        xNode.SetElementValue("FirstName", developer.FirstName);
-                        xNode.SetElementValue("LastName", developer.LastName);
-                        xNode.SetElementValue("Sex", developer.Sex.ToString());
-                        xNode.SetElementValue("Appointment", developer.Appointment);
-                        xNode.SetElementValue("Date", developer.Date);
-                        xNode.SetElementValue("Salary", developer.Salary.ToString());
-                        xNode.SetElementValue("DeveloperLanguage", developer.DevLang);
-                        xNode.SetElementValue("Experience", developer.Experience.ToString());
-                        xNode.SetElementValue("Level", developer.Level);
+                        if (worker is Developer == true)
+                        {
+                            developer = (Developer)worker;
+                            xNode.SetElementValue("FirstName", developer.FirstName);
+                            xNode.SetElementValue("LastName", developer.LastName);
+                            xNode.SetElementValue("Sex", developer.Sex.ToString());
+                            xNode.SetElementValue("Appointment", developer.Appointment);
+                            xNode.SetElementValue("Date", developer.Date);
+                            xNode.SetElementValue("Salary", developer.Salary.ToString());
+                            xNode.SetElementValue("DeveloperLanguage", developer.DevLang);
+                            xNode.SetElementValue("Experience", developer.Experience.ToString());
+                            xNode.SetElementValue("Level", developer.Level);
+                        }
+                        else
+                        {
+                            office = (OfficeWorker)worker;
+                            xNode.SetElementValue("FirstName", office.FirstName);
+                            xNode.SetElementValue("LastName", office.LastName);
+                            xNode.SetElementValue("Sex", office.Sex.ToString());
+                            xNode.SetElementValue("Appointment", office.Appointment);
+                            xNode.SetElementValue("Date", office.Date);
+                            xNode.SetElementValue("Salary", office.Salary.ToString());
+                            xNode.SetElementValue("YearsInService", office.YearsInService.ToString());
+                        }
+                        streamReader.Close();
+                        repositoryArray.Save(xmlPath);
+                        break;
                     }
-                    else
-                    {
-                        office = (OfficeWorker)worker;
-                        xNode.SetElementValue("FirstName", office.FirstName);
-                        xNode.SetElementValue("LastName", office.LastName);
-                        xNode.SetElementValue("Sex", office.Sex.ToString());
-                        xNode.SetElementValue("Appointment", office.Appointment);
-                        xNode.SetElementValue("Date", office.Date);
-                        xNode.SetElementValue("Salary", office.Salary.ToString());
-                        xNode.SetElementValue("YearsInService", office.YearsInService.ToString());
-                    }
-                    streamReader.Close();
-                    repositoryArray.Save(Config._xmlPath);
-                    break;
                 }
             }
         }
@@ -203,31 +209,22 @@ namespace DataAccess
             /// Find anf remove worker by id from xml
             /// </summary>
             /// <param name="id">Worker's id</param>
-        public void Delete(Guid id)
+        public void Delete(Guid id, string xmlPath, string xsdPath)
         {            
-            XElement xDoc = XElement.Load(Config._xmlPath);
-            IEnumerable<XElement> elements = xDoc.Element("Workers").Elements().Elements("_id");
-            foreach (XElement xNode in elements)
+            XElement xDoc = XElement.Load(xmlPath);
+            if(!valid.Validate(xmlPath, xsdPath))
             {
-                if (Guid.Parse(xNode.Value) == id)
+                IEnumerable<XElement> elements = xDoc.Element("Workers").Elements().Elements("_id");
+                foreach (XElement xNode in elements)
                 {
-                    xNode.Parent.Remove();
-                    xDoc.Save(Config._xmlPath);
-                    Console.WriteLine("Removing was sucсessful");
+                    if (Guid.Parse(xNode.Value) == id)
+                    {
+                        xNode.Parent.Remove();
+                        xDoc.Save(xmlPath);
+                        Console.WriteLine("Removing was sucсessful");
+                    }
                 }
-            }
-        }
-
-        //ВЫНЕСТИ В БИЗНЕС
-        /// <summary>
-        /// Check whether the object is a type "Developer"
-        /// </summary>
-        /// <param name="obj">Object for check</param>
-        /// <returns>Boolean value</returns>
-        public bool IsDeveloper(Object obj)
-        {
-            bool val = obj is Developer;
-            return val;
+            }            
         }
     }
 }

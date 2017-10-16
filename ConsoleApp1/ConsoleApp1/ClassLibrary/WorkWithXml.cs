@@ -24,11 +24,11 @@ namespace DataAccess
         /// Read from xml-document and put data in the string
         /// </summary>
         /// <returns>The string with all strings from the xml-document</returns>
-        public string ReadFromXmlInOneString()
+        public string ReadFromXmlInOneString(string xmlPath, string xsdPath)
         {
-            using (StreamReader streamReader = new StreamReader(Config._xmlPath))
+            using (StreamReader streamReader = new StreamReader(xmlPath))
             {
-                if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+                if (!valid.Validate(xmlPath, xsdPath))
                 {
                     String line = streamReader.ReadToEnd();
                     return line;
@@ -44,9 +44,9 @@ namespace DataAccess
         /// Read from xml-documet and add info in List<Worker>
         /// </summary>
         /// <param name="people">List of workers</param>
-        public List<Worker> ReadFromXml()
+        public List<Worker> ReadFromXml(string xmlPath, string xsdPath)
         {
-            var deserializeXml = DeserializeXml(Config._xmlPath);
+            var deserializeXml = DeserializeXml(xmlPath, xsdPath);
             if (deserializeXml != null)
             {
                 return deserializeXml.People;
@@ -78,12 +78,12 @@ namespace DataAccess
         /// </summary>
         /// <param name="fileName">Path to xmk-document</param>
         /// <returns></returns>
-        public XmlRepository DeserializeXml(string fileName)
+        public XmlRepository DeserializeXml(string xmlPath, string xsdPath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(XmlRepository));
-            using (StreamReader sr = new StreamReader(fileName))
+            using (StreamReader sr = new StreamReader(xmlPath))
             {
-                if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+                if (!valid.Validate(xmlPath, xsdPath))
                 {
                     return (XmlRepository)serializer.Deserialize(sr);
                 }

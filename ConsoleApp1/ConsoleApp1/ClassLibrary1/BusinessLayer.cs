@@ -8,13 +8,13 @@ using DataAccess.Models;
 
 namespace BusinessLayer
 {
-    public class BusinessLayerClass
+    public class BusinessLayerMethods
     {
-        private XmlRepository repository;
+        private IRepository _repository;
 
-        public BusinessLayerClass()
+        public BusinessLayerMethods(IRepository _repository)
         {
-            repository = new XmlRepository();
+            this._repository = new XmlRepository();
         }
 
         /// <summary>
@@ -22,9 +22,9 @@ namespace BusinessLayer
         /// </summary>
         /// <param name="indexNumber">Parameter for search</param>
         /// <returns>Information of selected worker in string format</returns>
-        public virtual void ShowOnePerson(int indexNumber)
+        public virtual void ShowOnePerson(int indexNumber, string xmlPath, string xsdPath)
         {
-            foreach (var person in repository.Get("Workers/*["+ indexNumber + "]"))
+            foreach (var person in this._repository.Get("Workers/*["+ indexNumber + "]", xmlPath, xsdPath))
             {
                 Console.WriteLine(person);
             }
@@ -34,9 +34,9 @@ namespace BusinessLayer
         /// Get all workers with selected appointment
         /// </summary>
         /// <param name="searchAppointment">Parameter for search</param>
-        public virtual void SearchByAppointment(string searchAppointment)
+        public virtual void SearchByAppointment(string searchAppointment, string xmlPath, string xsdPath)
         {
-            IEnumerable<Worker> selectPeople = repository.Get("Workers/*[Appointment = '" + searchAppointment + "']");
+            IEnumerable<Worker> selectPeople = this._repository.Get("Workers/*[Appointment = '" + searchAppointment + "']", xmlPath, xsdPath);
 
             if (selectPeople.Count() > 0)
             {
@@ -55,9 +55,9 @@ namespace BusinessLayer
         /// Get all workers with selected name
         /// </summary>
         /// <param name="searchingName">Parameter for search</param>
-        public void SearchByName(string searchingName)
+        public void SearchByName(string searchingName, string xmlPath, string xsdPath)
         {
-            IEnumerable<Worker> searchResult = repository.Get("Workers/*[Appointment = '" + searchingName + "']");
+            IEnumerable<Worker> searchResult = this._repository.Get("Workers/*[Appointment = '" + searchingName + "']", xmlPath, xsdPath);
 
             if (searchResult.Count() > 0)
             {
@@ -77,12 +77,23 @@ namespace BusinessLayer
         /// </summary>
         /// <param name="countAppointment">Parameter for count</param>
         /// <returns>List of appointments and employees' first name and last name holding these positions</returns>
-        public string CountWorkers(string countAppointment)
+        public string CountWorkers(string countAppointment, string xmlPath, string xsdPath)
         {
-            IEnumerable<Worker> workers = repository.Get("Workers/*[Appointment = '" + countAppointment + "']");
+            IEnumerable<Worker> workers = this._repository.Get("Workers/*[Appointment = '" + countAppointment + "']", xmlPath, xsdPath);
 
             string result = string.Format("{0} : {1}", countAppointment, workers.Count());
             return result;
+        }
+
+        /// <summary>
+        /// Check whether the object is a type "Developer"
+        /// </summary>
+        /// <param name="obj">Object for check</param>
+        /// <returns>Boolean value</returns>
+        public bool IsDeveloper(Object obj)
+        {
+            bool val = obj is Developer;
+            return val;
         }
     }
 }

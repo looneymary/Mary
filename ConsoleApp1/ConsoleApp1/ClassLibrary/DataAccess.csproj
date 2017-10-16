@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
     <Compile Include="EnumsForModels.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Model\Developer.cs" />

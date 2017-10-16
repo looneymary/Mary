@@ -18,31 +18,33 @@ namespace WorkerViewer
 {
     class Actions
     {
-        public delegate int ValidValuesDelegate(params string[] parametres);
-        public static event ValidValuesDelegate СheckingValid;
-
-        public delegate int ValidXmlValuesDelegate(string value, int i);
-        public static event ValidXmlValuesDelegate СheckingXmlValid;
-
-        XmlRepository repository = new XmlRepository();
-        Viewer viewer = new Viewer();
-        CheckValidExceptions ex = new CheckValidExceptions();
-        WorkWithXml xml = new WorkWithXml();
-        BusinessLayerClass business = new BusinessLayerClass();
-        ValidXml valid = new ValidXml();
-
-        TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
-
-        public Actions()
-        {
-        }
-
         public enum ActionsEnum { CreateWorker = 1, ShowWorkers = 2, ShowOneWorker = 3, SeachByAppoiintment = 4, SeachByName = 5, DeleteWorker = 6, QuitProgram = 7 };
 
         public enum ElementsOfXml
         {
             FirstName = 1, LastName = 2, Sex = 3, Appointment = 4, Date = 5, Salary = 6,
             DeveloperLanguage = 7, Experience = 8, Level = 9, YearsInService = 10
+        }
+
+        public delegate int ValidValuesDelegate(params string[] parametres);
+        public static event ValidValuesDelegate СheckingValid;
+
+        public delegate int ValidXmlValuesDelegate(string value, int i);
+        public static event ValidXmlValuesDelegate СheckingXmlValid;
+
+        private IRepository _repository;
+        Viewer viewer = new Viewer();
+        CheckValidExceptions ex = new CheckValidExceptions();
+        WorkWithXml xml = new WorkWithXml();
+        BusinessLayerMethods business;
+        ValidXml valid = new ValidXml();
+
+        TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+
+        public Actions()
+        {
+            this._repository = new XmlRepository();
+            business = new BusinessLayerMethods(_repository);
         }
 
         /// <summary>
@@ -106,7 +108,7 @@ namespace WorkerViewer
                         {
                             Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary,
                                                             devLang, experience, level);
-                            repository.Create(developer);
+                            this._repository.Create(developer, Config._xmlPath, Config._xsdPath);
                         }
                     }
                     else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
@@ -118,7 +120,7 @@ namespace WorkerViewer
                         if (ex.ValidResult == 0)
                         {
                             OfficeWorker office = new OfficeWorker(firstName, lastName, sex, appointment, date, salary, yearsInService);
-                            repository.Create(office);
+                            this._repository.Create(office, Config._xmlPath, Config._xsdPath);
                         }
                     }
                 }
@@ -140,21 +142,21 @@ namespace WorkerViewer
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Workers");
-            IEnumerable<Worker> workers = repository.Get("Workers/*");
+            IEnumerable<Worker> workers = this._repository.Get("Workers/*", Config._xmlPath, Config._xsdPath);
             viewer.ShowAllList(workers);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("List of developers");
             Console.ForegroundColor = ConsoleColor.White;
-            IEnumerable<Worker> devWorkers = repository.Get("Workers/Developer");
+            IEnumerable<Worker> devWorkers = this._repository.Get("Workers/Developer", Config._xmlPath, Config._xsdPath);
             viewer.ShowAllList(devWorkers);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("List of office workers");
             Console.ForegroundColor = ConsoleColor.White;
-            IEnumerable<Worker> officeWorkers = repository.Get("Workers/OfficeWorker");
+            IEnumerable<Worker> officeWorkers = this._repository.Get("Workers/OfficeWorker", Config._xmlPath, Config._xsdPath);
             viewer.ShowAllList(officeWorkers);
         }
 
@@ -165,7 +167,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter the index number:");
             int indexNumber = int.Parse(Console.ReadLine());
-            business.ShowOnePerson(indexNumber);            
+            business.ShowOnePerson(indexNumber, Config._xmlPath, Config._xsdPath);            
         }
 
         /// <summary>
@@ -175,7 +177,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter an appointment: ");
             string searchAppointment = ti.ToTitleCase(Console.ReadLine());
-            business.SearchByAppointment(searchAppointment);
+            business.SearchByAppointment(searchAppointment, Config._xmlPath, Config._xsdPath);
         }
 
         /// <summary>
@@ -185,7 +187,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter an appointment:");
             string countAppointment = ti.ToTitleCase(Console.ReadLine());
-            Console.WriteLine(business.CountWorkers(countAppointment));
+            Console.WriteLine(business.CountWorkers(countAppointment, Config._xmlPath, Config._xsdPath));
         }
 
         /// <summary>
@@ -197,12 +199,12 @@ namespace WorkerViewer
             Console.WriteLine("Enter the worker's index number: ");
             int index = int.Parse(Console.ReadLine());
 
-            if (repository.Get("Workers/*[" + index + "]").Count() > 0)
+            if (this._repository.Get("Workers/*[" + index + "]", Config._xmlPath, Config._xmlPath).Count() > 0)
             {
-                foreach (var person in repository.Get("Workers/*[" + index + "]"))
+                foreach (var person in this._repository.Get("Workers/*[" + index + "]", Config._xmlPath, Config._xmlPath))
                 {
                     worker._id = person._id;
-                    repository.Delete(worker._id);
+                    this._repository.Delete(worker._id, Config._xmlPath, Config._xsdPath);
                 }
             }
             else
@@ -226,114 +228,109 @@ namespace WorkerViewer
             
             СheckingXmlValid += ex.CheckXmlExeptions;
             
-            XElement xDoc = XElement.Load(Config._xmlPath);
-
-            if (!valid.Validate(Config._xmlPath, Config._xsdPath))
+            IEnumerable<Worker> workers = this._repository.Get("Workers/*[" + index + "]", Config._xmlPath, Config._xsdPath);
+            if (workers.Count() == 1)
             {
-                IEnumerable<Worker> workers = repository.Get("Workers/*[" + index + "]");
-                if (workers.Count() == 1)
+                foreach (var worker in workers)
                 {
-                    foreach (var worker in workers)
-                    {
-                        Console.WriteLine("Enter new value or press \"Enter\" to continue;");
+                    Console.WriteLine("Enter new value or press \"Enter\" to continue;");
                         
-                        if (repository.IsDeveloper(worker))
+                    if (business.IsDeveloper(worker))
+                    {
+                        dev = (Developer)worker;
+                        office = (OfficeWorker)worker;
+                        for (int i = 0; i < 10; i++)
                         {
-                            dev = (Developer)worker;
-                            office = (OfficeWorker)worker;
-                            for (int i = 0; i < 10; i++)
-                            {
-                                if (i == 0) continue;
+                            if (i == 0) continue;
 
-                                Console.WriteLine(((ElementsOfXml)i).ToString());
-                                if (i == 3) Console.WriteLine("Male/Female");
-                                newValue = ti.ToTitleCase(Console.ReadLine());
-                                if (newValue.Length > 0)
+                            Console.WriteLine(((ElementsOfXml)i).ToString());
+                            if (i == 3) Console.WriteLine("Male/Female");
+                            newValue = ti.ToTitleCase(Console.ReadLine());
+                            if (newValue.Length > 0)
+                            {
+                                СheckingXmlValid(newValue, i);
+                                if (ex.ValidResult == 0)
                                 {
-                                    СheckingXmlValid(newValue, i);
-                                    if (ex.ValidResult == 0)
+                                    if (i == 1) dev.FirstName = newValue;
+                                    if (i == 2) dev.LastName = newValue;
+                                    if (i == 4) dev.Appointment = newValue;
+                                    if (i == 5) dev.Date = newValue;
+                                    if (i == 6) dev.Salary = int.Parse(newValue);
+                                    if (i == 7) dev.DevLang = newValue;
+                                    if (i == 6) dev.Experience = newValue;
+                                    if (i == 7) dev.Level = newValue;
+                                    if (i == 3)
                                     {
-                                        if (i == 1) dev.FirstName = newValue;
-                                        if (i == 2) dev.LastName = newValue;
-                                        if (i == 4) dev.Appointment = newValue;
-                                        if (i == 5) dev.Date = newValue;
-                                        if (i == 6) dev.Salary = int.Parse(newValue);
-                                        if (i == 7) dev.DevLang = newValue;
-                                        if (i == 6) dev.Experience = newValue;
-                                        if (i == 7) dev.Level = newValue;
-                                        if (i == 3)
+                                        if (newValue == "Male")
                                         {
-                                            if (newValue == "Male")
-                                            {
-                                                office.Sex = (EnumsForModels.TypeOfSex)1;
-                                            }
-                                            else if (i == 3 && newValue == "Female")
-                                            {
-                                                office.Sex = (EnumsForModels.TypeOfSex)2;
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine("Incorrect value");
-                                                break;
-                                            }
+                                            office.Sex = (EnumsForModels.TypeOfSex)1;
                                         }
-                                    }
-                                    else
-                                    {
-                                        break;
+                                        else if (i == 3 && newValue == "Female")
+                                        {
+                                            office.Sex = (EnumsForModels.TypeOfSex)2;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Incorrect value");
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            repository.Update(dev);
-                        }                    
-                        else
-                        {
-                            office = (OfficeWorker)worker;
-                            for (int i = 0; i < 8; i++)
-                            {
-                                if (i == 0) continue;
-                                if (i == 7) i = 10;
-                                
-                                Console.WriteLine(((ElementsOfXml)i).ToString());
-                                if (i == 3) Console.WriteLine("Male/Female");
-                                newValue = ti.ToTitleCase(Console.ReadLine());
-                                if (newValue.Length > 0)
+                                else
                                 {
+                                    break;
+                                }
+                            }
+                        }
+                        this._repository.Update(dev, Config._xmlPath, Config._xsdPath);
+                    }                    
+                    else
+                    {
+                        office = (OfficeWorker)worker;
+                        for (int i = 0; i < 8; i++)
+                        {
+                            if (i == 0) continue;
+                            if (i == 7) i = 10;
+                                
+                            Console.WriteLine(((ElementsOfXml)i).ToString());
+                            if (i == 3) Console.WriteLine("Male/Female");
+                            newValue = ti.ToTitleCase(Console.ReadLine());
+                            if (newValue.Length > 0)
+                            {
                                     
-                                    СheckingXmlValid(newValue, i);
-                                    if (ex.ValidResult == 0)
+                                СheckingXmlValid(newValue, i);
+                                if (ex.ValidResult == 0)
+                                {
+                                    if (i == 1) office.FirstName = newValue;
+                                    if (i == 2) office.LastName = newValue;                                        
+                                    if (i == 4) office.Appointment = newValue;
+                                    if (i == 5) office.Date = newValue;
+                                    if (i == 6) office.Salary = int.Parse(newValue);
+                                    if (i == 7) office.YearsInService = int.Parse(newValue);
+                                    if (i == 3)
                                     {
-                                        if (i == 1) office.FirstName = newValue;
-                                        if (i == 2) office.LastName = newValue;                                        
-                                        if (i == 4) office.Appointment = newValue;
-                                        if (i == 5) office.Date = newValue;
-                                        if (i == 6) office.Salary = int.Parse(newValue);
-                                        if (i == 7) office.YearsInService = int.Parse(newValue);
-                                        if (i == 3)
+                                        if (newValue == "Male")
                                         {
-                                            if (newValue == "Male")
-                                            {
-                                                office.Sex = (EnumsForModels.TypeOfSex)1;
-                                            }
-                                            else if (i == 3 && newValue == "Female")
-                                            {
-                                                office.Sex = (EnumsForModels.TypeOfSex)2;
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine("Incorrect value");
-                                                break;
-                                            }
+                                            office.Sex = (EnumsForModels.TypeOfSex)1;
+                                        }
+                                        else if (i == 3 && newValue == "Female")
+                                        {
+                                            office.Sex = (EnumsForModels.TypeOfSex)2;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Incorrect value");
+                                            break;
                                         }
                                     }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }                                
-                            }
-                            repository.Update(office);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }                                
                         }
+                        this._repository.Update(office, Config._xmlPath, Config._xsdPath);
                     }
                 }
             }            

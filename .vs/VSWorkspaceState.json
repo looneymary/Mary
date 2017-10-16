@@ -3,8 +3,9 @@
     "",
     "\\ConsoleApp1",
     "\\ConsoleApp1\\ConsoleApp1",
-    "\\ConsoleApp2\\ConsoleApp2"
+    "\\ConsoleApp1\\ConsoleApp1\\ClassLibrary",
+    "\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1"
   ],
-  "SelectedNode": "\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.sln",
+  "SelectedNode": "\\ConsoleApp1\\ConsoleApp1\\ClassLibrary\\XmlRepository.cs",
   "PreviewInSolutionExplorer": false
 }
