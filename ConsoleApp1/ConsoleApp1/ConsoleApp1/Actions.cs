@@ -108,7 +108,7 @@ namespace WorkerViewer
                         {
                             Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary,
                                                             devLang, experience, level);
-                            this._repository.Create(developer, Config._xmlPath, Config._xsdPath);
+                            this._repository.Create(developer);
                         }
                     }
                     else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
@@ -120,7 +120,7 @@ namespace WorkerViewer
                         if (ex.ValidResult == 0)
                         {
                             OfficeWorker office = new OfficeWorker(firstName, lastName, sex, appointment, date, salary, yearsInService);
-                            this._repository.Create(office, Config._xmlPath, Config._xsdPath);
+                            this._repository.Create(office);
                         }
                     }
                 }
@@ -142,21 +142,21 @@ namespace WorkerViewer
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Workers");
-            IEnumerable<Worker> workers = this._repository.Get("Workers/*", Config._xmlPath, Config._xsdPath);
+            IEnumerable<Worker> workers = this._repository.Get("Workers/*");
             viewer.ShowAllList(workers);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("List of developers");
             Console.ForegroundColor = ConsoleColor.White;
-            IEnumerable<Worker> devWorkers = this._repository.Get("Workers/Developer", Config._xmlPath, Config._xsdPath);
+            IEnumerable<Worker> devWorkers = this._repository.Get("Workers/Developer");
             viewer.ShowAllList(devWorkers);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("List of office workers");
             Console.ForegroundColor = ConsoleColor.White;
-            IEnumerable<Worker> officeWorkers = this._repository.Get("Workers/OfficeWorker", Config._xmlPath, Config._xsdPath);
+            IEnumerable<Worker> officeWorkers = this._repository.Get("Workers/OfficeWorker");
             viewer.ShowAllList(officeWorkers);
         }
 
@@ -167,7 +167,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter the index number:");
             int indexNumber = int.Parse(Console.ReadLine());
-            business.ShowOnePerson(indexNumber, Config._xmlPath, Config._xsdPath);            
+            business.ShowOnePerson(indexNumber);            
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter an appointment: ");
             string searchAppointment = ti.ToTitleCase(Console.ReadLine());
-            business.SearchByAppointment(searchAppointment, Config._xmlPath, Config._xsdPath);
+            business.SearchByAppointment(searchAppointment);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter an appointment:");
             string countAppointment = ti.ToTitleCase(Console.ReadLine());
-            Console.WriteLine(business.CountWorkers(countAppointment, Config._xmlPath, Config._xsdPath));
+            Console.WriteLine(business.CountWorkers(countAppointment));
         }
 
         /// <summary>
@@ -199,12 +199,12 @@ namespace WorkerViewer
             Console.WriteLine("Enter the worker's index number: ");
             int index = int.Parse(Console.ReadLine());
 
-            if (this._repository.Get("Workers/*[" + index + "]", Config._xmlPath, Config._xmlPath).Count() > 0)
+            if (this._repository.Get("Workers/*[" + index + "]").Count() > 0)
             {
-                foreach (var person in this._repository.Get("Workers/*[" + index + "]", Config._xmlPath, Config._xmlPath))
+                foreach (var person in this._repository.Get("Workers/*[" + index + "]"))
                 {
                     worker._id = person._id;
-                    this._repository.Delete(worker._id, Config._xmlPath, Config._xsdPath);
+                    this._repository.Delete(worker._id);
                 }
             }
             else
@@ -228,7 +228,7 @@ namespace WorkerViewer
             
             СheckingXmlValid += ex.CheckXmlExeptions;
             
-            IEnumerable<Worker> workers = this._repository.Get("Workers/*[" + index + "]", Config._xmlPath, Config._xsdPath);
+            IEnumerable<Worker> workers = this._repository.Get("Workers/*[" + index + "]");
             if (workers.Count() == 1)
             {
                 foreach (var worker in workers)
@@ -282,7 +282,7 @@ namespace WorkerViewer
                                 }
                             }
                         }
-                        this._repository.Update(dev, Config._xmlPath, Config._xsdPath);
+                        this._repository.Update(dev);
                     }                    
                     else
                     {
@@ -330,7 +330,7 @@ namespace WorkerViewer
                                 }
                             }                                
                         }
-                        this._repository.Update(office, Config._xmlPath, Config._xsdPath);
+                        this._repository.Update(office);
                     }
                 }
             }            

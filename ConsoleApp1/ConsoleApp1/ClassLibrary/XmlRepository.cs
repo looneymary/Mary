@@ -19,6 +19,8 @@ namespace DataAccess
         [XmlArrayItem("Developer", typeof(Developer))]
         [XmlArrayItem("OfficeWorker", typeof(OfficeWorker))]
         public List<Worker> People { get; set; }
+        string xmlPath = Config._xmlPath;
+        string xsdPath = Config._xsdPath;
 
         private WorkWithXml _xml;
         ValidXml valid = new ValidXml();
@@ -34,7 +36,7 @@ namespace DataAccess
         /// </summary>
         /// <param name="filter">Filter for search</param>
         /// <returns>List of workers what found</returns>
-        public IEnumerable<Worker> Get(string filter, string xmlPath, string xsdPath)
+        public IEnumerable<Worker> Get(string filter)
         {
             List<Worker> Workers = new List<Worker>();
             XmlDocument doc = new XmlDocument();
@@ -103,9 +105,8 @@ namespace DataAccess
         /// Add new worker in xml-document
         /// </summary>
         /// <param name="worker">Object that need to add in xml-document</param>
-        public void Create(Worker worker, string xmlPath, string xsdPath)
+        public void Create(Worker worker)
         {
-            XmlRepository repository = new XmlRepository();
             Developer developer = new Developer();
             OfficeWorker office = new OfficeWorker();
 
@@ -157,7 +158,7 @@ namespace DataAccess
         /// Update element in xml-document
         /// </summary>
         /// <param name="worker">object "Worker" for update</param>        
-        public void Update(Worker worker, string xmlPath, string xsdPath)
+        public void Update(Worker worker)
         {
             Developer developer = new Developer();
             OfficeWorker office = new OfficeWorker();
@@ -209,7 +210,7 @@ namespace DataAccess
             /// Find anf remove worker by id from xml
             /// </summary>
             /// <param name="id">Worker's id</param>
-        public void Delete(Guid id, string xmlPath, string xsdPath)
+        public void Delete(Guid id)
         {            
             XElement xDoc = XElement.Load(xmlPath);
             if(!valid.Validate(xmlPath, xsdPath))

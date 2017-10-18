@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="Actions.cs" />
     <Compile Include="CheckValidExceptions.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Viewer.cs" />
     <Compile Include="Program.cs" />
