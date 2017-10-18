@@ -33,18 +33,18 @@ namespace WorkerViewer
         public static event ValidXmlValuesDelegate СheckingXmlValid;
 
         private IRepository _repository;
+        private BusinessLayerMethods _business;
+
         Viewer viewer = new Viewer();
         CheckValidExceptions ex = new CheckValidExceptions();
         WorkWithXml xml = new WorkWithXml();
-        BusinessLayerMethods business;
         ValidXml valid = new ValidXml();
-
         TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
         public Actions()
         {
             this._repository = new XmlRepository();
-            business = new BusinessLayerMethods(_repository);
+            this._business = new BusinessLayerMethods(_repository);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace WorkerViewer
                         {
                             Developer developer = new Developer(firstName, lastName, sex, appointment, date, salary,
                                                             devLang, experience, level);
-                            this._repository.Create(developer);
+                            this._business.Create(developer);
                         }
                     }
                     else if (workerType == EnumsForModels.WorkerType.OfficeWorker)
@@ -120,7 +120,7 @@ namespace WorkerViewer
                         if (ex.ValidResult == 0)
                         {
                             OfficeWorker office = new OfficeWorker(firstName, lastName, sex, appointment, date, salary, yearsInService);
-                            this._repository.Create(office);
+                            this._business.Create(office);
                         }
                     }
                 }
@@ -142,21 +142,21 @@ namespace WorkerViewer
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Workers");
-            IEnumerable<Worker> workers = this._repository.Get("Workers/*");
+            IEnumerable<Worker> workers = this._business.Get("Workers/*");
             viewer.ShowAllList(workers);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("List of developers");
             Console.ForegroundColor = ConsoleColor.White;
-            IEnumerable<Worker> devWorkers = this._repository.Get("Workers/Developer");
+            IEnumerable<Worker> devWorkers = this._business.Get("Workers/Developer");
             viewer.ShowAllList(devWorkers);
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("List of office workers");
             Console.ForegroundColor = ConsoleColor.White;
-            IEnumerable<Worker> officeWorkers = this._repository.Get("Workers/OfficeWorker");
+            IEnumerable<Worker> officeWorkers = this._business.Get("Workers/OfficeWorker");
             viewer.ShowAllList(officeWorkers);
         }
 
@@ -167,7 +167,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter the index number:");
             int indexNumber = int.Parse(Console.ReadLine());
-            business.ShowOnePerson(indexNumber);            
+            this._business.ShowOnePerson(indexNumber);            
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter an appointment: ");
             string searchAppointment = ti.ToTitleCase(Console.ReadLine());
-            business.SearchByAppointment(searchAppointment);
+            this._business.SearchByAppointment(searchAppointment);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace WorkerViewer
         {
             Console.WriteLine("Enter an appointment:");
             string countAppointment = ti.ToTitleCase(Console.ReadLine());
-            Console.WriteLine(business.CountWorkers(countAppointment));
+            Console.WriteLine(this._business.CountWorkers(countAppointment));
         }
 
         /// <summary>
@@ -199,12 +199,12 @@ namespace WorkerViewer
             Console.WriteLine("Enter the worker's index number: ");
             int index = int.Parse(Console.ReadLine());
 
-            if (this._repository.Get("Workers/*[" + index + "]").Count() > 0)
+            if (this._business.Get("Workers/*[" + index + "]").Count() > 0)
             {
-                foreach (var person in this._repository.Get("Workers/*[" + index + "]"))
+                foreach (var person in this._business.Get("Workers/*[" + index + "]"))
                 {
                     worker._id = person._id;
-                    this._repository.Delete(worker._id);
+                    this._business.Delete(worker._id);
                 }
             }
             else
@@ -228,14 +228,14 @@ namespace WorkerViewer
             
             СheckingXmlValid += ex.CheckXmlExeptions;
             
-            IEnumerable<Worker> workers = this._repository.Get("Workers/*[" + index + "]");
+            IEnumerable<Worker> workers = this._business.Get("Workers/*[" + index + "]");
             if (workers.Count() == 1)
             {
                 foreach (var worker in workers)
                 {
                     Console.WriteLine("Enter new value or press \"Enter\" to continue;");
                         
-                    if (business.IsDeveloper(worker))
+                    if (this._business.IsDeveloper(worker))
                     {
                         dev = (Developer)worker;
                         office = (OfficeWorker)worker;
@@ -282,7 +282,7 @@ namespace WorkerViewer
                                 }
                             }
                         }
-                        this._repository.Update(dev);
+                        this._business.Update(dev);
                     }                    
                     else
                     {
@@ -330,7 +330,7 @@ namespace WorkerViewer
                                 }
                             }                                
                         }
-                        this._repository.Update(office);
+                        this._business.Update(office);
                     }
                 }
             }            

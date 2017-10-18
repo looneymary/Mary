@@ -95,5 +95,42 @@ namespace BusinessLayer
             bool val = obj is Developer;
             return val;
         }
+
+        /// <summary>
+        /// Call method Get from XmlRepository
+        /// </summary>
+        /// <param name="filter">Filter for search</param>
+        /// <returns>List of workers what found</returns>
+        public IEnumerable<Worker> Get(string filter)
+        {
+            return this._repository.Get(filter);
+        }
+
+        /// <summary>
+        /// Call method Create from XmlRepository
+        /// </summary>
+        /// <param name="worker">Object that need to add in xml-document</param>
+        public void Create(Worker worker)
+        {
+            this._repository.Create(worker);
+        }
+
+        /// <summary>
+        /// Call method Update from XmlRepository
+        /// </summary>
+        /// <param name="worker">object "Worker" for update</param>
+        public void Update(Worker worker)
+        {
+            this._repository.Update(worker);
+        }
+
+        /// <summary>
+        /// Call method Delete from XmlRepository
+        /// </summary>
+        /// <param name="id">Worker's id</param>
+        public void Delete(Guid id)
+        {
+            this._repository.Delete(id);
+        }
     }
 }
