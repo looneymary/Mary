@@ -31,8 +31,7 @@ namespace WorkerViewer
 
         public delegate int ValidXmlValuesDelegate(string value, int i);
         public static event ValidXmlValuesDelegate СheckingXmlValid;
-
-        private IRepository _repository;
+        
         private BusinessLayerMethods _business;
 
         Viewer viewer = new Viewer();
@@ -43,12 +42,11 @@ namespace WorkerViewer
 
         public Actions()
         {
-            this._repository = new XmlRepository();
-            this._business = new BusinessLayerMethods(_repository);
+            this._business = new BusinessLayerMethods(new XmlRepository());
         }
 
         /// <summary>
-        /// Add info about worker (case 1)
+        /// Create new worker (case 1)
         /// </summary>
         public void CreateWorker()
         {

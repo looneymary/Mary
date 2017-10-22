@@ -97,7 +97,7 @@ namespace BusinessLayer
         }
 
         /// <summary>
-        /// Call method Get from XmlRepository
+        /// Call method Get of IRepository
         /// </summary>
         /// <param name="filter">Filter for search</param>
         /// <returns>List of workers what found</returns>
@@ -107,7 +107,7 @@ namespace BusinessLayer
         }
 
         /// <summary>
-        /// Call method Create from XmlRepository
+        /// Call method Create of IRepository
         /// </summary>
         /// <param name="worker">Object that need to add in xml-document</param>
         public void Create(Worker worker)
@@ -116,7 +116,7 @@ namespace BusinessLayer
         }
 
         /// <summary>
-        /// Call method Update from XmlRepository
+        /// Call method Update of IRepository
         /// </summary>
         /// <param name="worker">object "Worker" for update</param>
         public void Update(Worker worker)
@@ -125,7 +125,7 @@ namespace BusinessLayer
         }
 
         /// <summary>
-        /// Call method Delete from XmlRepository
+        /// Call method Delete of IRepository
         /// </summary>
         /// <param name="id">Worker's id</param>
         public void Delete(Guid id)
