@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 using DataAccess.Models;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace BusinessLayer
 {
@@ -132,5 +134,7 @@ namespace BusinessLayer
         {
             this._repository.Delete(id);
         }
+
+
     }
 }

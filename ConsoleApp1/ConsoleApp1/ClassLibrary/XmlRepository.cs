@@ -62,7 +62,8 @@ namespace DataAccess
                                    Salary = int.Parse(element.Element("Salary").Value),
                                    DevLang = element.Element("DeveloperLanguage").Value,
                                    Experience = element.Element("Experience").Value,
-                                   Level = element.Element("Level").Value
+                                   Level = element.Element("Level").Value,
+                                   Type = "Developer"
                                });
 
                     if (developers != null)
@@ -83,7 +84,8 @@ namespace DataAccess
                                    Appointment = element.Element("Appointment").Value,
                                    Date = element.Element("Date").Value,
                                    Salary = int.Parse(element.Element("Salary").Value),
-                                   YearsInService = int.Parse(element.Element("YearsInService").Value)
+                                   YearsInService = int.Parse(element.Element("YearsInService").Value),
+                                   Type = "Office worker"
                                });
 
                     if (officeWorkers != null)

@@ -21,6 +21,7 @@ namespace DataAccess.Models
         
         public Developer()
         {
+            base._id = Guid.NewGuid();
         }
 
         public Developer(string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, string date, 
@@ -45,8 +46,8 @@ namespace DataAccess.Models
         /// <returns>The string, contains properties of worker</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} ", FirstName, LastName, Sex, Appointment, Date, Salary,
-                DevLang, Experience, Level);
+            return String.Format("{0} {1}, {2}, {3}, work since {4}, salary: {5}, languages: {6}, experience: {7}, level: {8} ", FirstName, LastName, Sex.ToString().ToLower(), Appointment.ToLower(), Date, Salary,
+                DevLang, Experience.ToLower(), Level.ToLower());
         }
     }
 }

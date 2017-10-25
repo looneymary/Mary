@@ -13,6 +13,7 @@ namespace DataAccess.Models
 
         public OfficeWorker()
         {
+            base._id = Guid.NewGuid();
         }
 
         public OfficeWorker(string firstName, string lastName, EnumsForModels.TypeOfSex sex, string appointment, 
@@ -34,7 +35,7 @@ namespace DataAccess.Models
         /// <returns>The string, contains properties of worker</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} {6} ", FirstName, LastName, Sex, Appointment, Date, Salary, YearsInService);
+            return String.Format("{0} {1}, {2}, {3}, work since {4}, salary: {5}, working for {6} year(s) ", FirstName, LastName, Sex.ToString().ToLower(), Appointment.ToLower(), Date, Salary, YearsInService);
         }
     }
 }

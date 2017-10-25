@@ -12,6 +12,7 @@ namespace WorkerViewer
         public enum NameOfElement { FirstName = 0, LastName = 1, Sex = 2, Appointment = 3, Date = 4, Salary = 5, DeveloperLanguage = 6, Experience = 7, Level = 8, YearsInService = 9 }
 
         public int ValidResult { get; set; }
+        public string ExMessage { get; set; }
         public CheckValidExceptions() { }
         public CheckValidExceptions(string message) : base(message) { }
 
@@ -22,13 +23,13 @@ namespace WorkerViewer
         /// <returns>Count of found exceptions</returns>
         public int CheckExceptions(params string[] parametres)
         {
-            Console.WriteLine("Validation of data.");
+            //Console.WriteLine("Validation of data.");
             ValidResult = 0;
+            ExMessage = "";
             try
             {
                 for (int i = 0; i < parametres.Length; i++)
                 {
-
                     if (i == 4)
                     {
                         DateCheck(parametres[i], ((NameOfElement)i).ToString());
@@ -41,10 +42,6 @@ namespace WorkerViewer
                     {
                         IntVal(int.Parse(parametres[i]), ((NameOfElement)9).ToString());
                     }
-                    else if (parametres.Length == 9 && i == 7)
-                    {
-                        IntVal(int.Parse(parametres[i]), ((NameOfElement)i).ToString());
-                    }
                     else
                     {
                         StringCheck(parametres[i], ((NameOfElement)i).ToString());
@@ -53,18 +50,18 @@ namespace WorkerViewer
             }
             catch (CheckValidExceptions ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.ExMessage);
                 ValidResult++;
             }
             finally
             {
                 if (ValidResult == 0)
                 {
-                    Console.WriteLine("Validation was successful.");
+                    ExMessage = "Validation was successful.";
                 }
                 else
                 {
-                    Console.WriteLine("The employee wasn't addede. Repeat input.");
+                    ExMessage += "\nThe employee wasn't addede. Repeat input.";
                 }
             }
             return ValidResult;
@@ -112,7 +109,7 @@ namespace WorkerViewer
             }
             catch (CheckValidExceptions ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.ExMessage);
                 ValidResult++;
             }
             catch
@@ -123,11 +120,11 @@ namespace WorkerViewer
             {
                 if (ValidResult == 0)
                 {
-                    Console.WriteLine("Validation was successful.");
+                    ExMessage =  "Validation was successful.";
                 }
                 else
                 {
-                    Console.WriteLine("The employee wasn't update. Repeat input.");
+                    ExMessage = "The employee wasn't update. Repeat input.";
                 }
             }
 
@@ -144,7 +141,8 @@ namespace WorkerViewer
             if (String.IsNullOrEmpty(var))
             {
                 string message = "The field \"" + name + "\" wasn't filled. Please, correct it.";
-                throw new CheckValidExceptions(message);
+                ExMessage = message;
+                throw new CheckValidExceptions(message);                
             }
 
             Regex regForText = new Regex(@"[А-Яа-яA-Za-z-]");
@@ -152,6 +150,7 @@ namespace WorkerViewer
             if (mc.Count == 0)
             {
                 string message = "The field \"" + name + "\" conteins invalid characters. " + var + " was introdused.";
+                ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
         }
@@ -168,6 +167,7 @@ namespace WorkerViewer
             if (mc.Count == 0)
             {
                 string message = "The field \"" + name + "\" not filled in correctly. Date format must be \"dd.mm.yyyy\".";
+                ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
         }
@@ -182,6 +182,7 @@ namespace WorkerViewer
             if (intVal <= 0)
             {
                 string message = "The field \"" + name + "\" not filled in correctly. The value must be greater, than 0.";
+                ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
         }

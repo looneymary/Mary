@@ -25,6 +25,7 @@ namespace DataAccess.Models
         public string Appointment { get; set; }
         public string Date { get; set; }
         public int Salary { get; set; }
+        public string Type { get; set; }
         
         public string FullInfo { get; set; }
                         
@@ -50,7 +51,7 @@ namespace DataAccess.Models
         /// <returns>The string with properties</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1} {2} {3} {4} {5} ", FirstName, LastName, Sex, Appointment, Date, Salary);
+            return String.Format("{0} {1}, {2} {3} {4} {5} ", FirstName, LastName, Sex, Appointment, Date, Salary);
         }
     }
 }
