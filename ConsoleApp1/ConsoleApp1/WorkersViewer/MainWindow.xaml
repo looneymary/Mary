@@ -9,7 +9,7 @@
     
     <Window.Resources>
         <Style TargetType="DataGrid">
-            <Setter Property="TextBlock.TextAlignment" Value="Right" />            
+            <Setter Property="TextBlock.TextAlignment" Value="Right" />
         </Style>
     </Window.Resources>
     
@@ -90,6 +90,11 @@
                 <DataGridTextColumn Header="Appointment" Binding="{Binding Appointment}" Width="*" />
                 <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
         <!-- Delete, update & add buttons -->
         <Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="185">
