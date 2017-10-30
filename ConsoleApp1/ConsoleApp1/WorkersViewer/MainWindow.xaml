@@ -30,12 +30,12 @@
                         <Image Source="F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\WorkersViewer\bin\Debug\Image\Save.png" Width="22"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Open">
+                <MenuItem Header="Open" Click="Menu_Open">
                     <MenuItem.Icon>
                         <Image Source="F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\WorkersViewer\bin\Debug\Image\Open.png" Width="22" ></Image>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Close">
+                <MenuItem Header="Close" Click="Menu_Close">
                     <MenuItem.Icon>
                         <Image Source="F:\net\projects\looneyTypeOfCoding\ConsoleApp1\ConsoleApp1\WorkersViewer\bin\Debug\Image\Close.png" Width="22"></Image>
                     </MenuItem.Icon>

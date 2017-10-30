@@ -19,6 +19,11 @@ namespace BusinessLayer
             this._repository = new XmlRepository();
         }
 
+        public BusinessLayerMethods(IRepository _repository, string xmlFile)
+        {
+            this._repository = new XmlRepository(xmlFile);
+        }
+
         /// <summary>
         /// Get one worker with some index number
         /// </summary>
@@ -133,8 +138,6 @@ namespace BusinessLayer
         public void Delete(Guid id)
         {
             this._repository.Delete(id);
-        }
-
-
+        }        
     }
 }

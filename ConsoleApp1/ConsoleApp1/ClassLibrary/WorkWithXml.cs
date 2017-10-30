@@ -55,23 +55,22 @@ namespace DataAccess
             {
                 return null;
             }
-        }        
+        }
 
         /// <summary>
         /// Serialize list of workers
         /// </summary>
         /// <param name="workers">List of workers</param>
         /// <returns></returns>
-        public string SerializeObject(List<Worker> workers)
+        public string SerializeObject(XmlRepository workers)
         {
+            XmlSerializer serializer = new XmlSerializer(workers.GetType());
             using (StringWriter stringwriter = new System.IO.StringWriter())
             {
-                var serializer = new XmlSerializer(workers.GetType());
                 serializer.Serialize(stringwriter, workers);
-                var obj = stringwriter.ToString();
-                return obj;
+                return stringwriter.ToString();
             }
-        }                      
+        }
 
         /// <summary>
         /// Deserialize data of xml-document
@@ -93,6 +92,6 @@ namespace DataAccess
                     return null;
                 }
             }
-        }                
+        }
     }
 }

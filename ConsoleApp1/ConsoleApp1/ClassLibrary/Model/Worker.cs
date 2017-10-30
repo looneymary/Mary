@@ -13,8 +13,6 @@ using System.Xml.Serialization;
 namespace DataAccess.Models
 {
     [Serializable]
-    [XmlInclude(typeof(Developer))]
-    [XmlInclude(typeof(OfficeWorker))]
     public abstract class Worker
     {
         public Guid _id;

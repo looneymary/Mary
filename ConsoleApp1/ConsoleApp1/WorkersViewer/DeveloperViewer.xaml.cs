@@ -33,15 +33,19 @@ namespace WorkersViewer
         public event ValidXmlValuesDelegate CheckingValid;
         TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
-        public DeveloperViewer(Developer developer, MainWindow.ViewForm form)
+        public DeveloperViewer(Developer developer, MainWindow.ViewForm form, string xmlFile)
         {
             InitializeComponent();
             this._developer = developer ?? new Developer();
-            this._business = new BusinessLayerMethods(new XmlRepository());
+            this._business = new BusinessLayerMethods(new XmlRepository(), xmlFile);
             windowForm = form;
             this.EditDevForm(developer);
         }
 
+        /// <summary>
+        /// Fill form of "DeveloperViewer" window
+        /// </summary>
+        /// <param name="developer"></param>
         public void EditDevForm(Developer developer)
         {
             if(windowForm == MainWindow.ViewForm.View)
@@ -69,8 +73,13 @@ namespace WorkersViewer
             this.Level.Text = developer.Level;
         }
 
+        /// <summary>
+        /// Click for button "Save" - save changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Btn_Dev_Save(object sender, RoutedEventArgs e)
-        {   
+        {
             CheckingValid += ex.CheckExceptions;
 
             try
@@ -101,7 +110,7 @@ namespace WorkersViewer
                     this._developer.Level = level;
 
                     if(windowForm == MainWindow.ViewForm.Create)
-                    {
+                    {                        
                         this._business.Create(this._developer);
                         this.Close();
                     }
@@ -122,6 +131,11 @@ namespace WorkersViewer
             }
         }
 
+        /// <summary>
+        /// Click for button "Close" - close the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Btn_Dev_Close(object sender, RoutedEventArgs e)
         {
             this.Close();

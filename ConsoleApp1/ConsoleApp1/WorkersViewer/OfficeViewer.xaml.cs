@@ -33,15 +33,19 @@ namespace WorkersViewer
         public delegate int ValidValuesDelegate(params string[] paarametres);
         public event ValidValuesDelegate CheckingValid;
 
-        public OfficeViewer(OfficeWorker office, MainWindow.ViewForm form)
+        public OfficeViewer(OfficeWorker office, MainWindow.ViewForm form, string xmlFile)
         {
             InitializeComponent();
             this._office = office;
-            this._business = new BusinessLayerMethods(new XmlRepository());
+            this._business = new BusinessLayerMethods(new XmlRepository(), xmlFile);
             windowForm = form;
             this.EditOfficeForm(this._office);
         }
 
+        /// <summary>
+        /// Fill form of "OfficeViewer" window
+        /// </summary>
+        /// <param name="office">Object to edit</param>
         public void EditOfficeForm(OfficeWorker office)
         {
             if (windowForm == MainWindow.ViewForm.View)
@@ -65,6 +69,11 @@ namespace WorkersViewer
             this.YearsInService.Text = this._office.YearsInService.ToString();
         }
 
+        /// <summary>
+        /// Click for button "Save" - save changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Btn_Office_Save(object sender, RoutedEventArgs e)
         {
             CheckingValid += ex.CheckExceptions;
@@ -109,6 +118,11 @@ namespace WorkersViewer
             }
         }
 
+        /// <summary>
+        /// Click for button "Close" - close the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Btn_Office_Close(object sender, RoutedEventArgs e)
         {
             this.Close();
