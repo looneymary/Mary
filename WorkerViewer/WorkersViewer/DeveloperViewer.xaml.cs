@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DataAccess.Models;
 using DataAccess;
-using BusinessLayer;
+using WorkerService;
 using WorkerViewer;
 using System.Globalization;
 
@@ -25,7 +25,7 @@ namespace WorkersViewer
     public partial class DeveloperViewer : Window
     {
         private readonly Developer _developer;
-        private BusinessLayerMethods _business;
+        private BusinessLayer _business;
         CheckValidExceptions ex = new CheckValidExceptions();
         MainWindow.ViewForm windowForm;
 
@@ -37,7 +37,7 @@ namespace WorkersViewer
         {
             InitializeComponent();
             this._developer = developer ?? new Developer();
-            this._business = new BusinessLayerMethods(new XmlRepository(), xmlFile);
+            this._business = new BusinessLayer(new XmlRepository(), xmlFile);
             windowForm = form;
             this.EditDevForm(developer);
         }

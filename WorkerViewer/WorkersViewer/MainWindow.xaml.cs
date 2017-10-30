@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataAccess;
 using DataAccess.Models;
-using BusinessLayer;
+using WorkerService;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Xml;
@@ -29,7 +29,7 @@ namespace WorkersViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public BusinessLayerMethods _business;
+        public BusinessLayer _business;
         WorkWithXml xml = new WorkWithXml();
         ValidXml valid = new ValidXml();        
                 
@@ -44,7 +44,7 @@ namespace WorkersViewer
         public MainWindow()
         {            
             InitializeComponent();
-            _business = new BusinessLayerMethods(new XmlRepository(), xmlFile);
+            _business = new BusinessLayer(new XmlRepository(), xmlFile);
             InitializeGrid();
         }
         
@@ -201,7 +201,7 @@ namespace WorkersViewer
             {
                 xmlFile = dlg.FileName;
                 _business = null;
-                _business = new BusinessLayerMethods(new XmlRepository(), dlg.FileName);
+                _business = new BusinessLayer(new XmlRepository(), dlg.FileName);
                 InitializeGrid();
             }
         }

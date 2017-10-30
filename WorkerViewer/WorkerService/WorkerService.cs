@@ -8,18 +8,18 @@ using DataAccess.Models;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace BusinessLayer
+namespace WorkerService
 {
-    public class BusinessLayerMethods
+    public class BusinessLayer
     {
         private IRepository _repository;
 
-        public BusinessLayerMethods(IRepository _repository)
+        public BusinessLayer(IRepository _repository)
         {
             this._repository = new XmlRepository();
         }
 
-        public BusinessLayerMethods(IRepository _repository, string xmlFile)
+        public BusinessLayer(IRepository _repository, string xmlFile)
         {
             this._repository = new XmlRepository(xmlFile);
         }
