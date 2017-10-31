@@ -1,0 +1,62 @@
+﻿<Window x:Class="WorkersViewer.OfficeViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorkersViewer"
+        mc:Ignorable="d"
+        Title="Office worker viewer" Height="435" Width="270" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
+    <StackPanel Margin="0,0,0,-50">
+        <TextBlock Padding="10" HorizontalAlignment="Center">General information</TextBlock>
+        <Grid>
+            <Label Padding="35,10,0,10">First name</Label>
+            <TextBox Name="FirstName" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+        </Grid>
+        <Grid>
+            <Label Padding="35,10,0,10">Last name</Label>
+            <TextBox Name="LastName" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+        </Grid>
+        <Grid>
+            <Label Padding="52,10,0,10">Sex</Label>
+            <ComboBox Name="Gender_value" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}">
+                <ComboBoxItem Name="Male" IsSelected="True">Male</ComboBoxItem>
+                <ComboBoxItem Name="Female">Female</ComboBoxItem>
+            </ComboBox>            
+        </Grid>
+        <Grid>
+            <Label Padding="30,10,0,10">Appointment</Label>
+            <TextBox Name="Appointment" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+        </Grid>
+        <Grid>
+            <Label Padding="50,10,0,10">Date</Label>
+            <TextBox Name="Date" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+        </Grid>
+        <Grid>
+            <Label Padding="48,10,0,10">Salary</Label>
+            <TextBox Name="Salary" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+        </Grid>
+        <TextBlock Padding="10" HorizontalAlignment="Center">Working information</TextBlock>
+        <Grid>
+            <Label Padding="30,10,0,10">Years in service</Label>
+            <TextBox Name="YearsInService" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+        </Grid>
+        <!-- Buttons -->
+        <WrapPanel  Margin="0,0,10,10" HorizontalAlignment="Right">
+            <Button Name="BtnOfficeSave" Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_Office_Save">
+                <Grid>
+                    <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" ></Ellipse>
+                    <Image Source="Resources/Image/DevView_save.png" Width="35" Height="35" Margin="1,1,0,0"></Image>
+                    <TextBlock Margin="-1,1,0,-15" HorizontalAlignment="Center" VerticalAlignment="Bottom">Save</TextBlock>
+                </Grid>
+            </Button>
+            <Button Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_Office_Close">
+                <Grid>
+                    <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" ></Ellipse>
+                    <Image Source="Resources/Image/DevView_close.png" Width="35" Height="35" Margin="1,1,0,0"></Image>
+                    <TextBlock Margin="0,1,0,-15" HorizontalAlignment="Center" VerticalAlignment="Bottom">Close</TextBlock>
+                </Grid>
+            </Button>
+        </WrapPanel>
+    </StackPanel>
+</Window>
