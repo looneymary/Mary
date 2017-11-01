@@ -24,34 +24,25 @@ using System.Xml.Serialization;
 
 namespace WorkersViewer
 {
+    public enum ViewForm { Create = 0, Update = 1, View = 2 }
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public WorkerService _business;
-        WorkWithXml xml = new WorkWithXml();
-        ValidXml valid = new ValidXml();        
-                
-        public string xmlFile = Config._xmlPath;
-
-        XmlRepository rep = new XmlRepository();
-
-        IEnumerable<Worker> workers;
-
-        public enum ViewForm { Create = 0, Update = 1, View =2}
 
         public MainWindow()
         {            
             InitializeComponent();
-            _business = new WorkerService(new XmlRepository(), xmlFile);
+            _business = new WorkerService(new XmlRepository());
             InitializeGrid();
         }
         
         public void InitializeGrid()
         {
-            workers = this._business.Get("Workers/*");
-            this.DataGrid.ItemsSource = workers;
+            this.DataGrid.ItemsSource = this._business.Get("Workers/*");
         }
 
         #region Buttons from right column
@@ -86,7 +77,7 @@ namespace WorkersViewer
         /// <param name="e"></param>
         private void Btn_Dev_Add(object sender, RoutedEventArgs e)
         {
-            DeveloperViewer dev = new DeveloperViewer(new Developer(), ViewForm.Create, xmlFile);
+            DeveloperViewer dev = new DeveloperViewer(this._business, new Developer(), ViewForm.Create);
             dev.ShowDialog();
             this.InitializeGrid();
         }
@@ -98,7 +89,7 @@ namespace WorkersViewer
         /// <param name="e"></param>
         private void Btn_Office_Add(object sender, RoutedEventArgs e)
         {
-            OfficeViewer office = new OfficeViewer(new OfficeWorker(), ViewForm.Create, xmlFile);
+            OfficeViewer office = new OfficeViewer(_business, new OfficeWorker(), ViewForm.Create);
             office.ShowDialog();
             this.InitializeGrid();
         }
@@ -113,13 +104,13 @@ namespace WorkersViewer
         {
             if (this.DataGrid.SelectedItem is Developer)
             {
-                DeveloperViewer window = new DeveloperViewer((Developer)this.DataGrid.SelectedItem, ViewForm.Update, xmlFile);
+                DeveloperViewer window = new DeveloperViewer(_business, (Developer)this.DataGrid.SelectedItem, ViewForm.Update);
                 window.ShowDialog();
                 this.InitializeGrid();
             }
             else if (this.DataGrid.SelectedItem is OfficeWorker)
             {
-                OfficeViewer window = new OfficeViewer((OfficeWorker)this.DataGrid.SelectedItem, MainWindow.ViewForm.Update, xmlFile);
+                OfficeViewer window = new OfficeViewer(_business, (OfficeWorker)this.DataGrid.SelectedItem, ViewForm.Update);
                 window.ShowDialog();
                 this.InitializeGrid();
             }
@@ -175,6 +166,7 @@ namespace WorkersViewer
 
             if(result == true)
             {
+                WorkWithXml xml = new WorkWithXml();
                 string stringForSave = xml.SerializeObject(new XmlRepository(result));
                 var stringReader = new StringReader(stringForSave);
                 XDocument xmlDocument = XDocument.Load(stringReader);
@@ -199,7 +191,7 @@ namespace WorkersViewer
 
             if(result == true && dlg.FileName != string.Empty)
             {
-                xmlFile = dlg.FileName;
+                string xmlFile = dlg.FileName;
                 _business = null;
                 _business = new WorkerService(new XmlRepository(), dlg.FileName);
                 InitializeGrid();
@@ -270,13 +262,13 @@ namespace WorkersViewer
         {
             if (this.DataGrid.SelectedItem is Developer)
             {
-                DeveloperViewer window = new DeveloperViewer((Developer)this.DataGrid.SelectedItem, ViewForm.View, xmlFile);
+                DeveloperViewer window = new DeveloperViewer(_business, (Developer)this.DataGrid.SelectedItem, ViewForm.View);
                 window.ShowDialog();
                 this.InitializeGrid();
             }
             else if (this.DataGrid.SelectedItem is OfficeWorker)
             {
-                OfficeViewer window = new OfficeViewer((OfficeWorker)this.DataGrid.SelectedItem, MainWindow.ViewForm.View, xmlFile);
+                OfficeViewer window = new OfficeViewer(_business, (OfficeWorker)this.DataGrid.SelectedItem, ViewForm.View);
                 window.ShowDialog();
                 this.InitializeGrid();
             }
@@ -295,8 +287,8 @@ namespace WorkersViewer
         /// <param name="e"></param>
         private void Menu_Resynchronize(object sender, RoutedEventArgs e)
         {
-            workers = null;
-            workers = this._business.Get("Workers/*");
+            this.DataGrid.ItemsSource = null;
+            this.DataGrid.ItemsSource = this._business.Get("Workers/*");
             InitializeGrid();
         }
         #endregion

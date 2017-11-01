@@ -27,28 +27,28 @@ namespace WorkersViewer
         private readonly Developer _developer;
         private WorkerService _business;
         CheckValidExceptions ex = new CheckValidExceptions();
-        MainWindow.ViewForm windowForm;
+
+        string _createOrUpdate;
 
         public delegate int ValidXmlValuesDelegate(params string[] parametres);
         public event ValidXmlValuesDelegate CheckingValid;
-        TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
-        public DeveloperViewer(Developer developer, MainWindow.ViewForm form, string xmlFile)
+        public DeveloperViewer(WorkerService business, Developer developer, ViewForm form)
         {
             InitializeComponent();
             this._developer = developer ?? new Developer();
-            this._business = new WorkerService(new XmlRepository(), xmlFile);
-            windowForm = form;
-            this.EditDevForm(developer);
+            this._business = business;
+            this.EditDevForm(developer, form);
+            this._createOrUpdate = form.ToString();
         }
 
         /// <summary>
         /// Fill form of "DeveloperViewer" window
         /// </summary>
         /// <param name="developer"></param>
-        public void EditDevForm(Developer developer)
+        public void EditDevForm(Developer developer, ViewForm form)
         {
-            if(windowForm == MainWindow.ViewForm.View)
+            if(form == ViewForm.View)
             {
                 this.FirstName.IsReadOnly = true;
                 this.LastName.IsReadOnly = true;
@@ -59,7 +59,7 @@ namespace WorkersViewer
                 this.Experience.IsReadOnly = true;
                 this.Level.IsReadOnly = true;
 
-                this.BtnDevSave.Visibility = Visibility.Hidden; 
+                this.BtnDevSave.Visibility = Visibility.Hidden;
             }
 
             this.FirstName.Text = developer.FirstName;
@@ -84,17 +84,15 @@ namespace WorkersViewer
 
             try
             {
-                string firstName = ti.ToTitleCase(this.FirstName.Text);
-                string lastName = ti.ToTitleCase(this.LastName.Text);
+                string firstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.FirstName.Text);
+                string lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.LastName.Text);
                 string sex = this.Gender_value.Text;
-                string appointment = ti.ToTitleCase(this.Appointment.Text);
-                string date = ti.ToTitleCase(this.Date.Text);
-                int salary = int.Parse(ti.ToTitleCase(this.Salary.Text));
-                string devLang = ti.ToTitleCase(this.DevLang.Text);
-                string experience = ti.ToTitleCase(this.Experience.Text);
-                string level = ti.ToTitleCase(this.Level.Text);
-
-                MessageBox.Show("Validation of data.");
+                string appointment = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Appointment.Text);
+                string date = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Date.Text);
+                int salary = int.Parse(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Salary.Text));
+                string devLang = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.DevLang.Text);
+                string experience = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Experience.Text);
+                string level = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Level.Text);
 
                 CheckingValid(firstName, lastName, sex, appointment, date, salary.ToString(), devLang, experience, level);
                 if (ex.ValidResult == 0)
@@ -109,12 +107,12 @@ namespace WorkersViewer
                     this._developer.Experience = experience;
                     this._developer.Level = level;
 
-                    if(windowForm == MainWindow.ViewForm.Create)
-                    {                        
+                    if (this._createOrUpdate == ViewForm.Create.ToString())
+                    {
                         this._business.Create(this._developer);
                         this.Close();
                     }
-                    if (windowForm == MainWindow.ViewForm.Update)
+                    if (this._createOrUpdate == ViewForm.Update.ToString())
                     {
                         this._business.Update(this._developer);
                         this.Close();

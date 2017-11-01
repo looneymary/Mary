@@ -24,31 +24,31 @@ namespace WorkersViewer
     /// </summary>
     public partial class OfficeViewer : Window
     {
-        private readonly OfficeWorker _office = new OfficeWorker();
+        private readonly OfficeWorker _office;
         private WorkerService _business;
         CheckValidExceptions ex = new CheckValidExceptions();
-        TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
-        MainWindow.ViewForm windowForm;
+
+        string _createOrUpdate;
 
         public delegate int ValidValuesDelegate(params string[] paarametres);
         public event ValidValuesDelegate CheckingValid;
 
-        public OfficeViewer(OfficeWorker office, MainWindow.ViewForm form, string xmlFile)
+        public OfficeViewer(WorkerService business, OfficeWorker office, ViewForm form)
         {
             InitializeComponent();
-            this._office = office;
-            this._business = new WorkerService(new XmlRepository(), xmlFile);
-            windowForm = form;
-            this.EditOfficeForm(this._office);
+            this._office = office ?? new OfficeWorker();
+            this._business = business;
+            this.EditOfficeForm(this._office, form);
+            this._createOrUpdate = form.ToString();
         }
 
         /// <summary>
         /// Fill form of "OfficeViewer" window
         /// </summary>
         /// <param name="office">Object to edit</param>
-        public void EditOfficeForm(OfficeWorker office)
+        public void EditOfficeForm(OfficeWorker office, ViewForm form)
         {
-            if (windowForm == MainWindow.ViewForm.View)
+            if (form == ViewForm.View)
             {
                 this.FirstName.IsReadOnly = true;
                 this.LastName.IsReadOnly = true;
@@ -80,15 +80,13 @@ namespace WorkersViewer
 
             try
             {
-                string firstName = ti.ToTitleCase(this.FirstName.Text);
-                string lastName = ti.ToTitleCase(this.LastName.Text);
+                string firstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.FirstName.Text);
+                string lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.LastName.Text);
                 string sex = this.Gender_value.Text;
-                string appointment = ti.ToTitleCase(this.Appointment.Text);
-                string date = ti.ToTitleCase(this.Date.Text);
-                int salary = int.Parse(ti.ToTitleCase(this.Salary.Text));
-                int yearsInOService = int.Parse(ti.ToTitleCase(this.YearsInService.Text));
-
-                MessageBox.Show("Validation of data.");
+                string appointment = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Appointment.Text);
+                string date = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Date.Text);
+                int salary = int.Parse(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Salary.Text));
+                int yearsInOService = int.Parse(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.YearsInService.Text));
 
                 CheckingValid(firstName, lastName, sex, appointment, date, salary.ToString(), yearsInOService.ToString());
 
@@ -102,10 +100,16 @@ namespace WorkersViewer
                     this._office.Salary = salary;
                     this._office.YearsInService = yearsInOService;
 
-                    if(windowForm == MainWindow.ViewForm.Create) this._business.Create(this._office);                    
-                    if(windowForm == MainWindow.ViewForm.Update) this._business.Update(this._office);
-
-                    this.Close();
+                    if (this._createOrUpdate == ViewForm.Create.ToString())
+                    {
+                        this._business.Create(this._office);
+                        this.Close();
+                    }
+                    if (this._createOrUpdate == ViewForm.Update.ToString())
+                    {
+                        this._business.Update(this._office);
+                        this.Close();
+                    }
                 }
                 else
                 {

@@ -50,7 +50,7 @@
                     <TextBlock Margin="-1,1,0,-15" HorizontalAlignment="Center" VerticalAlignment="Bottom">Save</TextBlock>
                 </Grid>
             </Button>
-            <Button Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_Office_Close">
+            <Button Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" IsCancel="True" Click="Btn_Office_Close">
                 <Grid>
                     <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" ></Ellipse>
                     <Image Source="Resources/Image/DevView_close.png" Width="35" Height="35" Margin="1,1,0,0"></Image>
