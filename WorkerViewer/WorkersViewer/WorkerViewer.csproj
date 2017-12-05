@@ -67,11 +67,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CheckValidExceptions.cs" />
+    <Compile Include="Infrastructure\CheckValidExceptions.cs" />
     <Compile Include="DeveloperViewer.xaml.cs">
       <DependentUpon>DeveloperViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Infrastructure\CommandHandler.cs" />
+    <Compile Include="Infrastructure\EnumHelper.cs" />
+    <Compile Include="Infrastructure\Mapper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -82,6 +84,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\BaseWorkerViewModel.cs" />
+    <Compile Include="ViewModels\DeveloperViewModel.cs" />
+    <Compile Include="ViewModels\OfficeWorkerViewModel.cs" />
+    <Compile Include="ViewModels\WorkerViewModel.cs" />
     <Compile Include="OfficeViewer.xaml.cs">
       <DependentUpon>OfficeViewer.xaml</DependentUpon>
     </Compile>

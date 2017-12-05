@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace WorkerViewer
+namespace WorkerViewer.Infrastructure
 {
     public class CheckValidExceptions : Exception
     {

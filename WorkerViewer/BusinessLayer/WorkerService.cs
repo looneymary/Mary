@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccess;
 using DataAccess.Models;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace BusinessLayer
 {
@@ -16,7 +12,7 @@ namespace BusinessLayer
 
         public WorkerService(IRepository _repository)
         {
-            this._repository = new XmlRepository();
+            this._repository = new XmlRepository(Config._xmlPath);
         }
 
         public WorkerService(IRepository _repository, string xmlFile)

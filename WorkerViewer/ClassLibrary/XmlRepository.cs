@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Collections;
 using DataAccess.Models;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace DataAccess
@@ -20,7 +16,7 @@ namespace DataAccess
         [XmlArrayItem("OfficeWorker", typeof(OfficeWorker))]
         public List<Worker> People { get; set; }
 
-        [XmlIgnore] public string xmlFile = Config._xmlPath;
+        [XmlIgnore] public string _xmlFile;
 
         private WorkWithXml _xml;
         ValidXml valid = new ValidXml();
@@ -38,9 +34,9 @@ namespace DataAccess
             this._xml = new WorkWithXml();
         }
 
-        public XmlRepository(string openFile)
+        public XmlRepository(string xmlFile)
         {
-            xmlFile = openFile;
+            this._xmlFile = xmlFile;
             People = new List<Worker>();
             this._xml = new WorkWithXml();
         }
@@ -54,9 +50,9 @@ namespace DataAccess
         {
             List<Worker> Worker = new List<Worker>();
             XmlDocument doc = new XmlDocument();
-            doc.Load(xmlFile);
+            doc.Load(this._xmlFile);
 
-            if (!valid.Validate(xmlFile, Config._xsdPath))
+            if (!valid.Validate(this._xmlFile, Config._xsdPath))
             {
                 XmlElement _root = doc.DocumentElement;
 
@@ -126,9 +122,9 @@ namespace DataAccess
             Developer developer = new Developer();
             OfficeWorker office = new OfficeWorker();
 
-            var streamReader = new StreamReader(xmlFile);
+            var streamReader = new StreamReader(this._xmlFile);
             XDocument xmlDocument = XDocument.Load(streamReader);
-            if (!valid.Validate(xmlFile, Config._xsdPath))
+            if (!valid.Validate(this._xmlFile, Config._xsdPath))
             {
                 var repositoryArray = xmlDocument.Element("XmlRepository");
                 var workers = repositoryArray.Element("Workers");
@@ -168,7 +164,7 @@ namespace DataAccess
                 }
 
                 streamReader.Close();
-                repositoryArray.Save(xmlFile);
+                repositoryArray.Save(this._xmlFile);
             }
         }
 
@@ -181,9 +177,9 @@ namespace DataAccess
             Developer developer = new Developer();
             OfficeWorker office = new OfficeWorker();
 
-            StreamReader streamReader = new StreamReader(xmlFile);
+            StreamReader streamReader = new StreamReader(this._xmlFile);
             XDocument xmlDocument = XDocument.Load(streamReader);
-            if (!valid.Validate(xmlFile, Config._xsdPath))
+            if (!valid.Validate(this._xmlFile, Config._xsdPath))
             {
                 var repositoryArray = xmlDocument.Element("XmlRepository");
                 var workers = repositoryArray.Element("Workers").Elements();
@@ -192,7 +188,7 @@ namespace DataAccess
                 {
                     if (Guid.Parse(xNode.Element("_id").Value) == worker._id)
                     {
-                        if (worker is Developer == true)
+                        if (worker is Developer)
                         {
                             developer = (Developer)worker;
                             xNode.SetElementValue("FirstName", developer.FirstName);
@@ -217,7 +213,7 @@ namespace DataAccess
                             xNode.SetElementValue("YearsInService", office.YearsInService.ToString());
                         }
                         streamReader.Close();
-                        repositoryArray.Save(xmlFile);
+                        repositoryArray.Save(this._xmlFile);
                         break;
                     }
                 }
@@ -230,8 +226,8 @@ namespace DataAccess
         /// <param name="id">Worker's id</param>
         public void Delete(Guid id)
         {
-            XElement xDoc = XElement.Load(xmlFile);
-            if (!valid.Validate(xmlFile, Config._xsdPath))
+            XElement xDoc = XElement.Load(this._xmlFile);
+            if (!valid.Validate(this._xmlFile, Config._xsdPath))
             {
                 IEnumerable<XElement> elements = xDoc.Element("Workers").Elements().Elements("_id");
                 foreach (XElement xNode in elements)
@@ -239,7 +235,7 @@ namespace DataAccess
                     if (Guid.Parse(xNode.Value) == id)
                     {
                         xNode.Parent.Remove();
-                        xDoc.Save(xmlFile);
+                        xDoc.Save(this._xmlFile);
                         Console.WriteLine("Removing was sucсessful");
                     }
                 }

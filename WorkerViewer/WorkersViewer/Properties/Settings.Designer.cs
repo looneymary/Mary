@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WorkersViewer.Properties
+namespace WorkerViewer.Properties
 {
 
 

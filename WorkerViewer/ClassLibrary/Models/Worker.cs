@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Collections;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 
 namespace DataAccess.Models
 {
     [Serializable]
     public abstract class Worker
     {
-        public Guid _id;
+        public Guid _id { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
