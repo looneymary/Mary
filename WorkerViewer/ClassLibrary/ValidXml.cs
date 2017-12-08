@@ -21,8 +21,8 @@ namespace DataAccess
 
             xmlFile.Validate(xsdSchema, (o, e) =>
             {
-                Console.WriteLine("{0}", e.Message);
                 errors = true;
+                throw e.Exception;
             });
             return errors;
         }

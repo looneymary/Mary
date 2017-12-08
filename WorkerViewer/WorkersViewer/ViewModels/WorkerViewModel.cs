@@ -1,5 +1,6 @@
 ﻿using BusinessLayer;
 using DataAccess;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace WorkerViewer.ViewModels
         /// </summary>
         private void AddDeveloper()
         {
-            var dev = new DeveloperViewModel(base._xmlOpenFile)
+            var dev = base._xmlOpenFile != null ? new DeveloperViewModel(base._xmlOpenFile) : new DeveloperViewModel()
             {
                 IsReadOnly = false,
                 CreateorUpdate = CreateOrUpdate.Create
@@ -78,7 +79,7 @@ namespace WorkerViewer.ViewModels
         /// </summary>
         private void AddOffice()
         {
-            var office = new OfficeWorkerViewModel(base._xmlOpenFile)
+            var office = base._xmlOpenFile != null ? new OfficeWorkerViewModel(base._xmlOpenFile) : new OfficeWorkerViewModel()
             {
                 IsReadOnly = false,
                 CreateorUpdate = CreateOrUpdate.Create
@@ -128,9 +129,9 @@ namespace WorkerViewer.ViewModels
         private void Delete()
         {
             // To save selected item and then remove from xml
-            var removeItem = SelectedItem; 
-            this.Workers.Remove(SelectedItem);
+            var removeItem = SelectedItem;
             this._business.Delete((Mapper.MapModelToEntity(removeItem))._id);
+            this.Workers.Remove(SelectedItem);            
         }
 
         /// <summary>
@@ -199,10 +200,17 @@ namespace WorkerViewer.ViewModels
             if (result == true)
             {
                 WorkWithXml xml = new WorkWithXml();
-                string stringForSave = xml.SerializeObject(new XmlRepository(result));
-                var stringReader = new StringReader(stringForSave);
-                XDocument xmlDocument = XDocument.Load(stringReader);
-                xmlDocument.Save(dlg.FileName);
+                try
+                {
+                    string stringForSave = xml.SerializeObject(new XmlRepository(result, base._xmlOpenFile));
+                    var stringReader = new StringReader(stringForSave);
+                    XDocument xmlDocument = XDocument.Load(stringReader);
+                    xmlDocument.Save(dlg.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Xml-document is not valid and can't be opened.\nError: " + ex.Message);
+                }
             }
         }
 
@@ -221,12 +229,20 @@ namespace WorkerViewer.ViewModels
             bool? result = dlg.ShowDialog();
 
             if (result == true && dlg.FileName != string.Empty)
-            {
+            {                
                 string xmlFile = dlg.FileName;
                 base._xmlOpenFile = xmlFile;
-                this._business = new WorkerService(new XmlRepository(), dlg.FileName);
-                Workers = new ObservableCollection<BaseWorkerViewModel>(this._business.Get("Workers/*").Select(Mapper.MapEntityToModel));
-                window.DataGrid.ItemsSource = Workers;
+                try
+                {
+                    this._business = new WorkerService(new XmlRepository(), dlg.FileName);
+                    Workers = new ObservableCollection<BaseWorkerViewModel>(this._business.Get("Workers/*").Select(Mapper.MapEntityToModel));
+                    window.DataGrid.ItemsSource = Workers;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Xml-document is not valid and can't be opened.\nError: " + ex.Message);
+                }    
+                    
             }
         }
         #endregion

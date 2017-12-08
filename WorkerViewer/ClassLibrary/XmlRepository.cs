@@ -20,15 +20,18 @@ namespace DataAccess
 
         private WorkWithXml _xml;
         ValidXml valid = new ValidXml();
+        public string XmlError { get; set; }
 
         public XmlRepository()
         {
+            this._xmlFile = Config._xmlPath;
             People = new List<Worker>();
             this._xml = new WorkWithXml();
         }
 
-        public XmlRepository(bool? result)
+        public XmlRepository(bool? result, string xmlFile)
         {
+            this._xmlFile = xmlFile != null ? xmlFile : Config._xmlPath;
             People = new List<Worker>();
             People = Get("Workers/*").ToList();
             this._xml = new WorkWithXml();
@@ -36,7 +39,7 @@ namespace DataAccess
 
         public XmlRepository(string xmlFile)
         {
-            this._xmlFile = xmlFile;
+            this._xmlFile = xmlFile != null ? xmlFile : Config._xmlPath;
             People = new List<Worker>();
             this._xml = new WorkWithXml();
         }
@@ -57,7 +60,6 @@ namespace DataAccess
                 XmlElement _root = doc.DocumentElement;
 
                 XmlNodeList people = _root.SelectNodes(filter);
-
                 foreach (XmlNode person in people)
                 {
                     XDocument xDoc = XDocument.Parse(person.OuterXml);
@@ -107,7 +109,6 @@ namespace DataAccess
                             Worker.Add(office);
                         }
                     }
-
                 }
             }
             return Worker;
@@ -236,7 +237,6 @@ namespace DataAccess
                     {
                         xNode.Parent.Remove();
                         xDoc.Save(this._xmlFile);
-                        Console.WriteLine("Removing was sucсessful");
                     }
                 }
             }

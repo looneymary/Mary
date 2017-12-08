@@ -162,7 +162,7 @@ namespace WorkerViewer.Infrastructure
             MatchCollection mc = reg.Matches(var);
             if (mc.Count == 0)
             {
-                string message = "The field \"" + name + "\" not filled in correctly. Date format must be \"dd.mm.yyyy\".";
+                string message = "The field \"" + name + "\" not filled in correctly. Date format must be \"dd.mm.19(20)yy\".";
                 ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
@@ -175,12 +175,18 @@ namespace WorkerViewer.Infrastructure
         /// <param name="name">The name of field</param>
         public void IntVal(int intVal, string name)
         {
-            if (intVal <= 0)
+            if (intVal <= 0 || intVal > 10000000)
             {
-                string message = "The field \"" + name + "\" not filled in correctly. The value must be greater, than 0.";
+                string message = "The field \"" + name + "\" not filled in correctly. The value must be greater than 0 and less than 1 000 000.";
                 ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
+            if(name == "YearsInService" && intVal > 70)
+            {
+                string message = "Any worker can't work here for so long. Please, input the correct value to the field \"" + name + "\".";
+                ExMessage = message;
+                throw new CheckValidExceptions(message);
+            } 
         }
     }
 }
