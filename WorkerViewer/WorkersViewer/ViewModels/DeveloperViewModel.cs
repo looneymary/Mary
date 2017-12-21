@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
+using WorkersViewer.Properties;
 using WorkerViewer.Infrastructure;
 
 namespace WorkerViewer.ViewModels
@@ -108,8 +109,8 @@ namespace WorkerViewer.ViewModels
         public void Edit(Window window, Developer dev)
         {
             CheckingValid += this._ex.CheckExceptions;
-            try
-            {
+            //try
+            //{
                 string firstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.FirstName);
                 string lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.LastName);
                 string sex = this.Sex.ToString();
@@ -144,11 +145,11 @@ namespace WorkerViewer.ViewModels
                 {
                     MessageBox.Show(this._ex.ExMessage);
                 }
-            }
-            catch
-            {
-                MessageBox.Show("Invalid value was entered. Please, repeat inpute.");
-            }
+            //}
+            //catch
+            //{
+            //    MessageBox.Show(Resources.EditErrorMessage);
+            //}
         }
 
         /// <summary>

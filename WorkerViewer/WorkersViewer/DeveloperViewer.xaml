@@ -4,78 +4,80 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkerViewer"
+        xmlns:resources="clr-namespace:WorkersViewer.Properties"
         mc:Ignorable="d"
-        Title="Developer viewer" Height="506" Width="270" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Name="Developer">
+        Title="{x:Static resources:Resources.Developer}" Height="506" Width="270" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Name="Developer">
     
     <StackPanel Margin="0,0,0,-50">
-        <TextBlock Padding="10" HorizontalAlignment="Center">General information</TextBlock>
+        <TextBlock Padding="10" HorizontalAlignment="Center" Text="{x:Static resources:Resources.GeneralInfo}"/>
         <Grid>
-            <Label Padding="35,10,0,10">First name</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.FirstName}"/>
             <TextBox Name="FirstName" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding FirstName}" IsReadOnly="{Binding Path=IsReadOnly}"/>
         </Grid>
         <Grid>
-            <Label Padding="35,10,0,10">Last name</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.LastName}"/>
             <TextBox Name="LastName" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding LastName}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>        
         <Grid>
-            <Label Padding="52,10,0,10">Sex</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.Sex}"/>
             <ComboBox Name="Gender_value" Width="120" Padding="0,0,10,0" Margin="15,5,5,5" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" 
                       Background="{x:Null}" BorderBrush="{x:Null}" Text="{Binding Sex}" IsReadOnly="{Binding Path=IsReadOnly}">
-                <ComboBoxItem Name="Male" IsSelected="True">Male</ComboBoxItem>
-                <ComboBoxItem Name="Female">Female</ComboBoxItem>
+                <ComboBoxItem Name="Male" IsSelected="True" Content="{x:Static resources:Resources.Male}" />
+                <ComboBoxItem Name="Female" Content="{x:Static resources:Resources.Female}" />
             </ComboBox>
         </Grid>
         <Grid>
-            <Label Padding="30,10,0,10">Appointment</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.Appointment}"/>
             <TextBox Name="Appointment" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding Appointment}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>
         <Grid>
-            <Label Padding="50,10,0,10">Date</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.Date}"/>
             <TextBox Name="Date" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding Date}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>
         <Grid>
-            <Label Padding="48,10,0,10">Salary</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.Salary}"/>
             <TextBox Name="Salary" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding Salary}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>
-        <TextBlock Padding="10" HorizontalAlignment="Center">Working information</TextBlock>
+        <TextBlock Padding="10" HorizontalAlignment="Center" Text="{x:Static resources:Resources.WorkingInfo}" />
         <Grid>
-            <Label Padding="10,10,0,10">Developer languages</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.DevLang}" />
             <TextBox Name="DevLang" Width="120" Padding="0,0,10,0" Margin="15,5,5,5" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding DevLang}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>
         <Grid>
-            <Label Padding="35,10,0,10">Experience</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.Experience}" />
             <TextBox Name="Experience" Width="120" Padding="0,0,10,0" Margin="15,5,5,5" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding Experience}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>
         <Grid>
-            <Label Padding="48,10,0,10">Level</Label>
+            <Label Padding="40,10,0,10" Content="{x:Static resources:Resources.Level}" />
             <TextBox Name="Level" Width="120" Margin="15,5,5,5" Padding="0,0,10,0" HorizontalAlignment="Right" 
                      HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Text="{Binding Level}" IsReadOnly="{Binding Path=IsReadOnly}" />
         </Grid>
         
         <!-- Buttons -->
-        <WrapPanel Margin="0,0,10,10" HorizontalAlignment="Right">
-            <Button Name="BtnDevSave" Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" 
+        <WrapPanel  Margin="0,0,-10,10" HorizontalAlignment="Right" Width="158">
+            <Button x:Name="BtnDevSave" Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" 
                     Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=Developer}">
                 <Grid>
-                    <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" ></Ellipse>
-                    <Image Source="Resources/Image/DevView_save.png" Width="35" Height="35" Margin="1,1,0,0"></Image>
-                    <TextBlock Margin="-1,1,0,-15" HorizontalAlignment="Center" VerticalAlignment="Bottom">Save</TextBlock>
+                    <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" />
+                    <Image Source="Resources/Images/DevView_save.png" Width="35" Height="35" Margin="1,1,0,0"/>
+                    <Label Margin="-18,0,-19,-21" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Content="{x:Static resources:Resources.Save}" 
+                           Width="82"/>
                 </Grid>
-                
             </Button>
             <Button Width="50" Height="50" Margin="15,5,5,5" Background="{x:Null}" BorderBrush="{x:Null}" IsCancel="True" 
                     Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=Developer}">
                 <Grid>
-                    <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" ></Ellipse>
-                    <Image Source="Resources/Image/DevView_close.png" Width="35" Height="35" Margin="1,1,0,0"></Image>
-                    <TextBlock Margin="1,1,0,-15" HorizontalAlignment="Center" VerticalAlignment="Bottom">Close</TextBlock>
+                    <Ellipse Fill="#FFE4F2FD" Width="45" Height="45" />
+                    <Image Source="Resources/Images/DevView_close.png" Width="35" Height="35" Margin="1,1,0,0"/>
+                    <Label Margin="-5,0,-7,-21" HorizontalAlignment="Center" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Content="{x:Static resources:Resources.Close}" 
+                           Width="58"/>
                 </Grid>
             </Button>
         </WrapPanel>

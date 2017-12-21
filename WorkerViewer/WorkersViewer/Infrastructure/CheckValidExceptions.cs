@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using WorkersViewer.Properties;
 
 namespace WorkerViewer.Infrastructure
 {
@@ -19,7 +20,6 @@ namespace WorkerViewer.Infrastructure
         /// <returns>Count of found exceptions</returns>
         public int CheckExceptions(params string[] parametres)
         {
-            //Console.WriteLine("Validation of data.");
             ValidResult = 0;
             ExMessage = "";
             try
@@ -28,36 +28,31 @@ namespace WorkerViewer.Infrastructure
                 {
                     if (i == 4)
                     {
-                        DateCheck(parametres[i], ((NameOfElement)i).ToString());
+                        DateCheck(parametres[i], EnumToRightLanguage((NameOfElement)i));
                     }
                     else if (i == 5)
                     {
-                        IntVal(int.Parse(parametres[i]), ((NameOfElement)i).ToString());
+                        IntVal(int.Parse(parametres[i]), EnumToRightLanguage((NameOfElement)i));
                     }
                     else if (parametres.Length == 7 && i == 6)
                     {
-                        IntVal(int.Parse(parametres[i]), ((NameOfElement)9).ToString());
+                        IntVal(int.Parse(parametres[i]), EnumToRightLanguage((NameOfElement)i));
                     }
                     else
                     {
-                        StringCheck(parametres[i], ((NameOfElement)i).ToString());
+                        StringCheck(parametres[i], EnumToRightLanguage((NameOfElement)i));
                     }
                 }
             }
             catch (CheckValidExceptions ex)
             {
-                Console.WriteLine(ex.ExMessage);
                 ValidResult++;
             }
             finally
             {
-                if (ValidResult == 0)
+                if (ValidResult > 0)
                 {
-                    ExMessage = "Validation was successful.";
-                }
-                else
-                {
-                    ExMessage += "\nThe employee wasn't addede. Repeat input.";
+                    ExMessage += "\n" + Resources.WorkerNotAdd;
                 }
             }
             return ValidResult;
@@ -114,13 +109,9 @@ namespace WorkerViewer.Infrastructure
             }
             finally
             {
-                if (ValidResult == 0)
+                if (ValidResult > 0)
                 {
-                    ExMessage =  "Validation was successful.";
-                }
-                else
-                {
-                    ExMessage = "The employee wasn't update. Repeat input.";
+                   ExMessage = Resources.WorkerNotUpdate;
                 }
             }
 
@@ -136,7 +127,7 @@ namespace WorkerViewer.Infrastructure
         {
             if (String.IsNullOrEmpty(var))
             {
-                string message = "The field \"" + name + "\" wasn't filled. Please, correct it.";
+                string message = Resources.StrindExcBegin + "\"" + name +  "\" " + Resources.EmptyStrindExcEnd;
                 ExMessage = message;
                 throw new CheckValidExceptions(message);                
             }
@@ -145,7 +136,7 @@ namespace WorkerViewer.Infrastructure
             MatchCollection mc = regForText.Matches(var);
             if (mc.Count == 0)
             {
-                string message = "The field \"" + name + "\" conteins invalid characters. " + var + " was introdused.";
+                string message = Resources.StrindExcBegin + "\"" + name + "\" " + Resources.InvalidStringExcMiddle + Resources.InvalidStringExcEnd + var;
                 ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
@@ -162,7 +153,7 @@ namespace WorkerViewer.Infrastructure
             MatchCollection mc = reg.Matches(var);
             if (mc.Count == 0)
             {
-                string message = "The field \"" + name + "\" not filled in correctly. Date format must be \"dd.mm.19(20)yy\".";
+                string message = Resources.StrindExcBegin + "\"" + name + "\" " + Resources.DateExc;
                 ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
@@ -177,16 +168,49 @@ namespace WorkerViewer.Infrastructure
         {
             if (intVal <= 0 || intVal > 10000000)
             {
-                string message = "The field \"" + name + "\" not filled in correctly. The value must be greater than 0 and less than 1 000 000.";
+                string message = Resources.StrindExcBegin + "\"" + name + "\" " + Resources.IntLessThenZeroOrTooBig;
                 ExMessage = message;
                 throw new CheckValidExceptions(message);
             }
             if(name == "YearsInService" && intVal > 70)
             {
-                string message = "Any worker can't work here for so long. Please, input the correct value to the field \"" + name + "\".";
+                string message = Resources.ExcForYearsInOffice + name + "\".";
                 ExMessage = message;
                 throw new CheckValidExceptions(message);
             } 
+        }
+
+        /// <summary>
+        /// Return name of eloement on right language
+        /// </summary>
+        /// <param name="name">enum with element's name</param>
+        /// <returns>name of element</returns>
+        public string EnumToRightLanguage(NameOfElement name)
+        {
+            switch (name)
+            {
+                case NameOfElement.FirstName:
+                    return Resources.FirstName;
+                case NameOfElement.LastName:
+                    return Resources.LastName;
+                case NameOfElement.Sex:
+                    return Resources.Sex;
+                case NameOfElement.Appointment:
+                    return Resources.Appointment;
+                case NameOfElement.Date:
+                    return Resources.Date;
+                case NameOfElement.Salary:
+                    return Resources.Salary;
+                case NameOfElement.DeveloperLanguage:
+                    return Resources.DevLang;
+                case NameOfElement.Experience:
+                    return Resources.Experience;
+                case NameOfElement.Level:
+                    return Resources.Level;
+                case NameOfElement.YearsInService:
+                    return Resources.YearsInService;
+            }
+            return null;
         }
     }
 }

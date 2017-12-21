@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkerViewer"
         xmlns:viewModel ="clr-namespace:WorkerViewer.ViewModels"
+        xmlns:resources="clr-namespace:WorkersViewer.Properties"
         mc:Ignorable="d"
-        Title="Worker Viewer" Height="370" Width="850" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" Name="Main">
-    
+        Title="{x:Static resources:Resources.Title}" Height="383.471" Width="900" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" Name="Main">
+
     <Window.Resources>
         <viewModel:WorkerViewModel x:Key="WorkerViewModel"/>
         <Style TargetType="DataGrid">
@@ -15,71 +16,76 @@
         </Style>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
-    
-    <Grid DataContext="{Binding Source={StaticResource WorkerViewModel}}">
-            <Grid.RowDefinitions>
+
+    <Grid DataContext="{Binding Source={StaticResource WorkerViewModel}}" Margin="0,0,2,0">
+        <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="205"/>
+            <ColumnDefinition Width="275"/>
         </Grid.ColumnDefinitions>
         <!-- Main menu -->
         <Menu Grid.Row="0" Grid.ColumnSpan="2">
-            <MenuItem Header="File" Width="100" Padding="40,0,0,0" BorderThickness="1" Height="30" BorderBrush="#FF7BA5C9"  >
-                <MenuItem Header="Save" Command="{Binding SaveDocumentCommand}">
+            <MenuItem Header="{x:Static resources:Resources.File}" Width="100" Padding="32,0,0,0" BorderThickness="1" Height="30" BorderBrush="#FF7BA5C9"  >
+                <MenuItem Header="{x:Static resources:Resources.Save}" Command="{Binding SaveDocumentCommand}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/Image/Save.png" Width="22"></Image>
+                        <Image Source="Resources/Images/SaveImg.png" Width="22"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Open" Command="{Binding OpenDocumentCommand}" CommandParameter="{Binding ElementName=Main}">
+                <MenuItem Header="{x:Static resources:Resources.Open}" Command="{Binding OpenDocumentCommand}" CommandParameter="{Binding ElementName=Main}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/Image/Open.png" Width="22" ></Image>
+                        <Image Source="Resources/Images/Openimg.png" Width="22" ></Image>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Close" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=Main}">
+                <MenuItem Header="{x:Static resources:Resources.Close}" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=Main}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/Image/Close.png" Width="22"></Image>
+                        <Image Source="Resources/Images/CloseImg.png" Width="22"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Service" Width="100" Padding="30,0,6,0" BorderThickness="0,1,1,1" BorderBrush="#FF7BA5C9" >
-                <MenuItem Header="Add">
+            <MenuItem Header="{x:Static resources:Resources.Service}" Width="100" Padding="30,0,6,0" BorderThickness="0,1,1,1" BorderBrush="#FF7BA5C9" >
+                <MenuItem Header="{x:Static resources:Resources.Add}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/Image/Add.png" Width="20"></Image>
+                        <Image Source="Resources/Images/AddImg.png" Width="20"></Image>
                     </MenuItem.Icon>
-                    <MenuItem Header="Developer" Command="{Binding AddDeveloperCommand}">
+                    <MenuItem Header="{x:Static resources:Resources.Developer}" Command="{Binding AddDeveloperCommand}">
                         <MenuItem.Icon>
-                            <Image Source="Resources/Image/Developer.png" Width="20"></Image>
+                            <Image Source="Resources/Images/developerImg.png" Width="20"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Office worker" Command="{Binding AddOfficeCommand}">
+                    <MenuItem Header="{x:Static resources:Resources.OfficeWorker}" Command="{Binding AddOfficeCommand}">
                         <MenuItem.Icon>
-                            <Image Source="Resources/Image/Office.png" Width="20"></Image>
+                            <Image Source="Resources/Images/OfficeImg.png" Width="20"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Update" Command="{Binding UpdateCommand}">
+                <MenuItem Header="{x:Static resources:Resources.Update}" Command="{Binding UpdateCommand}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/Image/Update.png" Width="20"></Image>
+                        <Image Source="Resources/Images/UpdateImg.png" Width="20"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Delete" Command="{Binding DeleteCommand}">
-                        <MenuItem.Icon>
-                        <Image Source="Resources/Image/Delete.png" Width="20"></Image>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                <MenuItem Header="View" Command="{Binding ViewWorkerCommand}">
-                        <MenuItem.Icon>
-                        <Image Source="Resources/Image/View.png" Width="20"></Image>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                <MenuItem Header="{x:Static resources:Resources.Delete}" Command="{Binding DeleteCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/Images/DeleteImg.png" Width="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{x:Static resources:Resources.View}" Command="{Binding ViewWorkerCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/Images/ViewImg.png" Width="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="Tools" Width="100" Padding="35,0,6,0" BorderThickness="0,1,1,1" BorderBrush="#FF7BA5C9" >
-                <MenuItem Header="Resynchronize" Command="{Binding ResynchronizeCommand}" CommandParameter="{Binding ElementName=Main}">
+            <MenuItem Header="{x:Static resources:Resources.Tools}" Width="140" Padding="35,0,6,0" BorderThickness="0,1,1,1" BorderBrush="#FF7BA5C9" >
+                <MenuItem Header="{x:Static resources:Resources.Resynchronize}" Command="{Binding ResynchronizeCommand}" CommandParameter="{Binding ElementName=Main}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/Image/Resynchronize.png" Width="20"></Image>
+                        <Image Source="Resources/Images/ResynchronizeImg.png" Width="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{x:Static resources:Resources.Language}" Command="{Binding ChangeLangCommand}" CommandParameter="{Binding ElementName=Main}">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/Images/lngImg.png" Width="20"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -89,17 +95,17 @@
                   Margin="10" Padding="0,5,5,5" AutoGenerateColumns="False" IsReadOnly="True" 
                   CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" Width="*" />
-                <DataGridTextColumn Header="Last name" Binding="{Binding LastName}" Width="*" />
-                <DataGridTextColumn Header="Appointment" Binding="{Binding Appointment}" Width="*" />
-                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
+                <DataGridTextColumn Header="{x:Static resources:Resources.FirstName}" Binding="{Binding FirstName}" Width="*" />
+                <DataGridTextColumn Header="{x:Static resources:Resources.LastName}" Binding="{Binding LastName}" Width="*" />
+                <DataGridTextColumn Header="{x:Static resources:Resources.Appointment}" Binding="{Binding Appointment}" Width="*" />
+                <DataGridTextColumn Header="{x:Static resources:Resources.Type}" Binding="{Binding Type}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
         <!-- Delete, update & add buttons -->
-        <Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="185">
+        <Grid Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Width="265" Margin="0,5,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80*" />
+                <ColumnDefinition Width="100*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="80" />
@@ -107,44 +113,44 @@
                 <RowDefinition Height="80" />
                 <RowDefinition Height="70" />
                 <RowDefinition Height="*" />
-            </Grid.RowDefinitions>            
+            </Grid.RowDefinitions>
             <!--  Update button  -->
             <Button Name="Update_worker" Grid.Column="0" Grid.Row="0" Width="70" Height="70" Margin="10,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" 
                     Command="{Binding UpdateCommand}">
                 <Grid>
                     <Ellipse Width="60" Height="60" Fill="#FFE4F2FD"></Ellipse>
-                    <Image Source="Resources/Image/Update_btn.png" Grid.Column="0" Grid.Row="0" Width="45" Margin="10,-1,0,0" Height="50"></Image>
+                    <Image Source="Resources/Images/Update_btn.png" Grid.Column="0" Grid.Row="0" Width="45" Margin="10,-1,0,0" Height="50"></Image>
                 </Grid>
             </Button>
-            <TextBlock Grid.Column="1" Height="20" Margin="6,26,21,24">Update worker</TextBlock>
+            <TextBlock Grid.Column="1" Height="20" Margin="6,26,21,24" Text="{x:Static resources:Resources.UpdateWorker}"/>
             <!--  Delete button  -->
             <Button Name="Delete_worker" Width="70" Grid.Column="0" Grid.Row="1" Height="70" Margin="10,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" 
                     Command="{Binding DeleteCommand}">
                 <Grid>
                     <Ellipse Width="60" Height="60" Fill="#FFE4F2FD"></Ellipse>
-                    <Image Source="Resources/Image/Remove_btn.png" Width="45" Height="50" Margin="10,-1,0,0"></Image>
+                    <Image Source="Resources/Images/Remove_btn.png" Width="45" Height="50" Margin="10,-1,0,0"></Image>
                 </Grid>
             </Button>
-            <TextBlock Grid.Column="1" Grid.Row="1" Margin="6,26,25,24" Height="20" >Delete worker</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="1" Margin="6,26,25,24" Height="20" Text="{x:Static resources:Resources.DeleteWorker}"/>
             <!--  Add button  -->
             <ToggleButton Name="Add_worker" Grid.Column="0" Grid.Row="2" Width="70" Height="70" Margin="10,10,0,0" Background="{x:Null}" BorderBrush="{x:Null}" >
                 <Grid>
                     <Ellipse Width="60" Height="60" Fill="#FFE4F2FD"></Ellipse>
-                    <Image Name ="Add_btn" Source="Resources/Image/Add_btn.png" Grid.Column="0" Grid.Row="1" Width="45" Height="50" Margin="3,-2,0,0"></Image>
+                    <Image Name ="Add_btn" Source="Resources/Images/Add_btn.png" Grid.Column="0" Grid.Row="1" Width="45" Height="50" Margin="3,-2,0,0"></Image>
                 </Grid>
             </ToggleButton>
-            <TextBlock Grid.Column="1" Grid.Row="2" Margin="5,31,38,23" RenderTransformOrigin="0.525,1.312">Add worker</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="2" Margin="5,31,21,23" RenderTransformOrigin="0.525,1.312" Text="{x:Static resources:Resources.AddWorker}"/>
             <!--  Double add buttons  -->
             <StackPanel Name="Double_addMenu" Grid.Column="0" Grid.Row="3" 
-                        Visibility="{Binding Source={x:Reference Add_worker},Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Image Source="Resources/Image/Developer.png" Grid.Column="0" Grid.Row="3" Width="25" Margin ="5"></Image>
-                <Image Source="Resources/Image/Office.png" Grid.Column="0" Grid.Row="3" Width="25" Margin ="5"></Image>
+                        Visibility="{Binding Source={x:Reference Add_worker},Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="-10,0,10,0">
+                <Image Source="Resources/Images/DeveloperImg.png" Grid.Column="0" Grid.Row="3" Width="25" Margin ="5"></Image>
+                <Image Source="Resources/Images/OfficeImg.png" Grid.Column="0" Grid.Row="3" Width="25" Margin ="5"></Image>
             </StackPanel>
-            <StackPanel Name="Double_addMenu_text" Grid.Column="1" Grid.Row="3" 
-                        Visibility="{Binding Source={x:Reference Add_worker}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Button Name="AddDev" Width="120" Margin ="-8,8,-7,0" Content="Add developer" Background="#FFE4F2FD" BorderBrush="#FFC5E2FB" 
+            <StackPanel Name="Double_addMenu_text" Grid.Row="3" 
+                        Visibility="{Binding Source={x:Reference Add_worker}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.ColumnSpan="2" Margin="78,0,21,0">
+                <Button Name="AddDev" Margin ="0,8,0,0" Content="{x:Static resources:Resources.AddDeveloper}" Background="#FFE4F2FD" BorderBrush="#FFC5E2FB" 
                         Command ="{Binding AddDeveloperCommand}"/>
-                <Button Width="120" Margin ="-8,14,-7,0" Content="Add office worker" Background="#FFE4F2FD" BorderBrush="#FFC5E2FB" 
+                <Button Margin ="0,14,0,0" Content="{x:Static resources:Resources.AddOffice}" Background="#FFE4F2FD" BorderBrush="#FFC5E2FB" 
                         Command ="{Binding AddOfficeCommand}" />
             </StackPanel>
         </Grid>

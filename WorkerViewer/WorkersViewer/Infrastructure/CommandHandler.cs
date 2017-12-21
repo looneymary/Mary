@@ -20,7 +20,6 @@ namespace WorkerViewer.Infrastructure
         {
             return _canExecute;
         }
-
         public void Execute(object parameter)
         {
             _action();

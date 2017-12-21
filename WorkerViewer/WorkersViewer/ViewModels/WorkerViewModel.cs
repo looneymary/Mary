@@ -7,6 +7,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
+using WorkersViewer;
+using WorkersViewer.Properties;
 using WorkerViewer.Infrastructure;
 
 namespace WorkerViewer.ViewModels
@@ -52,6 +54,7 @@ namespace WorkerViewer.ViewModels
         public ICommand ResynchronizeCommand => new CommandHandlerGeneric<MainWindow>(Resynchronize, true);
         public ICommand SaveDocumentCommand => new CommandHandler(SaveDocument, true);
         public ICommand OpenDocumentCommand => new CommandHandlerGeneric<MainWindow>(OpenDocument, true);
+        public ICommand ChangeLangCommand => new CommandHandlerGeneric<Window>(ChangeLang, true);
         #endregion
 
         #region Methods
@@ -209,7 +212,7 @@ namespace WorkerViewer.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Xml-document is not valid and can't be opened.\nError: " + ex.Message);
+                    MessageBox.Show(Resources.XmlNotValid +"\n"+ Resources.Error + ex.Message);
                 }
             }
         }
@@ -240,10 +243,17 @@ namespace WorkerViewer.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Xml-document is not valid and can't be opened.\nError: " + ex.Message);
+                    MessageBox.Show(Resources.XmlNotValid + "\n" + Resources.Error + ex.Message);
                 }    
                     
             }
+        }
+
+        private void ChangeLang(Window window)
+        {
+            var newWindow = new AuthorizationViewer();
+            window.Close();
+            newWindow.ShowDialog();
         }
         #endregion
     }
